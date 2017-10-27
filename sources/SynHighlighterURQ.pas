@@ -103,7 +103,7 @@ type
     function GetEOL: Boolean; override;
     function GetKeyWords: string;
     function GetTokenID: TtkTokenKind;
-    procedure SetLine(NewValue: String; LineNumber: Integer); override;
+    procedure SetLine(NewValue: string; LineNumber: Integer); override;
     function GetToken: String; override;
     function GetTokenAttribute: TSynHighlighterAttributes; override;
     function GetTokenKind: integer; override;
@@ -524,7 +524,7 @@ begin
   fRange := rsUnknown;
 end;
 
-procedure TSynURQSyn.SetLine(NewValue: String; LineNumber: Integer);
+procedure TSynURQSyn.SetLine(NewValue: string; LineNumber: Integer);
 begin
   fLine := PChar(NewValue);
   Run := 0;

@@ -173,11 +173,4 @@ object CommandsDataModule: TCommandsDataModule
     Left = 20
     Top = 68
   end
-  object SynPHPSyn1: TSynPHPSyn
-    Options.AutoDetectEnabled = False
-    Options.AutoDetectLineLimit = 0
-    Options.Visible = False
-    Left = 192
-    Top = 64
-  end
 end

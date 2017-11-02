@@ -14,6 +14,7 @@ object TextSearchDialog: TTextSearchDialog
   OldCreateOrder = False
   Position = poOwnerFormCenter
   OnCloseQuery = FormCloseQuery
+  OnShow = FormShow
   PixelsPerInch = 96
   TextHeight = 13
   object Label1: TLabel
@@ -28,7 +29,6 @@ object TextSearchDialog: TTextSearchDialog
     Top = 8
     Width = 228
     Height = 21
-    ItemHeight = 13
     TabOrder = 0
   end
   object gbSearchOptions: TGroupBox

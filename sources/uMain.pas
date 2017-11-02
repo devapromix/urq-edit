@@ -6,12 +6,12 @@ interface
 
 uses
   Windows, Messages, SysUtils, Classes, Graphics, Controls, Forms, Dialogs,
-  Menus, ActnList, uEditAppIntfs, ComCtrls;
+  Menus, ActnList, uEditAppIntfs, ComCtrls, System.Actions;
 
 type
   TMainForm = class(TForm)
     mnuMain: TMainMenu;
-    mFile: TMenuItem;
+    mQuest: TMenuItem;
     miFileExit: TMenuItem;
     miFileNew: TMenuItem;
     N1: TMenuItem;
@@ -46,29 +46,30 @@ type
     N5: TMenuItem;
     miFilePrint: TMenuItem;
     actlStandard: TActionList;
-    actFileNew: TAction;
-    actFileOpen: TAction;
-    actFileExit: TAction;
+    actQuestNew: TAction;
+    actQuestOpen: TAction;
+    actQuestExit: TAction;
     actViewStatusbar: TAction;
     actUpdateStatusBarPanels: TAction;
-    actFileCloseAll: TAction;
+    actQuestCloseAll: TAction;
     miFileCloseAll: TMenuItem;
     mHelp: TMenuItem;
     mAbout: TMenuItem;
     procedure FormCreate(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
-    procedure mFileClick(Sender: TObject);
+    procedure mQuestClick(Sender: TObject);
     procedure actFileNewOrOpenUpdate(Sender: TObject);
-    procedure actFileNewExecute(Sender: TObject);
-    procedure actFileOpenExecute(Sender: TObject);
-    procedure actFileExitExecute(Sender: TObject);
+    procedure actQuestNewExecute(Sender: TObject);
+    procedure actQuestOpenExecute(Sender: TObject);
+    procedure actQuestExitExecute(Sender: TObject);
     procedure mRecentFilesClick(Sender: TObject);
     procedure actViewStatusbarUpdate(Sender: TObject);
     procedure actViewStatusbarExecute(Sender: TObject);
     procedure OnOpenMRUFile(Sender: TObject);
     procedure actUpdateStatusBarPanelsUpdate(Sender: TObject);
-    procedure actFileCloseAllExecute(Sender: TObject);
-    procedure actFileCloseAllUpdate(Sender: TObject);
+    procedure actQuestCloseAllExecute(Sender: TObject);
+    procedure actQuestCloseAllUpdate(Sender: TObject);
+    procedure FormShow(Sender: TObject);
   protected
     fMRUItems: array[1..5] of TMenuItem;
     function CanCloseAll: boolean;
@@ -84,7 +85,7 @@ implementation
 {$R *.DFM}
 
 uses
-  IniFiles, uCommands, GNUGetText;
+  IniFiles, uCommands, uLanguage;
 
 { TMainForm }
 
@@ -105,6 +106,15 @@ begin
     GI_EditorFactory.CloseAll;
   WriteIniSettings;
   CommandsDataModule.Free;
+end;
+
+procedure TMainForm.FormShow(Sender: TObject);
+begin
+  //
+  mQuest.Caption := _('&Quest');
+  mEdit.Caption := _('&Edit');
+  mView.Caption := _('&View');
+  mHelp.Caption := _('&Help');
 end;
 
 // implementation
@@ -227,12 +237,12 @@ begin
   (Sender as TAction).Enabled := GI_EditorFactory <> nil;
 end;
 
-procedure TMainForm.actFileNewExecute(Sender: TObject);
+procedure TMainForm.actQuestNewExecute(Sender: TObject);
 begin
   DoOpenFile('');
 end;
 
-procedure TMainForm.actFileOpenExecute(Sender: TObject);
+procedure TMainForm.actQuestOpenExecute(Sender: TObject);
 begin
   with CommandsDataModule.dlgFileOpen do begin
     if Execute then
@@ -240,7 +250,7 @@ begin
   end;
 end;
 
-procedure TMainForm.actFileCloseAllExecute(Sender: TObject);
+procedure TMainForm.actQuestCloseAllExecute(Sender: TObject);
 var
   i: integer;
 begin
@@ -256,13 +266,13 @@ begin
   end;
 end;
 
-procedure TMainForm.actFileCloseAllUpdate(Sender: TObject);
+procedure TMainForm.actQuestCloseAllUpdate(Sender: TObject);
 begin
-  actFileCloseAll.Enabled := (GI_EditorFactory <> nil)
+  actQuestCloseAll.Enabled := (GI_EditorFactory <> nil)
     and (GI_EditorFactory.GetEditorCount > 0);
 end;
 
-procedure TMainForm.actFileExitExecute(Sender: TObject);
+procedure TMainForm.actQuestExitExecute(Sender: TObject);
 begin
   Close;
 end;
@@ -280,7 +290,7 @@ begin
     end;
 end;
 
-procedure TMainForm.mFileClick(Sender: TObject);
+procedure TMainForm.mQuestClick(Sender: TObject);
 begin
   mRecentFiles.Enabled := CommandsDataModule.GetMRUEntries > 0;
 end;

@@ -2,7 +2,7 @@ inherited TextReplaceDialog: TTextReplaceDialog
   Caption = 'Replace text'
   ClientHeight = 210
   OldCreateOrder = True
-  ExplicitHeight = 242
+  ExplicitHeight = 235
   PixelsPerInch = 96
   TextHeight = 13
   object Label2: TLabel [1]
@@ -37,7 +37,6 @@ inherited TextReplaceDialog: TTextReplaceDialog
     Top = 37
     Width = 228
     Height = 21
-    ItemHeight = 13
     TabOrder = 1
   end
 end

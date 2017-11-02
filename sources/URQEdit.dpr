@@ -11,7 +11,8 @@ uses
   uSearchText in 'uSearchText.pas' {TextSearchDialog},
   uReplaceText in 'uReplaceText.pas' {TextReplaceDialog},
   uConfirmReplace in 'uConfirmReplace.pas' {ConfirmReplaceDialog},
-  GNUGetText in 'GNUGetText.pas';
+  uLanguage in 'uLanguage.pas',
+  uUtils in 'uUtils.pas';
 
 {$R *.RES}
 

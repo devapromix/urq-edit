@@ -13,6 +13,7 @@ type
     Label2: TLabel;
     cbReplaceText: TComboBox;
     procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
+    procedure FormShow(Sender: TObject);
   private
     function GetReplaceText: string;
     function GetReplaceTextHistory: string;
@@ -28,7 +29,16 @@ implementation
 
 {$R *.DFM}
 
+uses uLanguage;
+
 { TTextReplaceDialog }
+
+procedure TTextReplaceDialog.FormShow(Sender: TObject);
+begin
+  inherited;
+  Caption := _('Replace text');
+  Label2.Caption := _('&Replace with:');
+end;
 
 function TTextReplaceDialog.GetReplaceText: string;
 begin

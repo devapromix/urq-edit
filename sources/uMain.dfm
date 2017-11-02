@@ -13,6 +13,7 @@ object MainForm: TMainForm
   OldCreateOrder = False
   OnCreate = FormCreate
   OnDestroy = FormDestroy
+  OnShow = FormShow
   PixelsPerInch = 96
   TextHeight = 13
   object StatusBar: TStatusBar
@@ -41,14 +42,14 @@ object MainForm: TMainForm
   object mnuMain: TMainMenu
     Left = 28
     Top = 32
-    object mFile: TMenuItem
-      Caption = '&File'
-      OnClick = mFileClick
+    object mQuest: TMenuItem
+      Caption = '&Quest'
+      OnClick = mQuestClick
       object miFileNew: TMenuItem
-        Action = actFileNew
+        Action = actQuestNew
       end
       object miFileOpen: TMenuItem
-        Action = actFileOpen
+        Action = actQuestOpen
       end
       object mRecentFiles: TMenuItem
         Caption = '&Recent Files'
@@ -87,7 +88,7 @@ object MainForm: TMainForm
         Action = CommandsDataModule.actFileClose
       end
       object miFileCloseAll: TMenuItem
-        Action = actFileCloseAll
+        Action = actQuestCloseAll
       end
       object N5: TMenuItem
         Caption = '-'
@@ -99,7 +100,7 @@ object MainForm: TMainForm
         Caption = '-'
       end
       object miFileExit: TMenuItem
-        Action = actFileExit
+        Action = actQuestExit
       end
     end
     object mEdit: TMenuItem
@@ -160,33 +161,33 @@ object MainForm: TMainForm
   object actlStandard: TActionList
     Left = 76
     Top = 68
-    object actFileNew: TAction
-      Category = 'File'
+    object actQuestNew: TAction
+      Category = 'Quest'
       Caption = '&New'
       ShortCut = 16462
-      OnExecute = actFileNewExecute
+      OnExecute = actQuestNewExecute
       OnUpdate = actFileNewOrOpenUpdate
     end
-    object actFileOpen: TAction
-      Category = 'File'
+    object actQuestOpen: TAction
+      Category = 'Quest'
       Caption = '&Open...'
       ShortCut = 16463
-      OnExecute = actFileOpenExecute
+      OnExecute = actQuestOpenExecute
       OnUpdate = actFileNewOrOpenUpdate
     end
-    object actFileCloseAll: TAction
-      Category = 'File'
+    object actQuestCloseAll: TAction
+      Category = 'Quest'
       Caption = 'Close All Fi&les'
       Enabled = False
       ShortCut = 24691
-      OnExecute = actFileCloseAllExecute
-      OnUpdate = actFileCloseAllUpdate
+      OnExecute = actQuestCloseAllExecute
+      OnUpdate = actQuestCloseAllUpdate
     end
-    object actFileExit: TAction
-      Category = 'File'
+    object actQuestExit: TAction
+      Category = 'Quest'
       Caption = 'E&xit'
       ShortCut = 32883
-      OnExecute = actFileExitExecute
+      OnExecute = actQuestExitExecute
     end
     object actViewStatusbar: TAction
       Category = 'View'

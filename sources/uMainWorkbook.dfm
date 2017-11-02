@@ -5,7 +5,7 @@ inherited WorkbookMainForm: TWorkbookMainForm
   OldCreateOrder = True
   OnCloseQuery = FormCloseQuery
   ExplicitWidth = 658
-  ExplicitHeight = 554
+  ExplicitHeight = 546
   PixelsPerInch = 96
   TextHeight = 13
   object pctrlMain: TPageControl [0]
@@ -23,11 +23,6 @@ inherited WorkbookMainForm: TWorkbookMainForm
     Width = 650
     ExplicitTop = 481
     ExplicitWidth = 650
-  end
-  inherited mnuMain: TMainMenu
-    inherited mFile: TMenuItem
-      Caption = '&Quest'
-    end
   end
   inherited actlStandard: TActionList
     Top = 76

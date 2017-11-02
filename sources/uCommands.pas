@@ -90,7 +90,7 @@ implementation
 {$R *.DFM}
 
 uses
-  uHighlighterProcs, uEditAppIntfs, GNUGetText;
+  uHighlighterProcs, uEditAppIntfs, uLanguage;
 
 const
   MAX_MRU = 5;

@@ -125,7 +125,7 @@ implementation
 
 uses
   ComCtrls, uCommands, uSearchText, uReplaceText, uConfirmReplace,
-  uMainWorkbook, GNUGetText;
+  uMainWorkbook, uLanguage;
 
 const
   WM_DELETETHIS  =  WM_USER + 42;

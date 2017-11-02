@@ -22,6 +22,7 @@ type
     btnCancel: TButton;
     cbRegularExpression: TCheckBox;
     procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
+    procedure FormShow(Sender: TObject);
   private
     function GetSearchBackwards: boolean;
     function GetSearchCaseSensitive: boolean;
@@ -61,7 +62,15 @@ implementation
 
 {$R *.DFM}
 
+uses uLanguage;
+
 { TTextSearchDialog }
+
+procedure TTextSearchDialog.FormShow(Sender: TObject);
+begin
+  Caption := _('Search Text');
+  Label1.Caption := _('&Search for:');
+end;
 
 function TTextSearchDialog.GetSearchBackwards: boolean;
 begin

@@ -37,7 +37,7 @@ uses SysUtils, uUtils;
 function _(const AValue: string): string;
 begin
   Language.FSL.Append(AValue + '=');
-  Result := Language.Get(AValue);
+  Result := Language.Get(AValue) + '+';
 end;
 
 procedure TLanguage.Clear;

@@ -154,7 +154,7 @@ object MainForm: TMainForm
     object mHelp: TMenuItem
       Caption = '&Help'
       object mAbout: TMenuItem
-        Caption = 'About'
+        Action = actAbout
       end
     end
   end
@@ -198,6 +198,11 @@ object MainForm: TMainForm
     object actUpdateStatusBarPanels: TAction
       Caption = 'actUpdateStatusBarPanels'
       OnUpdate = actUpdateStatusBarPanelsUpdate
+    end
+    object actAbout: TAction
+      Category = 'Help'
+      Caption = '&About...'
+      OnExecute = actAboutExecute
     end
   end
 end

@@ -55,6 +55,7 @@ type
     miFileCloseAll: TMenuItem;
     mHelp: TMenuItem;
     mAbout: TMenuItem;
+    actAbout: TAction;
     procedure FormCreate(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
     procedure mQuestClick(Sender: TObject);
@@ -70,6 +71,7 @@ type
     procedure actQuestCloseAllExecute(Sender: TObject);
     procedure actQuestCloseAllUpdate(Sender: TObject);
     procedure FormShow(Sender: TObject);
+    procedure actAboutExecute(Sender: TObject);
   protected
     fMRUItems: array[1..5] of TMenuItem;
     function CanCloseAll: boolean;
@@ -110,11 +112,20 @@ end;
 
 procedure TMainForm.FormShow(Sender: TObject);
 begin
-  //
+  // Main menu
   mQuest.Caption := _('&Quest');
   mEdit.Caption := _('&Edit');
   mView.Caption := _('&View');
   mHelp.Caption := _('&Help');
+  // Quest
+  actQuestNew.Caption := _('&New');
+  actQuestOpen.Caption := _('&Open...');
+  actQuestCloseAll.Caption := _('Close All Fi&les');
+  actQuestExit.Caption := _('E&xit');
+  // View
+  actViewStatusbar.Caption := _('&Status Bar');
+  // Help
+  actAbout.Caption := _('&About...');
 end;
 
 // implementation
@@ -231,6 +242,12 @@ begin
 end;
 
 // action handler methods
+
+procedure TMainForm.actAboutExecute(Sender: TObject);
+begin
+  // About...
+
+end;
 
 procedure TMainForm.actFileNewOrOpenUpdate(Sender: TObject);
 begin

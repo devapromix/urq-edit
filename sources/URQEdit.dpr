@@ -12,7 +12,8 @@ uses
   uReplaceText in 'uReplaceText.pas' {TextReplaceDialog},
   uConfirmReplace in 'uConfirmReplace.pas' {ConfirmReplaceDialog},
   uLanguage in 'uLanguage.pas',
-  uUtils in 'uUtils.pas';
+  uUtils in 'uUtils.pas',
+  uConfirm in 'uConfirm.pas' {ConfirmDialog};
 
 {$R *.RES}
 
@@ -20,6 +21,7 @@ begin
   Application.Initialize;
   Application.Title := 'URQEdit';
   Application.CreateForm(TWorkbookMainForm, WorkbookMainForm);
+  Application.CreateForm(TConfirmDialog, ConfirmDialog);
   Application.Run;
 end.
 

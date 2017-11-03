@@ -1,40 +1,38 @@
-object ConfirmReplaceDialog: TConfirmReplaceDialog
-  Left = 176
-  Top = 158
+object ConfirmDialog: TConfirmDialog
+  Left = 0
+  Top = 0
   BorderStyle = bsDialog
-  Caption = 'Confirm replace'
-  ClientHeight = 98
-  ClientWidth = 328
+  Caption = 'Confirm'
+  ClientHeight = 93
+  ClientWidth = 333
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
   Font.Height = -11
-  Font.Name = 'MS Sans Serif'
+  Font.Name = 'Tahoma'
   Font.Style = []
   OldCreateOrder = False
-  Position = poOwnerFormCenter
   OnCreate = FormCreate
-  OnDestroy = FormDestroy
   OnShow = FormShow
   PixelsPerInch = 96
   TextHeight = 13
-  object lblConfirmation: TLabel
-    Left = 60
-    Top = 12
-    Width = 261
-    Height = 44
-    AutoSize = False
-    WordWrap = True
-  end
   object Image1: TImage
     Left = 8
     Top = 8
     Width = 32
     Height = 32
   end
+  object lblConfirmation: TLabel
+    Left = 64
+    Top = 8
+    Width = 261
+    Height = 44
+    AutoSize = False
+    WordWrap = True
+  end
   object btnReplace: TButton
-    Left = 6
-    Top = 67
+    Left = 38
+    Top = 62
     Width = 75
     Height = 23
     Caption = '&Yes'
@@ -43,8 +41,8 @@ object ConfirmReplaceDialog: TConfirmReplaceDialog
     TabOrder = 0
   end
   object btnSkip: TButton
-    Left = 87
-    Top = 67
+    Left = 119
+    Top = 62
     Width = 75
     Height = 23
     Caption = '&No'
@@ -52,22 +50,13 @@ object ConfirmReplaceDialog: TConfirmReplaceDialog
     TabOrder = 1
   end
   object btnCancel: TButton
-    Left = 166
-    Top = 67
+    Left = 198
+    Top = 62
     Width = 75
     Height = 23
     Cancel = True
     Caption = 'Cancel'
     ModalResult = 2
     TabOrder = 2
-  end
-  object btnReplaceAll: TButton
-    Left = 245
-    Top = 67
-    Width = 75
-    Height = 23
-    Caption = 'Yes to &all'
-    ModalResult = 10
-    TabOrder = 3
   end
 end

@@ -18,8 +18,9 @@ type
     Image1: TImage;
     procedure FormCreate(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
+    procedure FormShow(Sender: TObject);
   public
-    procedure PrepareShow(AEditorRect: TRect; X, Y1, Y2: integer;
+    procedure PrepareShow(AEditorRect: TRect; X, Y1, Y2: Integer;
       AReplaceText: string);
   end;
 
@@ -30,8 +31,7 @@ implementation
 
 {$R *.DFM}
 
-resourcestring
-  SAskReplaceText = 'Replace this occurence of "%s"?';
+uses uLanguage;
 
 { TConfirmReplaceDialog }
 
@@ -45,18 +45,29 @@ begin
   ConfirmReplaceDialog := nil;
 end;
 
-procedure TConfirmReplaceDialog.PrepareShow(AEditorRect: TRect;
-  X, Y1, Y2: integer; AReplaceText: string);
-var
-  nW, nH: integer;
+procedure TConfirmReplaceDialog.FormShow(Sender: TObject);
 begin
-  lblConfirmation.Caption := Format(SAskReplaceText, [AReplaceText]);
+  Caption := _('Confirm replace');
+  btnReplace.Caption := _('&Yes');
+  btnSkip.Caption := _('&No');
+  btnCancel.Caption := _('&Cancel');
+  btnReplaceAll.Caption := _('Yes to &all');
+end;
+
+procedure TConfirmReplaceDialog.PrepareShow(AEditorRect: TRect;
+  X, Y1, Y2: Integer; AReplaceText: string);
+var
+  nW, nH: Integer;
+begin
+  lblConfirmation.Caption := Format(_('Replace this occurence of "%s"?'),
+    [AReplaceText]);
   nW := AEditorRect.Right - AEditorRect.Left;
   nH := AEditorRect.Bottom - AEditorRect.Top;
 
   if nW <= Width then
     X := AEditorRect.Left - (Width - nW) div 2
-  else begin
+  else
+  begin
     if X + Width > AEditorRect.Right then
       X := AEditorRect.Right - Width;
   end;
@@ -68,4 +79,3 @@ begin
 end;
 
 end.
-

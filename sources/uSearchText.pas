@@ -70,6 +70,17 @@ procedure TTextSearchDialog.FormShow(Sender: TObject);
 begin
   Caption := _('Search Text');
   Label1.Caption := _('&Search for:');
+  rgSearchDirection.Caption :=_('Direction');
+  rgSearchDirection.Items.Strings[0] := _('&Forward');
+  rgSearchDirection.Items.Strings[1] := _('&Backward');
+  gbSearchOptions.Caption := _('Options');
+  cbSearchCaseSensitive.Caption := _('C&ase sensitivity');
+  cbSearchWholeWords.Caption := _('&Whole words only');
+  cbSearchFromCursor.Caption := _('Search from &caret');
+  cbSearchSelectedOnly.Caption := _('&Selected text only');
+  cbRegularExpression.Caption := _('&Regular expression');
+  btnOK.Caption := _('OK');
+  btnCancel.Caption := _('Cancel');
 end;
 
 function TTextSearchDialog.GetSearchBackwards: boolean;

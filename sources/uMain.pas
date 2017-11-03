@@ -122,10 +122,29 @@ begin
   actQuestOpen.Caption := _('&Open...');
   actQuestCloseAll.Caption := _('Close All Fi&les');
   actQuestExit.Caption := _('E&xit');
+  mRecentFiles.Caption := _('&Recent Files');
+  CommandsDataModule.actFileSave.Caption := _('&Save');
+  CommandsDataModule.actFileSaveAs.Caption := _('Save &As...');
+  CommandsDataModule.actFileClose.Caption := _('&Close');
+  CommandsDataModule.actFilePrint.Caption := _('&Print...');
+  // Edit
+  CommandsDataModule.actEditUndo.Caption := _('&Undo');
+  CommandsDataModule.actEditRedo.Caption := _('&Redo');
+  CommandsDataModule.actEditCut.Caption := _('Cu&t');
+  CommandsDataModule.actEditCopy.Caption := _('&Copy');
+  CommandsDataModule.actEditPaste.Caption := _('&Paste');
+  CommandsDataModule.actEditDelete.Caption := _('De&lete');
+  CommandsDataModule.actEditSelectAll.Caption := _('Select &All');
+  // Search
+  CommandsDataModule.actSearchFind.Caption := _('&Find...');
+  CommandsDataModule.actSearchFindNext.Caption := _('Find &Next');
+  CommandsDataModule.actSearchFindPrev.Caption := _('Find &Previous');
+  CommandsDataModule.actSearchReplace.Caption := _('&Replace...');
   // View
   actViewStatusbar.Caption := _('&Status Bar');
   // Help
   actAbout.Caption := _('&About...');
+  //
 end;
 
 // implementation

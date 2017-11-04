@@ -2,6 +2,7 @@ inherited TextReplaceDialog: TTextReplaceDialog
   Caption = 'Replace text'
   ClientHeight = 210
   OldCreateOrder = True
+  Position = poDefaultPosOnly
   ExplicitHeight = 235
   PixelsPerInch = 96
   TextHeight = 13

@@ -851,6 +851,7 @@ begin
     dlg := TTextReplaceDialog.Create(Self)
   else
     dlg := TTextSearchDialog.Create(Self);
+  Utils.ShowCenterForm(dlg, False);
   with dlg do
     try
       // assign search options

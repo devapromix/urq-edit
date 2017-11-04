@@ -13,7 +13,8 @@ uses
   uConfirmReplace in 'uConfirmReplace.pas' {ConfirmReplaceDialog},
   uLanguage in 'uLanguage.pas',
   uUtils in 'uUtils.pas',
-  uConfirm in 'uConfirm.pas' {ConfirmDialog};
+  uConfirm in 'uConfirm.pas' {ConfirmDialog},
+  uAbout in 'uAbout.pas' {AboutDialog};
 
 {$R *.RES}
 
@@ -22,6 +23,7 @@ begin
   Application.Title := 'URQEdit';
   Application.CreateForm(TWorkbookMainForm, WorkbookMainForm);
   Application.CreateForm(TConfirmDialog, ConfirmDialog);
+  Application.CreateForm(TAboutDialog, AboutDialog);
   Application.Run;
 end.
 

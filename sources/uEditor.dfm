@@ -76,6 +76,19 @@ object EditorForm: TEditorForm
     Align = alLeft
     BevelOuter = bvNone
     TabOrder = 1
+    object ListBox1: TListBox
+      Left = 0
+      Top = 0
+      Width = 145
+      Height = 456
+      Align = alClient
+      ItemHeight = 13
+      TabOrder = 0
+      ExplicitLeft = 18
+      ExplicitTop = 40
+      ExplicitWidth = 121
+      ExplicitHeight = 97
+    end
   end
   object pmnuEditor: TPopupMenu
     Left = 356

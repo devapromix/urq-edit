@@ -34,7 +34,7 @@ implementation
 
 {$R *.dfm}
 
-uses uLanguage;
+uses uLanguage, uUtils;
 
 function DoConfirmDialog(const FileName: string): TConfirmResult;
 begin
@@ -44,7 +44,7 @@ begin
     lblConfirmation.Caption :=
       Format(_('The text in the "%s" file has changed. Do you want to save the modifications?'),
       [FileName]);
-    ShowModal;
+    Utils.ShowCenterForm(ConfirmDialog);
     case ModalResult of
       mrYes:
         Result := crYes;

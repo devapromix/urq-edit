@@ -73,7 +73,7 @@ type
     procedure FormShow(Sender: TObject);
     procedure actAboutExecute(Sender: TObject);
   protected
-    fMRUItems: array[1..5] of TMenuItem;
+    fMRUItems: array [1 .. 5] of TMenuItem;
     function CanCloseAll: boolean;
     function CmdLineOpenFiles(AMultipleFiles: boolean): boolean;
     function DoCreateEditor(AFileName: string): IEditor; virtual;
@@ -87,7 +87,7 @@ implementation
 {$R *.DFM}
 
 uses
-  IniFiles, uCommands, uLanguage;
+  IniFiles, uCommands, uLanguage, uAbout, uUtils;
 
 { TMainForm }
 
@@ -159,13 +159,15 @@ var
   i, Cnt: integer;
 begin
   Cnt := ParamCount;
-  if Cnt > 0 then begin
+  if Cnt > 0 then
+  begin
     if not AMultipleFiles and (Cnt > 1) then
       Cnt := 1;
     for i := 1 to Cnt do
       DoOpenFile(ParamStr(i));
     Result := TRUE;
-  end else
+  end
+  else
     Result := FALSE;
 end;
 
@@ -180,13 +182,16 @@ var
   LEditor: IEditor;
 begin
   AFileName := ExpandFileName(AFileName);
-  if AFileName <> '' then begin
+  if AFileName <> '' then
+  begin
     CommandsDataModule.RemoveMRUEntry(AFileName);
     // activate the editor if already open
     Assert(GI_EditorFactory <> nil);
-    for i := GI_EditorFactory.GetEditorCount - 1 downto 0 do begin
+    for i := GI_EditorFactory.GetEditorCount - 1 downto 0 do
+    begin
       LEditor := GI_EditorFactory.Editor[i];
-      if CompareText(LEditor.GetFileName, AFileName) = 0 then begin
+      if CompareText(LEditor.GetFileName, AFileName) = 0 then
+      begin
         LEditor.Activate;
         exit;
       end;
@@ -217,7 +222,8 @@ begin
       WindowState := wsMaximized;
     StatusBar.Visible := iniFile.ReadInteger('Main', 'ShowStatusbar', 1) <> 0;
     // MRU files
-    for i := 5 downto 1 do begin
+    for i := 5 downto 1 do
+    begin
       s := iniFile.ReadString('MRUFiles', Format('MRUFile%d', [i]), '');
       if s <> '' then
         CommandsDataModule.AddMRUEntry(s);
@@ -239,16 +245,18 @@ begin
     wp.length := SizeOf(TWindowPlacement);
     GetWindowPlacement(Handle, @wp);
     // form properties
-    with wp.rcNormalPosition do begin
+    with wp.rcNormalPosition do
+    begin
       iniFile.WriteInteger('Main', 'Left', Left);
       iniFile.WriteInteger('Main', 'Top', Top);
       iniFile.WriteInteger('Main', 'Width', Right - Left);
       iniFile.WriteInteger('Main', 'Height', Bottom - Top);
     end;
     iniFile.WriteInteger('Main', 'Maximized', Ord(WindowState = wsMaximized));
-    iniFile.WriteInteger('Main', 'ShowStatusbar', Ord(Statusbar.Visible));
+    iniFile.WriteInteger('Main', 'ShowStatusbar', Ord(StatusBar.Visible));
     // MRU files
-    for i := 1 to 5 do begin
+    for i := 1 to 5 do
+    begin
       s := CommandsDataModule.GetMRUEntry(i - 1);
       if s <> '' then
         iniFile.WriteString('MRUFiles', Format('MRUFile%d', [i]), s)
@@ -264,8 +272,7 @@ end;
 
 procedure TMainForm.actAboutExecute(Sender: TObject);
 begin
-  // About...
-
+  Utils.ShowCenterForm(AboutDialog);
 end;
 
 procedure TMainForm.actFileNewOrOpenUpdate(Sender: TObject);
@@ -280,7 +287,8 @@ end;
 
 procedure TMainForm.actQuestOpenExecute(Sender: TObject);
 begin
-  with CommandsDataModule.dlgFileOpen do begin
+  with CommandsDataModule.dlgFileOpen do
+  begin
     if Execute then
       DoOpenFile(FileName);
   end;
@@ -290,12 +298,14 @@ procedure TMainForm.actQuestCloseAllExecute(Sender: TObject);
 var
   i: integer;
 begin
-  if GI_EditorFactory <> nil then begin
+  if GI_EditorFactory <> nil then
+  begin
     if not CanCloseAll then
       exit;
     i := GI_EditorFactory.GetEditorCount - 1;
     // close all editor childs
-    while i >= 0 do begin
+    while i >= 0 do
+    begin
       GI_EditorFactory.GetEditor(i).Close;
       Dec(i);
     end;
@@ -304,8 +314,8 @@ end;
 
 procedure TMainForm.actQuestCloseAllUpdate(Sender: TObject);
 begin
-  actQuestCloseAll.Enabled := (GI_EditorFactory <> nil)
-    and (GI_EditorFactory.GetEditorCount > 0);
+  actQuestCloseAll.Enabled := (GI_EditorFactory <> nil) and
+    (GI_EditorFactory.GetEditorCount > 0);
 end;
 
 procedure TMainForm.actQuestExitExecute(Sender: TObject);
@@ -319,7 +329,8 @@ var
   s: string;
 begin
   for i := Low(fMRUItems) to High(fMRUItems) do
-    if fMRUItems[i] <> nil then begin
+    if fMRUItems[i] <> nil then
+    begin
       s := CommandsDataModule.GetMRUEntry(i - Low(fMRUItems));
       fMRUItems[i].Visible := s <> '';
       fMRUItems[i].Caption := s;
@@ -347,7 +358,8 @@ var
   s: string;
 begin
   for i := Low(fMRUItems) to High(fMRUItems) do
-    if Sender = fMRUItems[i] then begin
+    if Sender = fMRUItems[i] then
+    begin
       s := CommandsDataModule.GetMRUEntry(i - 1);
       if s <> '' then
         DoOpenFile(s);
@@ -359,10 +371,11 @@ var
   ptCaret: TPoint;
 begin
   actUpdateStatusBarPanels.Enabled := TRUE;
-  if GI_ActiveEditor <> nil then begin
+  if GI_ActiveEditor <> nil then
+  begin
     ptCaret := GI_ActiveEditor.GetCaretPos;
-    if (ptCaret.X > 0) and (ptCaret.Y > 0) then
-      StatusBar.Panels[0].Text := Format(' %6d:%3d ', [ptCaret.Y, ptCaret.X])
+    if (ptCaret.x > 0) and (ptCaret.y > 0) then
+      StatusBar.Panels[0].Text := Format(' %6d:%3d ', [ptCaret.y, ptCaret.x])
     else
       StatusBar.Panels[0].Text := '';
     if GI_ActiveEditor.GetModified then
@@ -370,7 +383,9 @@ begin
     else
       StatusBar.Panels[1].Text := '';
     StatusBar.Panels[2].Text := GI_ActiveEditor.GetEditorState;
-  end else begin
+  end
+  else
+  begin
     StatusBar.Panels[0].Text := '';
     StatusBar.Panels[1].Text := '';
     StatusBar.Panels[2].Text := '';
@@ -378,4 +393,3 @@ begin
 end;
 
 end.
-

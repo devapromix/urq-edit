@@ -7,7 +7,7 @@ interface
 uses
   Windows, Messages, SysUtils, Classes, Graphics, Controls, Forms, Menus,
   uEditAppIntfs, SynEdit, SynEditTypes, SynEditMiscProcs,
-  SynEditMiscClasses, SynEditSearch, SynUnicode, ExtCtrls;
+  SynEditMiscClasses, SynEditSearch, SynUnicode, ExtCtrls, Vcl.StdCtrls;
 
 type
   TEditorKind = (ekBorderless, ekInTabsheet, ekMDIChild);
@@ -29,6 +29,7 @@ type
     SynEditSearch1: TSynEditSearch;
     Panel1: TPanel;
     Splitter1: TSplitter;
+    ListBox1: TListBox;
     procedure SynEditorReplaceText(Sender: TObject;
       const ASearch, AReplace: string; Line, Column: Integer;
       var Action: TSynReplaceAction);
@@ -125,7 +126,7 @@ implementation
 
 uses
   ComCtrls, uCommands, uSearchText, uReplaceText, uConfirmReplace,
-  uMainWorkbook, uLanguage, uConfirm;
+  uMainWorkbook, uLanguage, uConfirm, uUtils;
 
 const
   WM_DELETETHIS = WM_USER + 42;
@@ -666,7 +667,7 @@ begin
       ConfirmReplaceDialog := TConfirmReplaceDialog.Create(Application);
     ConfirmReplaceDialog.PrepareShow(EditRect, APos.X, APos.Y,
       APos.Y + SynEditor.LineHeight, ASearch);
-    case ConfirmReplaceDialog.ShowModal of
+    case Utils.ShowCenterForm(ConfirmReplaceDialog) of
       mrYes:
         Action := raReplace;
       mrYesToAll:

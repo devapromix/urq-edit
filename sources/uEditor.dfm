@@ -84,10 +84,6 @@ object EditorForm: TEditorForm
       Align = alClient
       ItemHeight = 13
       TabOrder = 0
-      ExplicitLeft = 18
-      ExplicitTop = 40
-      ExplicitWidth = 121
-      ExplicitHeight = 97
     end
   end
   object pmnuEditor: TPopupMenu

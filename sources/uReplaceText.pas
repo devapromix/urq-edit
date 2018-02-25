@@ -21,8 +21,7 @@ type
     procedure SetReplaceTextHistory(Value: string);
   public
     property ReplaceText: string read GetReplaceText write SetReplaceText;
-    property ReplaceTextHistory: string read GetReplaceTextHistory
-      write SetReplaceTextHistory;
+    property ReplaceTextHistory: string read GetReplaceTextHistory write SetReplaceTextHistory;
   end;
 
 implementation
@@ -47,15 +46,16 @@ end;
 
 function TTextReplaceDialog.GetReplaceTextHistory: string;
 var
-  i: integer;
+  I: Integer;
 begin
   Result := '';
-  for i := 0 to cbReplaceText.Items.Count - 1 do begin
-    if i >= 10 then
+  for I := 0 to cbReplaceText.Items.Count - 1 do
+  begin
+    if I >= 10 then
       break;
-    if i > 0 then
+    if I > 0 then
       Result := Result + #13#10;
-    Result := Result + cbReplaceText.Items[i];
+    Result := Result + cbReplaceText.Items[I];
   end;
 end;
 
@@ -69,26 +69,28 @@ begin
   cbReplaceText.Items.Text := Value;
 end;
 
-procedure TTextReplaceDialog.FormCloseQuery(Sender: TObject;
-  var CanClose: Boolean);
+procedure TTextReplaceDialog.FormCloseQuery(Sender: TObject; var CanClose: Boolean);
 var
-  s: string;
-  i: integer;
+  S: string;
+  I: Integer;
 begin
   inherited;
-  if ModalResult = mrOK then begin
-    s := cbReplaceText.Text;
-    if s <> '' then begin
-      i := cbReplaceText.Items.IndexOf(s);
-      if i > -1 then begin
-        cbReplaceText.Items.Delete(i);
-        cbReplaceText.Items.Insert(0, s);
-        cbReplaceText.Text := s;
-      end else
-        cbReplaceText.Items.Insert(0, s);
+  if ModalResult = mrOK then
+  begin
+    S := cbReplaceText.Text;
+    if S <> '' then
+    begin
+      I := cbReplaceText.Items.IndexOf(S);
+      if I > -1 then
+      begin
+        cbReplaceText.Items.Delete(I);
+        cbReplaceText.Items.Insert(0, S);
+        cbReplaceText.Text := S;
+      end
+      else
+        cbReplaceText.Items.Insert(0, S);
     end;
   end;
 end;
 
 end.
-

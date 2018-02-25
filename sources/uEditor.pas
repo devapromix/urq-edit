@@ -30,8 +30,7 @@ type
     Panel1: TPanel;
     Splitter1: TSplitter;
     ListBox1: TListBox;
-    procedure SynEditorReplaceText(Sender: TObject;
-      const ASearch, AReplace: string; Line, Column: Integer;
+    procedure SynEditorReplaceText(Sender: TObject; const ASearch, AReplace: string; Line, Column: Integer;
       var Action: TSynReplaceAction);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
     procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
@@ -42,8 +41,7 @@ type
     procedure SynEditorChange(Sender: TObject);
     procedure SynEditorEnter(Sender: TObject);
     procedure SynEditorExit(Sender: TObject);
-    procedure SynEditorStatusChange(Sender: TObject;
-      Changes: TSynStatusChanges);
+    procedure SynEditorStatusChange(Sender: TObject; Changes: TSynStatusChanges);
   private
     fEditor: TEditor;
     fKind: TEditorKind;
@@ -62,8 +60,7 @@ type
     procedure DoActivate;
   end;
 
-  TEditor = class(TInterfacedObject, IEditor, IEditCommands, IFileCommands,
-    ISearchCommands)
+  TEditor = class(TInterfacedObject, IEditor, IEditCommands, IFileCommands, ISearchCommands)
   private
     // IEditor implementation
     procedure Activate;
@@ -460,32 +457,32 @@ end;
 
 function TEditorFactory.CanCloseAll: Boolean;
 var
-  i: Integer;
+  I: Integer;
   LEditor: IEditor;
 begin
-  i := fEditors.Count - 1;
-  while i >= 0 do
+  I := fEditors.Count - 1;
+  while I >= 0 do
   begin
-    LEditor := IEditor(fEditors[i]);
+    LEditor := IEditor(fEditors[I]);
     if not LEditor.AskSaveChanges then
     begin
       Result := False;
       exit;
     end;
-    Dec(i);
+    Dec(I);
   end;
   Result := True;
 end;
 
 procedure TEditorFactory.CloseAll;
 var
-  i: Integer;
+  I: Integer;
 begin
-  i := fEditors.Count - 1;
-  while i >= 0 do
+  I := fEditors.Count - 1;
+  while I >= 0 do
   begin
-    IEditor(fEditors[i]).Close;
-    Dec(i);
+    IEditor(fEditors[I]).Close;
+    Dec(I);
   end;
 end;
 
@@ -566,11 +563,11 @@ end;
 
 procedure TEditorFactory.RemoveEditor(AEditor: IEditor);
 var
-  i: Integer;
+  I: Integer;
 begin
-  i := fEditors.IndexOf(AEditor);
-  if i > -1 then
-    fEditors.Delete(i);
+  I := fEditors.IndexOf(AEditor);
+  if I > -1 then
+    fEditors.Delete(I);
 end;
 
 { TEditorForm }
@@ -622,12 +619,12 @@ end;
 procedure TEditorForm.SynEditorChange(Sender: TObject);
 var
   Empty: Boolean;
-  i: Integer;
+  I: Integer;
 begin
   Assert(fEditor <> nil);
   Empty := True;
-  for i := SynEditor.Lines.Count - 1 downto 0 do
-    if SynEditor.Lines[i] <> '' then
+  for I := SynEditor.Lines.Count - 1 downto 0 do
+    if SynEditor.Lines[I] <> '' then
     begin
       Empty := False;
       break;
@@ -645,8 +642,7 @@ begin
   DoAssignInterfacePointer(False);
 end;
 
-procedure TEditorForm.SynEditorReplaceText(Sender: TObject;
-  const ASearch, AReplace: string; Line, Column: Integer;
+procedure TEditorForm.SynEditorReplaceText(Sender: TObject; const ASearch, AReplace: string; Line, Column: Integer;
   var Action: TSynReplaceAction);
 var
   APos: TPoint;
@@ -657,16 +653,14 @@ begin
   else
   begin
     APos := SynEditor.ClientToScreen
-      (SynEditor.RowColumnToPixels(SynEditor.BufferToDisplayPos
-      (BufferCoord(Column, Line))));
+      (SynEditor.RowColumnToPixels(SynEditor.BufferToDisplayPos(BufferCoord(Column, Line))));
     EditRect := ClientRect;
     EditRect.TopLeft := ClientToScreen(EditRect.TopLeft);
     EditRect.BottomRight := ClientToScreen(EditRect.BottomRight);
 
     if ConfirmReplaceDialog = nil then
       ConfirmReplaceDialog := TConfirmReplaceDialog.Create(Application);
-    ConfirmReplaceDialog.PrepareShow(EditRect, APos.X, APos.Y,
-      APos.Y + SynEditor.LineHeight, ASearch);
+    ConfirmReplaceDialog.PrepareShow(EditRect, APos.X, APos.Y, APos.Y + SynEditor.LineHeight, ASearch);
     case Utils.ShowCenterForm(ConfirmReplaceDialog) of
       mrYes:
         Action := raReplace;
@@ -680,8 +674,7 @@ begin
   end;
 end;
 
-procedure TEditorForm.SynEditorStatusChange(Sender: TObject;
-  Changes: TSynStatusChanges);
+procedure TEditorForm.SynEditorStatusChange(Sender: TObject; Changes: TSynStatusChanges);
 begin
   Assert(fEditor <> nil);
   if Changes * [scAll, scSelection] <> [] then
@@ -790,8 +783,7 @@ begin
     Result := False;
 end;
 
-procedure TEditorForm.DoSearchReplaceText(AReplace: Boolean;
-  ABackwards: Boolean);
+procedure TEditorForm.DoSearchReplaceText(AReplace: Boolean; ABackwards: Boolean);
 var
   Options: TSynSearchOptions;
 begin
@@ -836,8 +828,7 @@ begin
   Assert(fEditor <> nil);
   if fEditor.fFileName <> '' then
   begin
-    SynEditor.Highlighter := CommandsDataModule.GetHighlighterForFile
-      (fEditor.fFileName);
+    SynEditor.Highlighter := CommandsDataModule.GetHighlighterForFile(fEditor.fFileName);
   end
   else
     SynEditor.Highlighter := nil;
@@ -845,14 +836,14 @@ end;
 
 procedure TEditorForm.ShowSearchReplaceDialog(AReplace: Boolean);
 var
-  dlg: TTextSearchDialog;
+  Dlg: TTextSearchDialog;
 begin
   if AReplace then
-    dlg := TTextReplaceDialog.Create(Self)
+    Dlg := TTextReplaceDialog.Create(Self)
   else
-    dlg := TTextSearchDialog.Create(Self);
-  Utils.ShowCenterForm(dlg, False);
-  with dlg do
+    Dlg := TTextSearchDialog.Create(Self);
+  Utils.ShowCenterForm(Dlg, False);
+  with Dlg do
     try
       // assign search options
       SearchBackwards := gbSearchBackwards;
@@ -864,15 +855,14 @@ begin
       if gbSearchTextAtCaret then
       begin
         // if something is selected search for that text
-        if SynEditor.SelAvail and
-          (SynEditor.BlockBegin.Line = SynEditor.BlockEnd.Line) then
+        if SynEditor.SelAvail and (SynEditor.BlockBegin.Line = SynEditor.BlockEnd.Line) then
           SearchText := SynEditor.SelText
         else
           SearchText := SynEditor.GetWordAtRowCol(SynEditor.CaretXY);
       end;
       SearchTextHistory := gsSearchTextHistory;
       if AReplace then
-        with dlg as TTextReplaceDialog do
+        with Dlg as TTextReplaceDialog do
         begin
           ReplaceText := gsReplaceText;
           ReplaceTextHistory := gsReplaceTextHistory;
@@ -888,7 +878,7 @@ begin
         gsSearchText := SearchText;
         gsSearchTextHistory := SearchTextHistory;
         if AReplace then
-          with dlg as TTextReplaceDialog do
+          with Dlg as TTextReplaceDialog do
           begin
             gsReplaceText := ReplaceText;
             gsReplaceTextHistory := ReplaceTextHistory;
@@ -901,7 +891,7 @@ begin
         end;
       end;
     finally
-      dlg.Free;
+      Dlg.Free;
     end;
 end;
 

@@ -74,8 +74,8 @@ type
     procedure actAboutExecute(Sender: TObject);
   protected
     fMRUItems: array [1 .. 5] of TMenuItem;
-    function CanCloseAll: boolean;
-    function CmdLineOpenFiles(AMultipleFiles: boolean): boolean;
+    function CanCloseAll: Boolean;
+    function CmdLineOpenFiles(AMultipleFiles: Boolean): Boolean;
     function DoCreateEditor(AFileName: string): IEditor; virtual;
     procedure DoOpenFile(AFileName: string);
     procedure ReadIniSettings;
@@ -149,26 +149,26 @@ end;
 
 // implementation
 
-function TMainForm.CanCloseAll: boolean;
+function TMainForm.CanCloseAll: Boolean;
 begin
-  Result := TRUE;
+  Result := True;
 end;
 
-function TMainForm.CmdLineOpenFiles(AMultipleFiles: boolean): boolean;
+function TMainForm.CmdLineOpenFiles(AMultipleFiles: Boolean): Boolean;
 var
-  i, Cnt: integer;
+  I, Cnt: Integer;
 begin
   Cnt := ParamCount;
   if Cnt > 0 then
   begin
     if not AMultipleFiles and (Cnt > 1) then
       Cnt := 1;
-    for i := 1 to Cnt do
-      DoOpenFile(ParamStr(i));
-    Result := TRUE;
+    for I := 1 to Cnt do
+      DoOpenFile(ParamStr(I));
+    Result := True;
   end
   else
-    Result := FALSE;
+    Result := False;
 end;
 
 function TMainForm.DoCreateEditor(AFileName: string): IEditor;
@@ -178,7 +178,7 @@ end;
 
 procedure TMainForm.DoOpenFile(AFileName: string);
 var
-  i: integer;
+  I: Integer;
   LEditor: IEditor;
 begin
   AFileName := ExpandFileName(AFileName);
@@ -187,13 +187,13 @@ begin
     CommandsDataModule.RemoveMRUEntry(AFileName);
     // activate the editor if already open
     Assert(GI_EditorFactory <> nil);
-    for i := GI_EditorFactory.GetEditorCount - 1 downto 0 do
+    for I := GI_EditorFactory.GetEditorCount - 1 downto 0 do
     begin
-      LEditor := GI_EditorFactory.Editor[i];
+      LEditor := GI_EditorFactory.Editor[I];
       if CompareText(LEditor.GetFileName, AFileName) = 0 then
       begin
         LEditor.Activate;
-        exit;
+        Exit;
       end;
     end;
   end;
@@ -205,66 +205,66 @@ end;
 
 procedure TMainForm.ReadIniSettings;
 var
-  iniFile: TIniFile;
-  x, y, w, h: integer;
-  i: integer;
-  s: string;
+  IniFile: TIniFile;
+  X, Y, W, H: Integer;
+  I: Integer;
+  S: string;
 begin
-  iniFile := TIniFile.Create(ChangeFileExt(Application.ExeName, '.ini'));
+  IniFile := TIniFile.Create(ChangeFileExt(Application.ExeName, '.ini'));
   try
-    x := iniFile.ReadInteger('Main', 'Left', 0);
-    y := iniFile.ReadInteger('Main', 'Top', 0);
-    w := iniFile.ReadInteger('Main', 'Width', 0);
-    h := iniFile.ReadInteger('Main', 'Height', 0);
-    if (w > 0) and (h > 0) then
-      SetBounds(x, y, w, h);
-    if iniFile.ReadInteger('Main', 'Maximized', 0) <> 0 then
+    X := IniFile.ReadInteger('Main', 'Left', 0);
+    Y := IniFile.ReadInteger('Main', 'Top', 0);
+    W := IniFile.ReadInteger('Main', 'Width', 0);
+    H := IniFile.ReadInteger('Main', 'Height', 0);
+    if (W > 0) and (H > 0) then
+      SetBounds(X, Y, W, H);
+    if IniFile.ReadInteger('Main', 'Maximized', 0) <> 0 then
       WindowState := wsMaximized;
-    StatusBar.Visible := iniFile.ReadInteger('Main', 'ShowStatusbar', 1) <> 0;
+    StatusBar.Visible := IniFile.ReadInteger('Main', 'ShowStatusbar', 1) <> 0;
     // MRU files
-    for i := 5 downto 1 do
+    for I := 5 downto 1 do
     begin
-      s := iniFile.ReadString('MRUFiles', Format('MRUFile%d', [i]), '');
-      if s <> '' then
-        CommandsDataModule.AddMRUEntry(s);
+      S := IniFile.ReadString('MRUFiles', Format('MRUFile%d', [I]), '');
+      if S <> '' then
+        CommandsDataModule.AddMRUEntry(S);
     end;
   finally
-    iniFile.Free;
+    IniFile.Free;
   end;
 end;
 
 procedure TMainForm.WriteIniSettings;
 var
-  iniFile: TIniFile;
-  wp: TWindowPlacement;
-  i: integer;
-  s: string;
+  IniFile: TIniFile;
+  WP: TWindowPlacement;
+  I: Integer;
+  S: string;
 begin
-  iniFile := TIniFile.Create(ChangeFileExt(Application.ExeName, '.ini'));
+  IniFile := TIniFile.Create(ChangeFileExt(Application.ExeName, '.ini'));
   try
-    wp.length := SizeOf(TWindowPlacement);
-    GetWindowPlacement(Handle, @wp);
+    WP.length := SizeOf(TWindowPlacement);
+    GetWindowPlacement(Handle, @WP);
     // form properties
-    with wp.rcNormalPosition do
+    with WP.rcNormalPosition do
     begin
-      iniFile.WriteInteger('Main', 'Left', Left);
-      iniFile.WriteInteger('Main', 'Top', Top);
-      iniFile.WriteInteger('Main', 'Width', Right - Left);
-      iniFile.WriteInteger('Main', 'Height', Bottom - Top);
+      IniFile.WriteInteger('Main', 'Left', Left);
+      IniFile.WriteInteger('Main', 'Top', Top);
+      IniFile.WriteInteger('Main', 'Width', Right - Left);
+      IniFile.WriteInteger('Main', 'Height', Bottom - Top);
     end;
-    iniFile.WriteInteger('Main', 'Maximized', Ord(WindowState = wsMaximized));
-    iniFile.WriteInteger('Main', 'ShowStatusbar', Ord(StatusBar.Visible));
+    IniFile.WriteInteger('Main', 'Maximized', Ord(WindowState = wsMaximized));
+    IniFile.WriteInteger('Main', 'ShowStatusbar', Ord(StatusBar.Visible));
     // MRU files
-    for i := 1 to 5 do
+    for I := 1 to 5 do
     begin
-      s := CommandsDataModule.GetMRUEntry(i - 1);
-      if s <> '' then
-        iniFile.WriteString('MRUFiles', Format('MRUFile%d', [i]), s)
+      S := CommandsDataModule.GetMRUEntry(I - 1);
+      if S <> '' then
+        IniFile.WriteString('MRUFiles', Format('MRUFile%d', [I]), S)
       else
-        iniFile.DeleteKey('MRUFiles', Format('MRUFile%d', [i]));
+        IniFile.DeleteKey('MRUFiles', Format('MRUFile%d', [I]));
     end;
   finally
-    iniFile.Free;
+    IniFile.Free;
   end;
 end;
 
@@ -296,26 +296,25 @@ end;
 
 procedure TMainForm.actQuestCloseAllExecute(Sender: TObject);
 var
-  i: integer;
+  I: Integer;
 begin
   if GI_EditorFactory <> nil then
   begin
     if not CanCloseAll then
-      exit;
-    i := GI_EditorFactory.GetEditorCount - 1;
+      Exit;
+    I := GI_EditorFactory.GetEditorCount - 1;
     // close all editor childs
-    while i >= 0 do
+    while I >= 0 do
     begin
-      GI_EditorFactory.GetEditor(i).Close;
-      Dec(i);
+      GI_EditorFactory.GetEditor(I).Close;
+      Dec(I);
     end;
   end;
 end;
 
 procedure TMainForm.actQuestCloseAllUpdate(Sender: TObject);
 begin
-  actQuestCloseAll.Enabled := (GI_EditorFactory <> nil) and
-    (GI_EditorFactory.GetEditorCount > 0);
+  actQuestCloseAll.Enabled := (GI_EditorFactory <> nil) and (GI_EditorFactory.GetEditorCount > 0);
 end;
 
 procedure TMainForm.actQuestExitExecute(Sender: TObject);
@@ -325,15 +324,15 @@ end;
 
 procedure TMainForm.mRecentFilesClick(Sender: TObject);
 var
-  i: integer;
-  s: string;
+  I: Integer;
+  S: string;
 begin
-  for i := Low(fMRUItems) to High(fMRUItems) do
-    if fMRUItems[i] <> nil then
+  for I := Low(fMRUItems) to High(fMRUItems) do
+    if fMRUItems[I] <> nil then
     begin
-      s := CommandsDataModule.GetMRUEntry(i - Low(fMRUItems));
-      fMRUItems[i].Visible := s <> '';
-      fMRUItems[i].Caption := s;
+      S := CommandsDataModule.GetMRUEntry(I - Low(fMRUItems));
+      fMRUItems[I].Visible := S <> '';
+      fMRUItems[I].Caption := S;
     end;
 end;
 
@@ -354,28 +353,28 @@ end;
 
 procedure TMainForm.OnOpenMRUFile(Sender: TObject);
 var
-  i: integer;
-  s: string;
+  I: Integer;
+  S: string;
 begin
-  for i := Low(fMRUItems) to High(fMRUItems) do
-    if Sender = fMRUItems[i] then
+  for I := Low(fMRUItems) to High(fMRUItems) do
+    if Sender = fMRUItems[I] then
     begin
-      s := CommandsDataModule.GetMRUEntry(i - 1);
-      if s <> '' then
-        DoOpenFile(s);
+      S := CommandsDataModule.GetMRUEntry(I - 1);
+      if S <> '' then
+        DoOpenFile(S);
     end;
 end;
 
 procedure TMainForm.actUpdateStatusBarPanelsUpdate(Sender: TObject);
 var
-  ptCaret: TPoint;
+  PtCaret: TPoint;
 begin
-  actUpdateStatusBarPanels.Enabled := TRUE;
+  actUpdateStatusBarPanels.Enabled := True;
   if GI_ActiveEditor <> nil then
   begin
-    ptCaret := GI_ActiveEditor.GetCaretPos;
-    if (ptCaret.x > 0) and (ptCaret.y > 0) then
-      StatusBar.Panels[0].Text := Format(' %6d:%3d ', [ptCaret.y, ptCaret.x])
+    PtCaret := GI_ActiveEditor.GetCaretPos;
+    if (PtCaret.X > 0) and (PtCaret.Y > 0) then
+      StatusBar.Panels[0].Text := Format(' %6d:%3d ', [PtCaret.Y, PtCaret.X])
     else
       StatusBar.Panels[0].Text := '';
     if GI_ActiveEditor.GetModified then

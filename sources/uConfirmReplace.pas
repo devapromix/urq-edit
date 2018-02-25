@@ -20,8 +20,7 @@ type
     procedure FormDestroy(Sender: TObject);
     procedure FormShow(Sender: TObject);
   public
-    procedure PrepareShow(AEditorRect: TRect; X, Y1, Y2: Integer;
-      AReplaceText: string);
+    procedure PrepareShow(AEditorRect: TRect; X, Y1, Y2: Integer; AReplaceText: string);
   end;
 
 var
@@ -54,24 +53,22 @@ begin
   btnReplaceAll.Caption := _('Yes to &all');
 end;
 
-procedure TConfirmReplaceDialog.PrepareShow(AEditorRect: TRect;
-  X, Y1, Y2: Integer; AReplaceText: string);
+procedure TConfirmReplaceDialog.PrepareShow(AEditorRect: TRect; X, Y1, Y2: Integer; AReplaceText: string);
 var
-  nW, nH: Integer;
+  NW, NH: Integer;
 begin
-  lblConfirmation.Caption := Format(_('Replace this occurence of "%s"?'),
-    [AReplaceText]);
-  nW := AEditorRect.Right - AEditorRect.Left;
-  nH := AEditorRect.Bottom - AEditorRect.Top;
+  lblConfirmation.Caption := Format(_('Replace this occurence of "%s"?'), [AReplaceText]);
+  NW := AEditorRect.Right - AEditorRect.Left;
+  NH := AEditorRect.Bottom - AEditorRect.Top;
 
-  if nW <= Width then
-    X := AEditorRect.Left - (Width - nW) div 2
+  if NW <= Width then
+    X := AEditorRect.Left - (Width - NW) div 2
   else
   begin
     if X + Width > AEditorRect.Right then
       X := AEditorRect.Right - Width;
   end;
-  if Y2 > AEditorRect.Top + MulDiv(nH, 2, 3) then
+  if Y2 > AEditorRect.Top + MulDiv(NH, 2, 3) then
     Y2 := Y1 - Height - 4
   else
     Inc(Y2, 4);

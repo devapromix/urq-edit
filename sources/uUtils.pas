@@ -25,11 +25,10 @@ end;
 class function Utils.ShowCenterForm(const AForm: TForm; AShow: Boolean = True): Integer;
 begin
   Result := -1;
-  AForm.Left := Application.MainForm.Left +
-    ((Application.MainForm.Width div 2) - (AForm.Width div 2));
-  AForm.Top := Application.MainForm.Top +
-    ((Application.MainForm.Height div 2) - (AForm.Height div 2));
-  if AShow then Result := AForm.ShowModal;
+  AForm.Left := Application.MainForm.Left + ((Application.MainForm.Width div 2) - (AForm.Width div 2));
+  AForm.Top := Application.MainForm.Top + ((Application.MainForm.Height div 2) - (AForm.Height div 2));
+  if AShow then
+    Result := AForm.ShowModal;
 end;
 
 end.

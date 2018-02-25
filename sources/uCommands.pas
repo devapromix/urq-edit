@@ -74,8 +74,7 @@ type
     function GetHighlighterForFile(AFileName: string): TSynCustomHighlighter;
     function GetMRUEntries: integer;
     function GetMRUEntry(Index: integer): string;
-    function GetSaveFileName(var ANewName: string;
-      AHighlighter: TSynCustomHighlighter): boolean;
+    function GetSaveFileName(var ANewName: string; AHighlighter: TSynCustomHighlighter): boolean;
     function GetUntitledNumber: integer;
     procedure ReleaseUntitledNumber(ANumber: integer);
     procedure RemoveMRUEntry(AFileName: string);
@@ -98,7 +97,7 @@ const
 resourcestring
   SFilterAllFiles = 'All files|*.*|';
 
-{ TCommandsDataModule }
+  { TCommandsDataModule }
 
 procedure TCommandsDataModule.DataModuleCreate(Sender: TObject);
 begin
@@ -106,7 +105,7 @@ begin
   GetHighlighters(Self, fHighlighters, FALSE);
   dlgFileOpen.Filter := GetHighlightersFilter(fHighlighters) + SFilterAllFiles;
   fMRUFiles := TStringList.Create;
-//  dlgFileOpen.Filter := GetFilters;
+  // dlgFileOpen.Filter := GetFilters;
 end;
 
 procedure TCommandsDataModule.DataModuleDestroy(Sender: TObject);
@@ -121,7 +120,8 @@ end;
 
 procedure TCommandsDataModule.AddMRUEntry(AFileName: string);
 begin
-  if AFileName <> '' then begin
+  if AFileName <> '' then
+  begin
     RemoveMRUEntry(AFileName);
     fMRUFiles.Insert(0, AFileName);
     while fMRUFiles.Count > MAX_MRU do
@@ -135,8 +135,7 @@ begin
   Result := Result + _('All files') + ' (*.*)|*.*|';
 end;
 
-function TCommandsDataModule.GetHighlighterForFile(
-  AFileName: string): TSynCustomHighlighter;
+function TCommandsDataModule.GetHighlighterForFile(AFileName: string): TSynCustomHighlighter;
 begin
   if AFileName <> '' then
     Result := GetHighlighterFromFileExt(fHighlighters, ExtractFileExt(AFileName))
@@ -157,14 +156,17 @@ begin
     Result := '';
 end;
 
-function TCommandsDataModule.GetSaveFileName(var ANewName: string;
-  AHighlighter: TSynCustomHighlighter): boolean;
+function TCommandsDataModule.GetSaveFileName(var ANewName: string; AHighlighter: TSynCustomHighlighter): boolean;
 begin
-  with dlgFileSave do begin
-    if ANewName <> '' then begin
+  with dlgFileSave do
+  begin
+    if ANewName <> '' then
+    begin
       InitialDir := ExtractFileDir(ANewName);
       FileName := ExtractFileName(ANewName);
-    end else begin
+    end
+    else
+    begin
       InitialDir := '';
       FileName := '';
     end;
@@ -172,11 +174,13 @@ begin
       Filter := AHighlighter.DefaultFilter
     else
       Filter := SFilterAllFiles;
-//    dlgFileSave.Filter := GetFilters;
-    if Execute then begin
+    // dlgFileSave.Filter := GetFilters;
+    if Execute then
+    begin
       ANewName := FileName;
       Result := TRUE;
-    end else
+    end
+    else
       Result := FALSE;
   end;
 end;
@@ -195,19 +199,18 @@ end;
 procedure TCommandsDataModule.ReleaseUntitledNumber(ANumber: integer);
 begin
   Dec(ANumber);
-  if (fUntitledNumbers <> nil) and (ANumber >= 0)
-    and (ANumber < fUntitledNumbers.Size)
-  then
+  if (fUntitledNumbers <> nil) and (ANumber >= 0) and (ANumber < fUntitledNumbers.Size) then
     fUntitledNumbers[ANumber] := FALSE;
 end;
 
 procedure TCommandsDataModule.RemoveMRUEntry(AFileName: string);
 var
-  i: integer;
+  I: integer;
 begin
-  for i := fMRUFiles.Count - 1 downto 0 do begin
-    if CompareText(AFileName, fMRUFiles[i]) = 0 then
-      fMRUFiles.Delete(i);
+  for I := fMRUFiles.Count - 1 downto 0 do
+  begin
+    if CompareText(AFileName, fMRUFiles[I]) = 0 then
+      fMRUFiles.Delete(I);
   end;
 end;
 
@@ -351,8 +354,7 @@ end;
 
 procedure TCommandsDataModule.actSearchFindNextUpdate(Sender: TObject);
 begin
-  actSearchFindNext.Enabled := (GI_SearchCmds <> nil)
-    and GI_SearchCmds.CanFindNext;
+  actSearchFindNext.Enabled := (GI_SearchCmds <> nil) and GI_SearchCmds.CanFindNext;
 end;
 
 procedure TCommandsDataModule.actSearchFindPrevExecute(Sender: TObject);
@@ -374,10 +376,7 @@ end;
 
 procedure TCommandsDataModule.actSearchReplaceUpdate(Sender: TObject);
 begin
-  actSearchReplace.Enabled := (GI_SearchCmds <> nil)
-    and GI_SearchCmds.CanReplace;
+  actSearchReplace.Enabled := (GI_SearchCmds <> nil) and GI_SearchCmds.CanReplace;
 end;
 
 end.
-
- 

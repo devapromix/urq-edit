@@ -100,14 +100,17 @@ begin
   fMRUItems[5] := miFileMRU5;
   CommandsDataModule := TCommandsDataModule.Create(Self);
   ReadIniSettings;
+  Language := TLanguage.Create(True);
 end;
 
 procedure TMainForm.FormDestroy(Sender: TObject);
 begin
   if GI_EditorFactory <> nil then
     GI_EditorFactory.CloseAll;
+  Language.SaveDefault;
+  FreeAndNil(Language);
   WriteIniSettings;
-  CommandsDataModule.Free;
+  FreeAndNil(CommandsDataModule);
 end;
 
 procedure TMainForm.FormShow(Sender: TObject);
@@ -272,7 +275,7 @@ end;
 
 procedure TMainForm.actAboutExecute(Sender: TObject);
 begin
-  Utils.ShowCenterForm(AboutDialog);
+  Utils.ShowForm(AboutDialog);
 end;
 
 procedure TMainForm.actFileNewOrOpenUpdate(Sender: TObject);

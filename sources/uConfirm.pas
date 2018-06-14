@@ -44,7 +44,7 @@ begin
     lblConfirmation.Caption :=
       Format(_('The text in the "%s" file has changed. Do you want to save the modifications?'),
       [FileName]);
-    Utils.ShowCenterForm(ConfirmDialog);
+    Utils.ShowForm(ConfirmDialog);
     case ModalResult of
       mrYes:
         Result := crYes;

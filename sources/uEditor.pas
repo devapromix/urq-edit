@@ -30,7 +30,8 @@ type
     Panel1: TPanel;
     Splitter1: TSplitter;
     ListBox1: TListBox;
-    procedure SynEditorReplaceText(Sender: TObject; const ASearch, AReplace: string; Line, Column: Integer;
+    procedure SynEditorReplaceText(Sender: TObject;
+      const ASearch, AReplace: string; Line, Column: Integer;
       var Action: TSynReplaceAction);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
     procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
@@ -41,7 +42,8 @@ type
     procedure SynEditorChange(Sender: TObject);
     procedure SynEditorEnter(Sender: TObject);
     procedure SynEditorExit(Sender: TObject);
-    procedure SynEditorStatusChange(Sender: TObject; Changes: TSynStatusChanges);
+    procedure SynEditorStatusChange(Sender: TObject;
+      Changes: TSynStatusChanges);
   private
     fEditor: TEditor;
     fKind: TEditorKind;
@@ -60,7 +62,8 @@ type
     procedure DoActivate;
   end;
 
-  TEditor = class(TInterfacedObject, IEditor, IEditCommands, IFileCommands, ISearchCommands)
+  TEditor = class(TInterfacedObject, IEditor, IEditCommands, IFileCommands,
+    ISearchCommands)
   private
     // IEditor implementation
     procedure Activate;
@@ -123,7 +126,7 @@ implementation
 
 uses
   ComCtrls, uCommands, uSearchText, uReplaceText, uConfirmReplace,
-  uMainWorkbook, uLanguage, uConfirm, uUtils;
+  uMainWorkbook, uLanguage, uConfirm, uUtils, uMain;
 
 const
   WM_DELETETHIS = WM_USER + 42;
@@ -642,7 +645,8 @@ begin
   DoAssignInterfacePointer(False);
 end;
 
-procedure TEditorForm.SynEditorReplaceText(Sender: TObject; const ASearch, AReplace: string; Line, Column: Integer;
+procedure TEditorForm.SynEditorReplaceText(Sender: TObject;
+  const ASearch, AReplace: string; Line, Column: Integer;
   var Action: TSynReplaceAction);
 var
   APos: TPoint;
@@ -653,15 +657,17 @@ begin
   else
   begin
     APos := SynEditor.ClientToScreen
-      (SynEditor.RowColumnToPixels(SynEditor.BufferToDisplayPos(BufferCoord(Column, Line))));
+      (SynEditor.RowColumnToPixels(SynEditor.BufferToDisplayPos
+      (BufferCoord(Column, Line))));
     EditRect := ClientRect;
     EditRect.TopLeft := ClientToScreen(EditRect.TopLeft);
     EditRect.BottomRight := ClientToScreen(EditRect.BottomRight);
 
     if ConfirmReplaceDialog = nil then
       ConfirmReplaceDialog := TConfirmReplaceDialog.Create(Application);
-    ConfirmReplaceDialog.PrepareShow(EditRect, APos.X, APos.Y, APos.Y + SynEditor.LineHeight, ASearch);
-    case Utils.ShowCenterForm(ConfirmReplaceDialog) of
+    ConfirmReplaceDialog.PrepareShow(EditRect, APos.X, APos.Y,
+      APos.Y + SynEditor.LineHeight, ASearch);
+    case Utils.ShowForm(ConfirmReplaceDialog) of
       mrYes:
         Action := raReplace;
       mrYesToAll:
@@ -674,7 +680,8 @@ begin
   end;
 end;
 
-procedure TEditorForm.SynEditorStatusChange(Sender: TObject; Changes: TSynStatusChanges);
+procedure TEditorForm.SynEditorStatusChange(Sender: TObject;
+  Changes: TSynStatusChanges);
 begin
   Assert(fEditor <> nil);
   if Changes * [scAll, scSelection] <> [] then
@@ -783,7 +790,8 @@ begin
     Result := False;
 end;
 
-procedure TEditorForm.DoSearchReplaceText(AReplace: Boolean; ABackwards: Boolean);
+procedure TEditorForm.DoSearchReplaceText(AReplace: Boolean;
+  ABackwards: Boolean);
 var
   Options: TSynSearchOptions;
 begin
@@ -827,9 +835,8 @@ procedure TEditorForm.DoUpdateHighlighter;
 begin
   Assert(fEditor <> nil);
   if fEditor.fFileName <> '' then
-  begin
-    SynEditor.Highlighter := CommandsDataModule.GetHighlighterForFile(fEditor.fFileName);
-  end
+    SynEditor.Highlighter := CommandsDataModule.GetHighlighterForFile
+      (fEditor.fFileName)
   else
     SynEditor.Highlighter := nil;
 end;
@@ -842,7 +849,7 @@ begin
     Dlg := TTextReplaceDialog.Create(Self)
   else
     Dlg := TTextSearchDialog.Create(Self);
-  Utils.ShowCenterForm(Dlg, False);
+  Utils.ShowForm(Dlg, False);
   with Dlg do
     try
       // assign search options
@@ -855,7 +862,8 @@ begin
       if gbSearchTextAtCaret then
       begin
         // if something is selected search for that text
-        if SynEditor.SelAvail and (SynEditor.BlockBegin.Line = SynEditor.BlockEnd.Line) then
+        if SynEditor.SelAvail and
+          (SynEditor.BlockBegin.Line = SynEditor.BlockEnd.Line) then
           SearchText := SynEditor.SelText
         else
           SearchText := SynEditor.GetWordAtRowCol(SynEditor.CaretXY);

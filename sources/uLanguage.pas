@@ -8,19 +8,22 @@ type
   TLanguage = class(TObject)
   private
     FID: TStringList;
+    FSL: TStringList;
     FValue: TStringList;
     FCurrent: string;
+    FUseDefaultLanguage: Boolean;
+    function GetPath(SubDir: string): string;
   public
-    FSL: TStringList;
     function Get(const AValue: string): string;
-    constructor Create;
+    constructor Create(const AUseDefaultLanguage: Boolean = False);
     destructor Destroy; override;
     procedure Clear;
-    procedure SaveLanguage;
+    procedure SaveDefault;
     procedure LoadFromFile(AFileName: string);
     procedure SaveToFile(AFileName: string);
     procedure UseLanguage(ACurrentLanguage: string);
     property Current: string read FCurrent write FCurrent;
+    property UseDefaultLanguage: Boolean read FUseDefaultLanguage;
   end;
 
 function _(const AValue: string): string;
@@ -30,14 +33,20 @@ var
 
 implementation
 
-uses SysUtils, uUtils;
+uses SysUtils;
 
 { TLanguage }
 
 function _(const AValue: string): string;
 begin
-  Language.FSL.Append(AValue + '=');
-  Result := Language.Get(AValue) + '+';
+  if Assigned(Language) then
+  begin
+    if Language.UseDefaultLanguage then
+      Language.FSL.Append(AValue + '=');
+    Result := Language.Get(AValue) + '+';
+  end
+  else
+    Result := AValue;
 end;
 
 procedure TLanguage.Clear;
@@ -46,12 +55,17 @@ begin
   FValue.Clear;
 end;
 
-constructor TLanguage.Create;
+constructor TLanguage.Create(const AUseDefaultLanguage: Boolean = False);
+var
+  F: string;
 begin
   FSL := TStringList.Create;
   FSL.Sorted := True;
   FSL.Duplicates := dupIgnore;
-  FSL.LoadFromFile(Utils.GetPath('languages') + 'default.lng');
+  FUseDefaultLanguage := AUseDefaultLanguage;
+  F := GetPath('languages') + 'default.lng';
+  if FileExists(F) then
+    FSL.LoadFromFile(F);
   FID := TStringList.Create;
   FValue := TStringList.Create;
   FCurrent := 'english';
@@ -89,9 +103,10 @@ begin
   end;
 end;
 
-procedure TLanguage.SaveLanguage;
+procedure TLanguage.SaveDefault;
 begin
-  SaveToFile(Utils.GetPath('languages') + 'default.lng');
+  if Language.UseDefaultLanguage then
+    SaveToFile(GetPath('languages') + 'default.lng');
 end;
 
 procedure TLanguage.SaveToFile(AFileName: string);
@@ -103,7 +118,7 @@ procedure TLanguage.UseLanguage(ACurrentLanguage: string);
 begin
   Clear;
   Current := ACurrentLanguage;
-  LoadFromFile(Utils.GetPath('languages') + Current + '.lng');
+  LoadFromFile(GetPath('languages') + Current + '.lng');
 end;
 
 function TLanguage.Get(const AValue: string): string;
@@ -117,12 +132,10 @@ begin
     Result := FValue[I];
 end;
 
-initialization
-  Language := TLanguage.Create;
-  Language.UseLanguage('russian');
-
-finalization
-  Language.SaveLanguage;
-  FreeAndNil(Language);
+function TLanguage.GetPath(SubDir: string): string;
+begin
+  Result := ExtractFilePath(ParamStr(0));
+  Result := IncludeTrailingPathDelimiter(Result + SubDir);
+end;
 
 end.

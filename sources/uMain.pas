@@ -72,6 +72,8 @@ type
     procedure actQuestCloseAllUpdate(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure actAboutExecute(Sender: TObject);
+  private
+    procedure WMDropFiles(var Msg: TWMDropFiles); message WM_DROPFILES;
   protected
     fMRUItems: array [1 .. 5] of TMenuItem;
     function CanCloseAll: Boolean;
@@ -87,12 +89,13 @@ implementation
 {$R *.DFM}
 
 uses
-  IniFiles, uCommands, uLanguage, uAbout, uUtils;
+  IniFiles, uCommands, uLanguage, uAbout, uUtils, Winapi.ShellAPI;
 
 { TMainForm }
 
 procedure TMainForm.FormCreate(Sender: TObject);
 begin
+  DragAcceptFiles(Handle, True);
   fMRUItems[1] := miFileMRU1;
   fMRUItems[2] := miFileMRU2;
   fMRUItems[3] := miFileMRU3;
@@ -111,6 +114,7 @@ begin
   FreeAndNil(Language);
   WriteIniSettings;
   FreeAndNil(CommandsDataModule);
+  DragAcceptFiles(Handle, False);
 end;
 
 procedure TMainForm.FormShow(Sender: TObject);
@@ -236,6 +240,22 @@ begin
   end;
 end;
 
+procedure TMainForm.WMDropFiles(var Msg: TWMDropFiles);
+var
+  FileName: array [0 .. MAX_PATH] of Char;
+begin
+  // Бросить файл в окно программы
+  try
+    if DragQueryFile(Msg.Drop, 0, FileName, MAX_PATH) > 0 then
+    begin
+      DoOpenFile(FileName);
+      Msg.Result := 0;
+    end;
+  finally
+    DragFinish(Msg.Drop);
+  end;
+end;
+
 procedure TMainForm.WriteIniSettings;
 var
   IniFile: TIniFile;
@@ -317,7 +337,8 @@ end;
 
 procedure TMainForm.actQuestCloseAllUpdate(Sender: TObject);
 begin
-  actQuestCloseAll.Enabled := (GI_EditorFactory <> nil) and (GI_EditorFactory.GetEditorCount > 0);
+  actQuestCloseAll.Enabled := (GI_EditorFactory <> nil) and
+    (GI_EditorFactory.GetEditorCount > 0);
 end;
 
 procedure TMainForm.actQuestExitExecute(Sender: TObject);

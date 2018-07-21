@@ -4,8 +4,8 @@ inherited WorkbookMainForm: TWorkbookMainForm
   ClientWidth = 650
   OldCreateOrder = True
   OnCloseQuery = FormCloseQuery
-  ExplicitWidth = 658
-  ExplicitHeight = 546
+  ExplicitWidth = 666
+  ExplicitHeight = 558
   PixelsPerInch = 96
   TextHeight = 13
   object pctrlMain: TPageControl [0]

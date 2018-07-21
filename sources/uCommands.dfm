@@ -5,7 +5,7 @@ object CommandsDataModule: TCommandsDataModule
   Height = 276
   Width = 420
   object dlgFileOpen: TOpenDialog
-    Options = [ofHideReadOnly, ofPathMustExist, ofEnableSizing]
+    Options = [ofHideReadOnly, ofAllowMultiSelect, ofPathMustExist, ofEnableSizing]
     Left = 20
     Top = 16
   end

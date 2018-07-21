@@ -75,7 +75,7 @@ type
   private
     procedure WMDropFiles(var Msg: TWMDropFiles); message WM_DROPFILES;
   protected
-    fMRUItems: array [1 .. 5] of TMenuItem;
+    FMRUItems: array [1 .. 5] of TMenuItem;
     function CanCloseAll: Boolean;
     function CmdLineOpenFiles(AMultipleFiles: Boolean): Boolean;
     function DoCreateEditor(AFileName: string): IEditor; virtual;
@@ -96,11 +96,11 @@ uses
 procedure TMainForm.FormCreate(Sender: TObject);
 begin
   DragAcceptFiles(Handle, True);
-  fMRUItems[1] := miFileMRU1;
-  fMRUItems[2] := miFileMRU2;
-  fMRUItems[3] := miFileMRU3;
-  fMRUItems[4] := miFileMRU4;
-  fMRUItems[5] := miFileMRU5;
+  FMRUItems[1] := miFileMRU1;
+  FMRUItems[2] := miFileMRU2;
+  FMRUItems[3] := miFileMRU3;
+  FMRUItems[4] := miFileMRU4;
+  FMRUItems[5] := miFileMRU5;
   CommandsDataModule := TCommandsDataModule.Create(Self);
   ReadIniSettings;
   Language := TLanguage.Create(True);
@@ -309,11 +309,21 @@ begin
 end;
 
 procedure TMainForm.actQuestOpenExecute(Sender: TObject);
+var
+  I: Integer;
 begin
   with CommandsDataModule.dlgFileOpen do
   begin
     if Execute then
-      DoOpenFile(FileName);
+    begin
+      if Files.Count > 1 then
+      begin
+        for I := 0 to Files.Count - 1 do
+          DoOpenFile(Files[I]);
+      end
+      else
+        DoOpenFile(FileName);
+    end;
   end;
 end;
 
@@ -351,12 +361,12 @@ var
   I: Integer;
   S: string;
 begin
-  for I := Low(fMRUItems) to High(fMRUItems) do
-    if fMRUItems[I] <> nil then
+  for I := Low(FMRUItems) to High(FMRUItems) do
+    if FMRUItems[I] <> nil then
     begin
-      S := CommandsDataModule.GetMRUEntry(I - Low(fMRUItems));
-      fMRUItems[I].Visible := S <> '';
-      fMRUItems[I].Caption := S;
+      S := CommandsDataModule.GetMRUEntry(I - Low(FMRUItems));
+      FMRUItems[I].Visible := S <> '';
+      FMRUItems[I].Caption := S;
     end;
 end;
 
@@ -380,8 +390,8 @@ var
   I: Integer;
   S: string;
 begin
-  for I := Low(fMRUItems) to High(fMRUItems) do
-    if Sender = fMRUItems[I] then
+  for I := Low(FMRUItems) to High(FMRUItems) do
+    if Sender = FMRUItems[I] then
     begin
       S := CommandsDataModule.GetMRUEntry(I - 1);
       if S <> '' then

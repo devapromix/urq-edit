@@ -315,15 +315,8 @@ begin
   with CommandsDataModule.dlgFileOpen do
   begin
     if Execute then
-    begin
-      if Files.Count > 1 then
-      begin
-        for I := 0 to Files.Count - 1 do
-          DoOpenFile(Files[I]);
-      end
-      else
-        DoOpenFile(FileName);
-    end;
+      for I := 0 to Files.Count - 1 do
+        DoOpenFile(Files[I]);
   end;
 end;
 

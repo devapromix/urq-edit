@@ -337,13 +337,27 @@ begin
 end;
 
 procedure TMainForm.actQuestRunExecute(Sender: TObject);
+var
+  FileName, IntURQPath: string;
 begin
   // Run
+  FileName := '';
+  if (GI_ActiveEditor <> nil) then
+    FileName := GI_ActiveEditor.GetFileName;
+  IntURQPath := Trim(fSettings.edSelURQ.Text);
+  if (IntURQPath = '') or not FileExists(IntURQPath) then
+    Exit;
+  ShellExecute(Application.Handle, 'open', PWideChar(IntURQPath),
+    PWideChar(FileName), nil, SW_SHOWNORMAL);
 end;
 
 procedure TMainForm.actQuestRunUpdate(Sender: TObject);
+var
+  IntURQPath: string;
 begin
-  // Run
+  IntURQPath := Trim(fSettings.edSelURQ.Text);
+  actQuestRun.Enabled := (GI_ActiveEditor <> nil) and
+   not GI_ActiveEditor.GetModified and (IntURQPath <> '') and FileExists(IntURQPath)
 end;
 
 procedure TMainForm.actQuestCloseAllExecute(Sender: TObject);

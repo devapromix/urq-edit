@@ -1,4 +1,4 @@
-unit uMain;
+ï»¿unit uMain;
 
 {$I SynEdit.inc}
 
@@ -56,8 +56,9 @@ type
     mHelp: TMenuItem;
     mAbout: TMenuItem;
     actAbout: TAction;
-    acConfig: TAction;
-    N6: TMenuItem;
+    actViewSettings: TAction;
+    miViewSettings: TMenuItem;
+    N7: TMenuItem;
     procedure FormCreate(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
     procedure mQuestClick(Sender: TObject);
@@ -74,7 +75,7 @@ type
     procedure actQuestCloseAllUpdate(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure actAboutExecute(Sender: TObject);
-    procedure acConfigExecute(Sender: TObject);
+    procedure actViewSettingsExecute(Sender: TObject);
   private
     procedure WMDropFiles(var Msg: TWMDropFiles); message WM_DROPFILES;
   protected
@@ -152,6 +153,7 @@ begin
   CommandsDataModule.actSearchReplace.Caption := _('&Replace...');
   // View
   actViewStatusbar.Caption := _('&Status Bar');
+  actViewSettings.Caption := _('Se&ttings');
   // Help
   actAbout.Caption := _('&About...');
   //
@@ -247,7 +249,7 @@ procedure TMainForm.WMDropFiles(var Msg: TWMDropFiles);
 var
   FileName: array [0 .. MAX_PATH] of Char;
 begin
-  // Áðîñèòü ôàéë â îêíî ïðîãðàììû
+  // Ð‘Ñ€Ð¾ÑÐ¸Ñ‚ÑŒ Ñ„Ð°Ð¹Ð» Ð² Ð¾ÐºÐ½Ð¾ Ð¿Ñ€Ð¾Ð³Ñ€Ð°Ð¼Ð¼Ñ‹
   try
     if DragQueryFile(Msg.Drop, 0, FileName, MAX_PATH) > 0 then
     begin
@@ -296,7 +298,7 @@ end;
 
 // action handler methods
 
-procedure TMainForm.acConfigExecute(Sender: TObject);
+procedure TMainForm.actViewSettingsExecute(Sender: TObject);
 begin
   Utils.ShowForm(fSettings);
 end;

@@ -16,9 +16,10 @@ object fSettings: TfSettings
   OldCreateOrder = False
   Position = poOwnerFormCenter
   OnCreate = FormCreate
+  OnShow = FormShow
   PixelsPerInch = 96
   TextHeight = 13
-  object btOK: TBitBtn
+  object btnOK: TBitBtn
     Left = 102
     Top = 312
     Width = 107
@@ -62,9 +63,9 @@ object fSettings: TfSettings
       FF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00}
     ModalResult = 1
     TabOrder = 0
-    OnClick = btOKClick
+    OnClick = btnOKClick
   end
-  object btCancel: TBitBtn
+  object btnCancel: TBitBtn
     Left = 215
     Top = 312
     Width = 107
@@ -108,7 +109,7 @@ object fSettings: TfSettings
       FF00FFFFFF00FFFFFF006360F80AFFFFFF00FFFFFF00FFFFFF00}
     ModalResult = 2
     TabOrder = 1
-    OnClick = btCancelClick
+    OnClick = btnCancelClick
   end
   object PageControl1: TPageControl
     Left = 0
@@ -118,8 +119,8 @@ object fSettings: TfSettings
     ActivePage = TabSheet1
     TabOrder = 2
     object TabSheet1: TTabSheet
-      Caption = #1048#1085#1090#1077#1088#1087#1088#1077#1090#1072#1090#1086#1088
-      object Label4: TLabel
+      Caption = 'URQ'
+      object lblURQInt: TLabel
         Left = 8
         Top = 16
         Width = 146

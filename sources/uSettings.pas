@@ -8,18 +8,19 @@ uses
 
 type
   TfSettings = class(TForm)
-    btOK: TBitBtn;
-    btCancel: TBitBtn;
+    btnOK: TBitBtn;
+    btnCancel: TBitBtn;
     PageControl1: TPageControl;
     TabSheet1: TTabSheet;
-    Label4: TLabel;
+    lblURQInt: TLabel;
     btSelURQ: TSpeedButton;
     edSelURQ: TEdit;
     OpenDialog: TOpenDialog;
     procedure btSelURQClick(Sender: TObject);
-    procedure btOKClick(Sender: TObject);
-    procedure btCancelClick(Sender: TObject);
+    procedure btnOKClick(Sender: TObject);
+    procedure btnCancelClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
+    procedure FormShow(Sender: TObject);
   private
     { Private declarations }
   public
@@ -35,17 +36,17 @@ implementation
 
 {$R *.dfm}
 
-uses uUtils, IniFiles;
+uses uUtils, IniFiles, uLanguage;
 
 const
   stURQIntFilters: string = 'Интерпретатор URQ|*.exe';
 
-procedure TfSettings.btCancelClick(Sender: TObject);
+procedure TfSettings.btnCancelClick(Sender: TObject);
 begin
   LoadConfig;
 end;
 
-procedure TfSettings.btOKClick(Sender: TObject);
+procedure TfSettings.btnOKClick(Sender: TObject);
 begin
   SaveConfig;
 end;
@@ -61,6 +62,15 @@ end;
 procedure TfSettings.FormCreate(Sender: TObject);
 begin
   LoadConfig;
+end;
+
+procedure TfSettings.FormShow(Sender: TObject);
+begin
+  Caption := _('Settings');
+  btnOK.Caption := _('OK');
+  btnCancel.Caption := _('Cancel');
+  TabSheet1.Caption := _('URQ');
+  lblURQInt.Caption := _('Cancel');
 end;
 
 procedure TfSettings.LoadConfig;

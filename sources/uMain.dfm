@@ -93,6 +93,12 @@ object MainForm: TMainForm
       object N5: TMenuItem
         Caption = '-'
       end
+      object Run1: TMenuItem
+        Action = actQuestRun
+      end
+      object N6: TMenuItem
+        Caption = '-'
+      end
       object miFilePrint: TMenuItem
         Action = CommandsDataModule.actFilePrint
       end
@@ -215,6 +221,13 @@ object MainForm: TMainForm
       Caption = 'Se&ttings'
       Hint = 'Settings'
       OnExecute = actViewSettingsExecute
+    end
+    object actQuestRun: TAction
+      Category = 'Quest'
+      Caption = 'Run'
+      ShortCut = 120
+      OnExecute = actQuestRunExecute
+      OnUpdate = actQuestRunUpdate
     end
   end
 end

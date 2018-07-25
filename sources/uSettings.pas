@@ -16,11 +16,13 @@ type
     btSelURQ: TSpeedButton;
     edSelURQ: TEdit;
     OpenDialog: TOpenDialog;
+    btnDefault: TBitBtn;
     procedure btSelURQClick(Sender: TObject);
     procedure btnOKClick(Sender: TObject);
     procedure btnCancelClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure FormShow(Sender: TObject);
+    procedure btnDefaultClick(Sender: TObject);
   private
     { Private declarations }
   public
@@ -38,12 +40,15 @@ implementation
 
 uses uUtils, IniFiles, uLanguage;
 
-const
-  stURQIntFilters: string = 'Интерпретатор URQ|*.exe';
-
 procedure TfSettings.btnCancelClick(Sender: TObject);
 begin
   LoadConfig;
+end;
+
+procedure TfSettings.btnDefaultClick(Sender: TObject);
+begin
+  // Дефолтные настройки
+  edSelURQ.Text := '';
 end;
 
 procedure TfSettings.btnOKClick(Sender: TObject);
@@ -54,7 +59,7 @@ end;
 procedure TfSettings.btSelURQClick(Sender: TObject);
 begin
   // Выбор интерпретатора для запуска квестов
-  OpenDialog.Filter := stURQIntFilters;
+  OpenDialog.Filter := _('Interpretator URQ|*.exe');
   if OpenDialog.Execute then
     edSelURQ.Text := Trim(OpenDialog.FileName);
 end;
@@ -69,6 +74,7 @@ begin
   Caption := _('Settings');
   btnOK.Caption := _('OK');
   btnCancel.Caption := _('Cancel');
+  btnDefault.Caption := _('Default');
   TabSheet1.Caption := _('URQ');
   lblURQInt.Caption := _('URQ path:');
 end;

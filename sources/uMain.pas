@@ -59,6 +59,9 @@ type
     actViewSettings: TAction;
     miViewSettings: TMenuItem;
     N7: TMenuItem;
+    actQuestRun: TAction;
+    N6: TMenuItem;
+    Run1: TMenuItem;
     procedure FormCreate(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
     procedure mQuestClick(Sender: TObject);
@@ -76,6 +79,8 @@ type
     procedure FormShow(Sender: TObject);
     procedure actAboutExecute(Sender: TObject);
     procedure actViewSettingsExecute(Sender: TObject);
+    procedure actQuestRunExecute(Sender: TObject);
+    procedure actQuestRunUpdate(Sender: TObject);
   private
     procedure WMDropFiles(var Msg: TWMDropFiles); message WM_DROPFILES;
   protected
@@ -133,7 +138,8 @@ begin
   actQuestOpen.Caption := _('&Open...');
   actQuestCloseAll.Caption := _('Close All Fi&les');
   actQuestExit.Caption := _('E&xit');
-  mRecentFiles.Caption := _('&Recent Files');
+  actQuestRun.Caption := _('&Run');
+  mRecentFiles.Caption := _('Recent &Files');
   CommandsDataModule.actFileSave.Caption := _('&Save');
   CommandsDataModule.actFileSaveAs.Caption := _('Save &As...');
   CommandsDataModule.actFileClose.Caption := _('&Close');
@@ -328,6 +334,16 @@ begin
       for I := 0 to Files.Count - 1 do
         DoOpenFile(Files[I]);
   end;
+end;
+
+procedure TMainForm.actQuestRunExecute(Sender: TObject);
+begin
+  // Run
+end;
+
+procedure TMainForm.actQuestRunUpdate(Sender: TObject);
+begin
+  // Run
 end;
 
 procedure TMainForm.actQuestCloseAllExecute(Sender: TObject);

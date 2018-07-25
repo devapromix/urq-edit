@@ -35,7 +35,10 @@ implementation
 
 {$R *.dfm}
 
-uses uCommon, uUtils, IniFiles;
+uses uUtils, IniFiles;
+
+const
+  stURQIntFilters: string = 'Интерпретатор URQ|*.exe';
 
 procedure TfSettings.btCancelClick(Sender: TObject);
 begin

@@ -2,19 +2,20 @@ program URQEdit;
 
 uses
   Forms,
-  uMain in 'uMain.pas' {MainForm} ,
-  uMainWorkbook in 'uMainWorkbook.pas' {WorkbookMainForm} ,
+  uMain in 'uMain.pas' {MainForm},
+  uMainWorkbook in 'uMainWorkbook.pas' {WorkbookMainForm},
   uEditAppIntfs in 'uEditAppIntfs.pas',
-  uEditor in 'uEditor.pas' {EditorForm} ,
-  uCommands in 'uCommands.pas' {CommandsDataModule: TDataModule} ,
+  uEditor in 'uEditor.pas' {EditorForm},
+  uCommands in 'uCommands.pas' {CommandsDataModule: TDataModule},
   uHighlighterProcs in 'uHighlighterProcs.pas',
-  uSearchText in 'uSearchText.pas' {TextSearchDialog} ,
-  uReplaceText in 'uReplaceText.pas' {TextReplaceDialog} ,
-  uConfirmReplace in 'uConfirmReplace.pas' {ConfirmReplaceDialog} ,
+  uSearchText in 'uSearchText.pas' {TextSearchDialog},
+  uReplaceText in 'uReplaceText.pas' {TextReplaceDialog},
+  uConfirmReplace in 'uConfirmReplace.pas' {ConfirmReplaceDialog},
   uLanguage in 'uLanguage.pas',
   uUtils in 'uUtils.pas',
-  uConfirm in 'uConfirm.pas' {ConfirmDialog} ,
-  uAbout in 'uAbout.pas' {AboutDialog};
+  uConfirm in 'uConfirm.pas' {ConfirmDialog},
+  uAbout in 'uAbout.pas' {AboutDialog},
+  uSettings in 'uSettings.pas' {fSettings};
 
 {$R *.RES}
 
@@ -30,6 +31,8 @@ begin
   Application.CreateForm(TWorkbookMainForm, WorkbookMainForm);
   Application.CreateForm(TConfirmDialog, ConfirmDialog);
   Application.CreateForm(TAboutDialog, AboutDialog);
+  Application.CreateForm(TfSettings, fSettings);
+  Application.CreateForm(TfSettings, fSettings);
   Application.Run;
 
 end.

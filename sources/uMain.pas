@@ -217,7 +217,7 @@ var
   I: Integer;
   S: string;
 begin
-  IniFile := TIniFile.Create(ChangeFileExt(Application.ExeName, '.ini'));
+  IniFile := TIniFile.Create(Utils.GetPath('') + 'config.ini');
   try
     X := IniFile.ReadInteger('Main', 'Left', 0);
     Y := IniFile.ReadInteger('Main', 'Top', 0);
@@ -263,7 +263,7 @@ var
   I: Integer;
   S: string;
 begin
-  IniFile := TIniFile.Create(ChangeFileExt(Application.ExeName, '.ini'));
+  IniFile := TIniFile.Create(Utils.GetPath('') + 'config.ini');
   try
     WP.length := SizeOf(TWindowPlacement);
     GetWindowPlacement(Handle, @WP);

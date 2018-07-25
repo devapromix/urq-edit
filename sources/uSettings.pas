@@ -70,7 +70,7 @@ begin
   btnOK.Caption := _('OK');
   btnCancel.Caption := _('Cancel');
   TabSheet1.Caption := _('URQ');
-  lblURQInt.Caption := _('Cancel');
+  lblURQInt.Caption := _('URQ path:');
 end;
 
 procedure TfSettings.LoadConfig;

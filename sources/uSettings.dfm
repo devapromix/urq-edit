@@ -4,7 +4,7 @@ object fSettings: TfSettings
   BorderIcons = [biSystemMenu]
   BorderStyle = bsSingle
   BorderWidth = 8
-  Caption = #1053#1072#1089#1090#1088#1086#1081#1082#1080
+  Caption = 'Settings'
   ClientHeight = 344
   ClientWidth = 425
   Color = clBtnFace
@@ -123,9 +123,9 @@ object fSettings: TfSettings
       object lblURQInt: TLabel
         Left = 8
         Top = 16
-        Width = 146
+        Width = 51
         Height = 13
-        Caption = #1055#1091#1090#1100' '#1082' '#1080#1085#1090#1077#1088#1087#1088#1077#1090#1072#1090#1086#1088#1091' URQ'
+        Caption = 'URQ path:'
       end
       object btSelURQ: TSpeedButton
         Left = 375

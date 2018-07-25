@@ -56,6 +56,8 @@ type
     mHelp: TMenuItem;
     mAbout: TMenuItem;
     actAbout: TAction;
+    acConfig: TAction;
+    N6: TMenuItem;
     procedure FormCreate(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
     procedure mQuestClick(Sender: TObject);
@@ -72,6 +74,7 @@ type
     procedure actQuestCloseAllUpdate(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure actAboutExecute(Sender: TObject);
+    procedure acConfigExecute(Sender: TObject);
   private
     procedure WMDropFiles(var Msg: TWMDropFiles); message WM_DROPFILES;
   protected
@@ -89,7 +92,7 @@ implementation
 {$R *.DFM}
 
 uses
-  IniFiles, uCommands, uLanguage, uAbout, uUtils, Winapi.ShellAPI;
+  IniFiles, uCommands, uLanguage, uAbout, uUtils, Winapi.ShellAPI, uSettings;
 
 { TMainForm }
 
@@ -292,6 +295,11 @@ begin
 end;
 
 // action handler methods
+
+procedure TMainForm.acConfigExecute(Sender: TObject);
+begin
+  Utils.ShowForm(fSettings);
+end;
 
 procedure TMainForm.actAboutExecute(Sender: TObject);
 begin

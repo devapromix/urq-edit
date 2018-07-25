@@ -150,6 +150,9 @@ object MainForm: TMainForm
       object miViewStatusbar: TMenuItem
         Action = actViewStatusbar
       end
+      object N6: TMenuItem
+        Action = acConfig
+      end
     end
     object mHelp: TMenuItem
       Caption = '&Help'
@@ -203,6 +206,12 @@ object MainForm: TMainForm
       Category = 'Help'
       Caption = '&About...'
       OnExecute = actAboutExecute
+    end
+    object acConfig: TAction
+      Category = 'View'
+      Caption = 'Settings'
+      Hint = 'Settings'
+      OnExecute = acConfigExecute
     end
   end
 end

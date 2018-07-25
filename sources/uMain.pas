@@ -357,7 +357,8 @@ var
 begin
   IntURQPath := Trim(fSettings.edSelURQ.Text);
   actQuestRun.Enabled := (GI_ActiveEditor <> nil) and
-   not GI_ActiveEditor.GetModified and (IntURQPath <> '') and FileExists(IntURQPath)
+    not GI_ActiveEditor.GetModified and (IntURQPath <> '') and
+    FileExists(IntURQPath)
 end;
 
 procedure TMainForm.actQuestCloseAllExecute(Sender: TObject);

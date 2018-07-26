@@ -1,4 +1,4 @@
-unit uMainWorkbook;
+﻿unit uMainWorkbook;
 
 {$I SynEdit.inc}
 
@@ -24,7 +24,6 @@ var
 implementation
 
 {$R *.DFM}
-
 { TWorkbookMainForm }
 
 function TWorkbookMainForm.DoCreateEditor(AFileName: string): IEditor;
@@ -38,7 +37,7 @@ end;
 procedure TWorkbookMainForm.FormCreate(Sender: TObject);
 begin
   inherited;
-  CmdLineOpenFiles(TRUE);
+  CmdLineOpenFiles(True);
 end;
 
 procedure TWorkbookMainForm.pctrlMainChange(Sender: TObject);
@@ -57,4 +56,3 @@ begin
 end;
 
 end.
-

@@ -29,7 +29,7 @@ begin
     for I := AOwner.ComponentCount - 1 downto 0 do
     begin
       if not(AOwner.Components[I] is TSynCustomHighlighter) then
-        continue;
+        Continue;
       Highlighter := AOwner.Components[I] as TSynCustomHighlighter;
       // only one highlighter for each language
       if AHighlighters.IndexOf(Highlighter.GetLanguageName) = -1 then
@@ -49,10 +49,10 @@ begin
     for I := 0 to AHighlighters.Count - 1 do
     begin
       if not(AHighlighters.Objects[I] is TSynCustomHighlighter) then
-        continue;
+        Continue;
       Highlighter := TSynCustomHighlighter(AHighlighters.Objects[I]);
       if Highlighter.DefaultFilter = '' then
-        continue;
+        Continue;
       Result := Result + Highlighter.DefaultFilter;
       if Result[Length(Result)] <> '|' then
         Result := Result + '|';
@@ -74,7 +74,7 @@ begin
     for I := 0 to AHighlighters.Count - 1 do
     begin
       if not(AHighlighters.Objects[I] is TSynCustomHighlighter) then
-        continue;
+        Continue;
       Highlighter := TSynCustomHighlighter(AHighlighters.Objects[I]);
       Filter := LowerCase(Highlighter.DefaultFilter);
       J := Pos('|', Filter);

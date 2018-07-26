@@ -173,4 +173,11 @@ object CommandsDataModule: TCommandsDataModule
     Left = 20
     Top = 68
   end
+  object SynURQLSyn1: TSynURQLSyn
+    Options.AutoDetectEnabled = False
+    Options.AutoDetectLineLimit = 0
+    Options.Visible = False
+    Left = 176
+    Top = 80
+  end
 end

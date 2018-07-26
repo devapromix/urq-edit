@@ -8,7 +8,7 @@ uses
   Windows, Messages, SysUtils, Classes, Graphics, Controls, Forms, Dialogs,
   ActnList, SynEditHighlighter,
   SynHighlighterSQL, SynHighlighterPas, SynHighlighterCpp,
-  System.Actions, SynEditCodeFolding;
+  System.Actions, SynEditCodeFolding, SynHighlighterURQ;
 
 type
   TCommandsDataModule = class(TDataModule)
@@ -33,6 +33,7 @@ type
     SynPasSyn1: TSynPasSyn;
     SynSQLSyn1: TSynSQLSyn;
     dlgFileSave: TSaveDialog;
+    SynURQLSyn1: TSynURQLSyn;
     procedure DataModuleCreate(Sender: TObject);
     procedure DataModuleDestroy(Sender: TObject);
     procedure actFileSaveExecute(Sender: TObject);
@@ -79,7 +80,6 @@ type
     function GetUntitledNumber: Integer;
     procedure ReleaseUntitledNumber(ANumber: Integer);
     procedure RemoveMRUEntry(AFileName: string);
-    function GetFilters: string;
   end;
 
 var
@@ -96,7 +96,7 @@ const
   MAX_MRU = 5;
 
 resourcestring
-  SFilterAllFiles = 'All files|*.*|';
+  SFilterAllFiles = 'All files |*.*|';
 
   { TCommandsDataModule }
 
@@ -106,7 +106,6 @@ begin
   GetHighlighters(Self, FHighlighters, False);
   dlgFileOpen.Filter := GetHighlightersFilter(FHighlighters) + SFilterAllFiles;
   FMRUFiles := TStringList.Create;
-  // dlgFileOpen.Filter := GetFilters;
 end;
 
 procedure TCommandsDataModule.DataModuleDestroy(Sender: TObject);
@@ -126,12 +125,6 @@ begin
     while FMRUFiles.Count > MAX_MRU do
       FMRUFiles.Delete(FMRUFiles.Count - 1);
   end;
-end;
-
-function TCommandsDataModule.GetFilters: string;
-begin
-  Result := Result + _('Quest') + ' (*.qst)|*.qst|';
-  Result := Result + _('All files') + ' (*.*)|*.*|';
 end;
 
 function TCommandsDataModule.GetHighlighterForFile(AFileName: string)
@@ -176,7 +169,6 @@ begin
       Filter := AHighlighter.DefaultFilter
     else
       Filter := SFilterAllFiles;
-    // dlgFileSave.Filter := GetFilters;
     if Execute then
     begin
       ANewName := FileName;

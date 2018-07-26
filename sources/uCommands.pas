@@ -1,4 +1,4 @@
-unit uCommands;
+﻿unit uCommands;
 
 {$I SynEdit.inc}
 
@@ -66,17 +66,18 @@ type
     procedure actSearchReplaceExecute(Sender: TObject);
     procedure actSearchReplaceUpdate(Sender: TObject);
   private
-    fHighlighters: TStringList;
-    fMRUFiles: TStringList;
-    fUntitledNumbers: TBits;
+    FHighlighters: TStringList;
+    FMRUFiles: TStringList;
+    FUntitledNumbers: TBits;
   public
     procedure AddMRUEntry(AFileName: string);
     function GetHighlighterForFile(AFileName: string): TSynCustomHighlighter;
-    function GetMRUEntries: integer;
-    function GetMRUEntry(Index: integer): string;
-    function GetSaveFileName(var ANewName: string; AHighlighter: TSynCustomHighlighter): boolean;
-    function GetUntitledNumber: integer;
-    procedure ReleaseUntitledNumber(ANumber: integer);
+    function GetMRUEntries: Integer;
+    function GetMRUEntry(Index: Integer): string;
+    function GetSaveFileName(var ANewName: string;
+      AHighlighter: TSynCustomHighlighter): Boolean;
+    function GetUntitledNumber: Integer;
+    procedure ReleaseUntitledNumber(ANumber: Integer);
     procedure RemoveMRUEntry(AFileName: string);
     function GetFilters: string;
   end;
@@ -101,31 +102,29 @@ resourcestring
 
 procedure TCommandsDataModule.DataModuleCreate(Sender: TObject);
 begin
-  fHighlighters := TStringList.Create;
-  GetHighlighters(Self, fHighlighters, FALSE);
-  dlgFileOpen.Filter := GetHighlightersFilter(fHighlighters) + SFilterAllFiles;
-  fMRUFiles := TStringList.Create;
+  FHighlighters := TStringList.Create;
+  GetHighlighters(Self, FHighlighters, False);
+  dlgFileOpen.Filter := GetHighlightersFilter(FHighlighters) + SFilterAllFiles;
+  FMRUFiles := TStringList.Create;
   // dlgFileOpen.Filter := GetFilters;
 end;
 
 procedure TCommandsDataModule.DataModuleDestroy(Sender: TObject);
 begin
-  fMRUFiles.Free;
-  fHighlighters.Free;
-  fUntitledNumbers.Free;
+  FMRUFiles.Free;
+  FHighlighters.Free;
+  FUntitledNumbers.Free;
   CommandsDataModule := nil;
 end;
-
-// implementation
 
 procedure TCommandsDataModule.AddMRUEntry(AFileName: string);
 begin
   if AFileName <> '' then
   begin
     RemoveMRUEntry(AFileName);
-    fMRUFiles.Insert(0, AFileName);
-    while fMRUFiles.Count > MAX_MRU do
-      fMRUFiles.Delete(fMRUFiles.Count - 1);
+    FMRUFiles.Insert(0, AFileName);
+    while FMRUFiles.Count > MAX_MRU do
+      FMRUFiles.Delete(FMRUFiles.Count - 1);
   end;
 end;
 
@@ -135,28 +134,31 @@ begin
   Result := Result + _('All files') + ' (*.*)|*.*|';
 end;
 
-function TCommandsDataModule.GetHighlighterForFile(AFileName: string): TSynCustomHighlighter;
+function TCommandsDataModule.GetHighlighterForFile(AFileName: string)
+  : TSynCustomHighlighter;
 begin
   if AFileName <> '' then
-    Result := GetHighlighterFromFileExt(fHighlighters, ExtractFileExt(AFileName))
+    Result := GetHighlighterFromFileExt(FHighlighters,
+      ExtractFileExt(AFileName))
   else
     Result := nil;
 end;
 
-function TCommandsDataModule.GetMRUEntries: integer;
+function TCommandsDataModule.GetMRUEntries: Integer;
 begin
-  Result := fMRUFiles.Count;
+  Result := FMRUFiles.Count;
 end;
 
-function TCommandsDataModule.GetMRUEntry(Index: integer): string;
+function TCommandsDataModule.GetMRUEntry(Index: Integer): string;
 begin
-  if (Index >= 0) and (Index < fMRUFiles.Count) then
-    Result := fMRUFiles[Index]
+  if (Index >= 0) and (Index < FMRUFiles.Count) then
+    Result := FMRUFiles[Index]
   else
     Result := '';
 end;
 
-function TCommandsDataModule.GetSaveFileName(var ANewName: string; AHighlighter: TSynCustomHighlighter): boolean;
+function TCommandsDataModule.GetSaveFileName(var ANewName: string;
+  AHighlighter: TSynCustomHighlighter): Boolean;
 begin
   with dlgFileSave do
   begin
@@ -178,39 +180,40 @@ begin
     if Execute then
     begin
       ANewName := FileName;
-      Result := TRUE;
+      Result := True;
     end
     else
-      Result := FALSE;
+      Result := False;
   end;
 end;
 
-function TCommandsDataModule.GetUntitledNumber: integer;
+function TCommandsDataModule.GetUntitledNumber: Integer;
 begin
-  if fUntitledNumbers = nil then
-    fUntitledNumbers := TBits.Create;
-  Result := fUntitledNumbers.OpenBit;
-  if Result = fUntitledNumbers.Size then
-    fUntitledNumbers.Size := fUntitledNumbers.Size + 32;
-  fUntitledNumbers[Result] := TRUE;
+  if FUntitledNumbers = nil then
+    FUntitledNumbers := TBits.Create;
+  Result := FUntitledNumbers.OpenBit;
+  if Result = FUntitledNumbers.Size then
+    FUntitledNumbers.Size := FUntitledNumbers.Size + 32;
+  FUntitledNumbers[Result] := True;
   Inc(Result);
 end;
 
-procedure TCommandsDataModule.ReleaseUntitledNumber(ANumber: integer);
+procedure TCommandsDataModule.ReleaseUntitledNumber(ANumber: Integer);
 begin
   Dec(ANumber);
-  if (fUntitledNumbers <> nil) and (ANumber >= 0) and (ANumber < fUntitledNumbers.Size) then
-    fUntitledNumbers[ANumber] := FALSE;
+  if (FUntitledNumbers <> nil) and (ANumber >= 0) and
+    (ANumber < FUntitledNumbers.Size) then
+    FUntitledNumbers[ANumber] := False;
 end;
 
 procedure TCommandsDataModule.RemoveMRUEntry(AFileName: string);
 var
-  I: integer;
+  I: Integer;
 begin
-  for I := fMRUFiles.Count - 1 downto 0 do
+  for I := FMRUFiles.Count - 1 downto 0 do
   begin
-    if CompareText(AFileName, fMRUFiles[I]) = 0 then
-      fMRUFiles.Delete(I);
+    if CompareText(AFileName, FMRUFiles[I]) = 0 then
+      FMRUFiles.Delete(I);
   end;
 end;
 
@@ -354,7 +357,8 @@ end;
 
 procedure TCommandsDataModule.actSearchFindNextUpdate(Sender: TObject);
 begin
-  actSearchFindNext.Enabled := (GI_SearchCmds <> nil) and GI_SearchCmds.CanFindNext;
+  actSearchFindNext.Enabled := (GI_SearchCmds <> nil) and
+    GI_SearchCmds.CanFindNext;
 end;
 
 procedure TCommandsDataModule.actSearchFindPrevExecute(Sender: TObject);
@@ -365,7 +369,8 @@ end;
 
 procedure TCommandsDataModule.actSearchFindPrevUpdate(Sender: TObject);
 begin
-  actSearchFindPrev.Enabled := (GI_SearchCmds <> nil) and GI_SearchCmds.CanFindPrev;
+  actSearchFindPrev.Enabled := (GI_SearchCmds <> nil) and
+    GI_SearchCmds.CanFindPrev;
 end;
 
 procedure TCommandsDataModule.actSearchReplaceExecute(Sender: TObject);
@@ -376,7 +381,8 @@ end;
 
 procedure TCommandsDataModule.actSearchReplaceUpdate(Sender: TObject);
 begin
-  actSearchReplace.Enabled := (GI_SearchCmds <> nil) and GI_SearchCmds.CanReplace;
+  actSearchReplace.Enabled := (GI_SearchCmds <> nil) and
+    GI_SearchCmds.CanReplace;
 end;
 
 end.

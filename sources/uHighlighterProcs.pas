@@ -1,20 +1,23 @@
-unit uHighlighterProcs;
+﻿unit uHighlighterProcs;
 
 interface
 
 uses
   Classes, SynEditHighlighter;
 
-procedure GetHighlighters(AOwner: TComponent; AHighlighters: TStringList; AppendToList: Boolean);
+procedure GetHighlighters(AOwner: TComponent; AHighlighters: TStringList;
+  AppendToList: Boolean);
 function GetHighlightersFilter(AHighlighters: TStringList): string;
-function GetHighlighterFromFileExt(AHighlighters: TStringList; Extension: string): TSynCustomHighlighter;
+function GetHighlighterFromFileExt(AHighlighters: TStringList;
+  Extension: string): TSynCustomHighlighter;
 
 implementation
 
 uses
   SysUtils;
 
-procedure GetHighlighters(AOwner: TComponent; AHighlighters: TStringList; AppendToList: Boolean);
+procedure GetHighlighters(AOwner: TComponent; AHighlighters: TStringList;
+  AppendToList: Boolean);
 var
   I: Integer;
   Highlighter: TSynCustomHighlighter;
@@ -56,7 +59,8 @@ begin
     end;
 end;
 
-function GetHighlighterFromFileExt(AHighlighters: TStringList; Extension: string): TSynCustomHighlighter;
+function GetHighlighterFromFileExt(AHighlighters: TStringList;
+  Extension: string): TSynCustomHighlighter;
 var
   ExtLen: Integer;
   I, J: Integer;
@@ -78,7 +82,8 @@ begin
       begin
         Delete(Filter, 1, J);
         J := Pos(Extension, Filter);
-        if (J > 0) and ((J + ExtLen > Length(Filter)) or (Filter[J + ExtLen] = ';')) then
+        if (J > 0) and ((J + ExtLen > Length(Filter)) or
+          (Filter[J + ExtLen] = ';')) then
         begin
           Result := Highlighter;
           exit;

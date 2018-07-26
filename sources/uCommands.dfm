@@ -177,7 +177,7 @@ object CommandsDataModule: TCommandsDataModule
     Options.AutoDetectEnabled = False
     Options.AutoDetectLineLimit = 0
     Options.Visible = False
-    Left = 176
-    Top = 80
+    Left = 328
+    Top = 64
   end
 end

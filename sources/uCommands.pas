@@ -8,7 +8,7 @@ uses
   Windows, Messages, SysUtils, Classes, Graphics, Controls, Forms, Dialogs,
   ActnList, SynEditHighlighter,
   SynHighlighterSQL, SynHighlighterPas, SynHighlighterCpp,
-  System.Actions, SynEditCodeFolding, SynHighlighterURQ;
+  System.Actions, SynEditCodeFolding, SynHighlighterURQL;
 
 type
   TCommandsDataModule = class(TDataModule)

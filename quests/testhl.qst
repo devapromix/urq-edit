@@ -1,0 +1,29 @@
+:0
+pln This is a test
+if a = 0 then pln Here we are! else pln Nope, doesn't work...
+if a = 0 then pln Here we are! & goto label1 else pln Nope, doesn't work...
+pln А потом она сказала "Ах!"
+z = "This is a string!"
+x = "This is text with pln and if"
+
+w = "Here come the #%substitude$ and rule it all!"
+
+pln Some other #sub$ here and #%here$ and it's cool.
+
+pln And some #sub#%insub#iside$$$ urq style
+
+;А это комментарий
+pln тут мы выводим текст ; и комментируем его
+
+/* это вот многострочный комментарий
+pln этот оператор закомментирован
+такие дела */
+
+image flower.jpg
+decoradd img (10, 10) IMAGE "zhopa.png"
+decoradd img (10, 10) TEXTBUTTON "Кнопка", "локация"
+decor_img_hotx = 5
+x = rnd15
+
+textcolor = 0xFFB011
+gametitle = 'Харчевня "У бретонца"'

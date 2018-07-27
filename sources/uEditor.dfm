@@ -34,6 +34,7 @@ object EditorForm: TEditorForm
     Width = 464
     Height = 456
     Align = alClient
+    Color = clBlack
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clWindowText
     Font.Height = -13
@@ -56,6 +57,8 @@ object EditorForm: TEditorForm
     Gutter.Font.Height = -11
     Gutter.Font.Name = 'Courier New'
     Gutter.Font.Style = []
+    Gutter.ShowLineNumbers = True
+    Gutter.ShowModification = True
     SearchEngine = SynEditSearch1
     OnChange = SynEditorChange
     OnReplaceText = SynEditorReplaceText

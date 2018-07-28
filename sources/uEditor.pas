@@ -7,7 +7,8 @@ interface
 uses
   Windows, Messages, SysUtils, Classes, Graphics, Controls, Forms, Menus,
   uEditAppIntfs, SynEdit, SynEditTypes, SynEditMiscProcs,
-  SynEditMiscClasses, SynEditSearch, SynUnicode, ExtCtrls, Vcl.StdCtrls;
+  SynEditMiscClasses, SynEditSearch, SynUnicode, ExtCtrls, Vcl.StdCtrls,
+  Vcl.ComCtrls, Vcl.Dialogs;
 
 type
   TEditorKind = (ekBorderless, ekInTabsheet, ekMDIChild);
@@ -29,7 +30,9 @@ type
     SynEditSearch1: TSynEditSearch;
     Panel1: TPanel;
     Splitter1: TSplitter;
-    ListBox1: TListBox;
+    PageControl1: TPageControl;
+    TabSheet1: TTabSheet;
+    KeyWordsList: TTreeView;
     procedure SynEditorReplaceText(Sender: TObject;
       const ASearch, AReplace: string; Line, Column: Integer;
       var Action: TSynReplaceAction);
@@ -44,6 +47,9 @@ type
     procedure SynEditorExit(Sender: TObject);
     procedure SynEditorStatusChange(Sender: TObject;
       Changes: TSynStatusChanges);
+    procedure FormCreate(Sender: TObject);
+    procedure KeyWordsListDeletion(Sender: TObject; Node: TTreeNode);
+    procedure KeyWordsListClick(Sender: TObject);
   private
     fEditor: TEditor;
     fKind: TEditorKind;
@@ -58,6 +64,8 @@ type
     procedure DoUpdateCaption;
     procedure DoUpdateHighlighter;
     procedure ShowSearchReplaceDialog(AReplace: Boolean);
+    procedure InitKeyWordsList;
+    procedure FreeKeyWordsList;
   public
     procedure DoActivate;
   end;
@@ -125,7 +133,7 @@ implementation
 {$R *.DFM}
 
 uses
-  ComCtrls, uCommands, uSearchText, uReplaceText, uConfirmReplace,
+  IniFiles, uCommands, uSearchText, uReplaceText, uConfirmReplace,
   uMainWorkbook, uLanguage, uConfirm, uUtils, uMain;
 
 const
@@ -590,6 +598,71 @@ begin
   DoUpdateCaption;
 end;
 
+procedure TEditorForm.FreeKeyWordsList;
+begin
+
+end;
+
+procedure TEditorForm.InitKeyWordsList;
+var
+  ValuesList, SectionsList: TStrings;
+  Name: string;
+  I, J: Integer;
+  RootNode: TTreeNode;
+  P: PString;
+begin
+  KeyWordsList.Items.Clear;
+  with TIniFile.Create(Utils.GetPath('') + 'keywords.ini') do
+    try
+      SectionsList := TStringList.Create;
+      try
+        ReadSections(SectionsList);
+        ValuesList := TStringList.Create;
+        try
+          for I := 0 to SectionsList.Count - 1 do
+          begin
+            ValuesList.Clear;
+            ReadSectionValues(SectionsList[I], ValuesList);
+            RootNode := KeyWordsList.Items.Add(nil, SectionsList[I]);
+            for J := 0 to ValuesList.Count - 1 do
+            begin
+              Name := ValuesList.Names[J];
+              New(P);
+              P^ := ValuesList.Values[Name];
+              KeyWordsList.Items.AddChildObject(RootNode, Name, P);
+            end;
+          end;
+        finally
+          FreeAndNil(ValuesList);
+        end;
+      finally
+        FreeAndNil(SectionsList);
+      end;
+    finally
+      Free;
+    end;
+end;
+
+procedure TEditorForm.KeyWordsListClick(Sender: TObject);
+var
+  KeyWord: string;
+begin
+    SynEditor.SetFocus;
+  if KeyWordsList.Selected.Level > 0 then
+  begin
+    // ShowMessage(KeyWordsList.Selected.Text + ' ' +
+    // string(KeyWordsList.Selected.Data^));
+    KeyWord := Trim(KeyWordsList.Selected.Text) + ' ';
+    SynEditor.SelText := KeyWord;
+  end;
+end;
+
+procedure TEditorForm.KeyWordsListDeletion(Sender: TObject; Node: TTreeNode);
+begin
+  if Node.Data <> nil then
+    Dispose(PString(Node.Data));
+end;
+
 procedure TEditorForm.FormClose(Sender: TObject; var Action: TCloseAction);
 begin
   if fKind = ekInTabsheet then
@@ -603,15 +676,20 @@ end;
 
 procedure TEditorForm.FormCloseQuery(Sender: TObject; var CanClose: Boolean);
 begin
-  // need to prevent this from happening more than once (e.g. with MDI childs)
   if not(csDestroying in ComponentState) then
     CanClose := DoAskSaveChanges;
+end;
+
+procedure TEditorForm.FormCreate(Sender: TObject);
+begin
+  InitKeyWordsList;
 end;
 
 procedure TEditorForm.FormDestroy(Sender: TObject);
 var
   LEditor: IEditor;
 begin
+  FreeKeyWordsList;
   LEditor := fEditor;
   Assert(fEditor <> nil);
   fEditor.fForm := nil;

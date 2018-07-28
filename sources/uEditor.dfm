@@ -3,8 +3,8 @@ object EditorForm: TEditorForm
   Top = 199
   ActiveControl = SynEditor
   Caption = 'Editor'
-  ClientHeight = 456
-  ClientWidth = 612
+  ClientHeight = 310
+  ClientWidth = 580
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -15,6 +15,7 @@ object EditorForm: TEditorForm
   OnActivate = FormActivate
   OnClose = FormClose
   OnCloseQuery = FormCloseQuery
+  OnCreate = FormCreate
   OnDestroy = FormDestroy
   OnDeactivate = FormDeactivate
   OnShow = FormShow
@@ -23,7 +24,7 @@ object EditorForm: TEditorForm
   object Splitter1: TSplitter
     Left = 145
     Top = 0
-    Height = 456
+    Height = 310
     ExplicitLeft = 224
     ExplicitTop = 136
     ExplicitHeight = 100
@@ -31,8 +32,8 @@ object EditorForm: TEditorForm
   object SynEditor: TSynEdit
     Left = 148
     Top = 0
-    Width = 464
-    Height = 456
+    Width = 432
+    Height = 310
     Align = alClient
     Color = clBlack
     Font.Charset = DEFAULT_CHARSET
@@ -64,6 +65,8 @@ object EditorForm: TEditorForm
     OnReplaceText = SynEditorReplaceText
     OnStatusChange = SynEditorStatusChange
     FontSmoothing = fsmNone
+    ExplicitWidth = 464
+    ExplicitHeight = 456
     RemovedKeystrokes = <
       item
         Command = ecDeleteLastChar
@@ -83,18 +86,40 @@ object EditorForm: TEditorForm
     Left = 0
     Top = 0
     Width = 145
-    Height = 456
+    Height = 310
     Align = alLeft
     BevelOuter = bvNone
     TabOrder = 1
-    object ListBox1: TListBox
+    ExplicitHeight = 456
+    object PageControl1: TPageControl
       Left = 0
       Top = 0
       Width = 145
-      Height = 456
+      Height = 310
+      ActivePage = TabSheet1
       Align = alClient
-      ItemHeight = 13
       TabOrder = 0
+      object TabSheet1: TTabSheet
+        Caption = 'KeyWords'
+        ExplicitWidth = 281
+        ExplicitHeight = 165
+        object KeyWordsList: TTreeView
+          Left = 0
+          Top = 0
+          Width = 137
+          Height = 282
+          Align = alClient
+          AutoExpand = True
+          DoubleBuffered = True
+          Indent = 19
+          ParentDoubleBuffered = False
+          ReadOnly = True
+          TabOrder = 0
+          OnClick = KeyWordsListClick
+          OnDeletion = KeyWordsListDeletion
+          ExplicitLeft = 1
+        end
+      end
     end
   end
   object pmnuEditor: TPopupMenu

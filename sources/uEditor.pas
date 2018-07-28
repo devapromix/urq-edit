@@ -623,7 +623,7 @@ begin
           begin
             ValuesList.Clear;
             ReadSectionValues(SectionsList[I], ValuesList);
-            RootNode := KeyWordsList.Items.Add(nil, SectionsList[I]);
+            RootNode := KeyWordsList.Items.Add(nil, _(SectionsList[I]));
             for J := 0 to ValuesList.Count - 1 do
             begin
               Name := ValuesList.Names[J];
@@ -645,15 +645,24 @@ end;
 
 procedure TEditorForm.KeyWordsListClick(Sender: TObject);
 var
-  KeyWord: string;
+  Word, Hint: string;
+const
+  Enter = #13#10;
 begin
-    SynEditor.SetFocus;
+  SynEditor.SetFocus;
   if KeyWordsList.Selected.Level > 0 then
   begin
-    // ShowMessage(KeyWordsList.Selected.Text + ' ' +
-    // string(KeyWordsList.Selected.Data^));
-    KeyWord := Trim(KeyWordsList.Selected.Text) + ' ';
-    SynEditor.SelText := KeyWord;
+    Hint := string(KeyWordsList.Selected.Data^);
+    // Выбранное из группы ключевое слово, добавляем пробел в конец
+    Word := Trim(KeyWordsList.Selected.Text) + ' ';
+    // Если оператор без параметров (как cls или perkill), то пробел не нужен
+    if Hint = '<>' then
+      Word := Trim(Word);
+    // Оператор end (особый случай)
+    if Word = 'end' then
+      Word := Enter + Word + Enter + Enter;
+    // Добавляем в позицию курсора
+    SynEditor.SelText := Word;
   end;
 end;
 

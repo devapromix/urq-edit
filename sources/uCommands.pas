@@ -102,7 +102,8 @@ procedure TCommandsDataModule.DataModuleCreate(Sender: TObject);
 begin
   FHighlighters := TStringList.Create;
   GetHighlighters(Self, FHighlighters, False);
-  dlgFileOpen.Filter := GetHighlightersFilter(FHighlighters) + SFilterAllFiles;
+  dlgFileOpen.Filter := GetHighlightersFilter(FHighlighters) +
+    _(SFilterAllFiles);
   FMRUFiles := TStringList.Create;
 end;
 
@@ -172,7 +173,7 @@ begin
     if AHighlighter <> nil then
       Filter := AHighlighter.DefaultFilter
     else
-      Filter := SFilterAllFiles;
+      Filter := _(SFilterAllFiles);
     if Execute then
     begin
       ANewName := FileName;

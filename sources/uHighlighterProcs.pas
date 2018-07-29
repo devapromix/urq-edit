@@ -14,7 +14,7 @@ function GetHighlighterFromFileExt(AHighlighters: TStringList;
 implementation
 
 uses
-  SysUtils;
+  SysUtils, uLanguage;
 
 procedure GetHighlighters(AOwner: TComponent; AHighlighters: TStringList;
   AppendToList: Boolean);
@@ -53,7 +53,7 @@ begin
       Highlighter := TSynCustomHighlighter(AHighlighters.Objects[I]);
       if Highlighter.DefaultFilter = '' then
         Continue;
-      Result := Result + Highlighter.DefaultFilter;
+      Result := Result + _(Highlighter.DefaultFilter);
       if Result[Length(Result)] <> '|' then
         Result := Result + '|';
     end;

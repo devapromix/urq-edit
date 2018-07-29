@@ -136,6 +136,7 @@ object CommandsDataModule: TCommandsDataModule
     Top = 68
   end
   object SynURQLSyn1: TSynURQLSyn
+    DefaultFilter = 'URQ Quest File (*.qst)|*.qst'
     Options.AutoDetectEnabled = False
     Options.AutoDetectLineLimit = 0
     Options.Visible = False

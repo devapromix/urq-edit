@@ -56,6 +56,9 @@ type
     FSearchFromCaret: Boolean;
     FSearchBackwards: Boolean;
     FSearchCaseSensitive: Boolean;
+    FSearchSelectionOnly: Boolean;
+    FSearchTextAtCaret: Boolean;
+    FSearchWholeWords: Boolean;
     function DoAskSaveChanges: Boolean;
     procedure DoAssignInterfacePointer(AActive: Boolean);
     function DoSave: Boolean;
@@ -141,11 +144,6 @@ const
   WM_DELETETHIS = WM_USER + 42;
 
 var
-  gbSearchFromCaret: Boolean;
-  gbSearchSelectionOnly: Boolean;
-  gbSearchTextAtCaret: Boolean;
-  gbSearchWholeWords: Boolean;
-
   gsSearchText: string;
   gsSearchTextHistory: string;
   gsReplaceText: string;
@@ -782,17 +780,17 @@ end;
 
 procedure TEditorForm.DoActivate;
 var
-  Sheet: TTabSheet;
-  PCtrl: TPageControl;
+  TabSheet: TTabSheet;
+  PageControl: TPageControl;
 begin
   if FormStyle = fsMDIChild then
     BringToFront
   else if Parent is TTabSheet then
   begin
-    Sheet := TTabSheet(Parent);
-    PCtrl := Sheet.PageControl;
-    if PCtrl <> nil then
-      PCtrl.ActivePage := Sheet;
+    TabSheet := TTabSheet(Parent);
+    PageControl := TabSheet.PageControl;
+    if PageControl <> nil then
+      PageControl.ActivePage := TabSheet;
   end;
   DoUpdateCaption;
 end;
@@ -893,9 +891,9 @@ begin
     Include(Options, ssoMatchCase);
   if not FSearchFromCaret then
     Include(Options, ssoEntireScope);
-  if gbSearchSelectionOnly then
+  if FSearchSelectionOnly then
     Include(Options, ssoSelectedOnly);
-  if gbSearchWholeWords then
+  if FSearchWholeWords then
     Include(Options, ssoWholeWord);
   if SynEditor.SearchReplace(gsSearchText, gsReplaceText, Options) = 0 then
   begin
@@ -946,11 +944,11 @@ begin
       // assign search options
       SearchBackwards := FSearchBackwards;
       SearchCaseSensitive := FSearchCaseSensitive;
-      SearchFromCursor := gbSearchFromCaret;
-      SearchInSelectionOnly := gbSearchSelectionOnly;
+      SearchFromCursor := FSearchFromCaret;
+      SearchInSelectionOnly := FSearchSelectionOnly;
       // start with last search text
       SearchText := gsSearchText;
-      if gbSearchTextAtCaret then
+      if FSearchTextAtCaret then
       begin
         // if something is selected search for that text
         if SynEditor.SelAvail and
@@ -966,14 +964,14 @@ begin
           ReplaceText := gsReplaceText;
           ReplaceTextHistory := gsReplaceTextHistory;
         end;
-      SearchWholeWords := gbSearchWholeWords;
+      SearchWholeWords := FSearchWholeWords;
       if ShowModal = mrOK then
       begin
         FSearchBackwards := SearchBackwards;
         FSearchCaseSensitive := SearchCaseSensitive;
-        gbSearchFromCaret := SearchFromCursor;
-        gbSearchSelectionOnly := SearchInSelectionOnly;
-        gbSearchWholeWords := SearchWholeWords;
+        FSearchFromCaret := SearchFromCursor;
+        FSearchSelectionOnly := SearchInSelectionOnly;
+        FSearchWholeWords := SearchWholeWords;
         gsSearchText := SearchText;
         gsSearchTextHistory := SearchTextHistory;
         if AReplace then
@@ -982,7 +980,7 @@ begin
             gsReplaceText := ReplaceText;
             gsReplaceTextHistory := ReplaceTextHistory;
           end;
-        FSearchFromCaret := gbSearchFromCaret;
+        FSearchFromCaret := FSearchFromCaret;
         if gsSearchText <> '' then
         begin
           DoSearchReplaceText(AReplace, FSearchBackwards);

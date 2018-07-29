@@ -1,4 +1,4 @@
-unit uConfirm;
+﻿unit uConfirm;
 
 interface
 

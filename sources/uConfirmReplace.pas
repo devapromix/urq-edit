@@ -1,4 +1,4 @@
-unit uConfirmReplace;
+﻿unit uConfirmReplace;
 
 {$I SynEdit.inc}
 

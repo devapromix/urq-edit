@@ -98,10 +98,6 @@ object EditorForm: TEditorForm
       TabOrder = 0
       object TabSheet1: TTabSheet
         Caption = 'KeyWords'
-        ExplicitLeft = 0
-        ExplicitTop = 0
-        ExplicitWidth = 0
-        ExplicitHeight = 0
         object KeyWordsList: TTreeView
           Left = 0
           Top = 0

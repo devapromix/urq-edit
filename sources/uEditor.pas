@@ -677,7 +677,7 @@ begin
       CaretLeft := StrToIntDef(Template[Length(Template)], 0);
       if IsLastCharDigit(Template) then
         Delete(Template, Length(Template), 1);
-      Template := Template.Replace('|', #13#10);
+      Template := Template.Replace('@@', #13#10);
       Word := Template;
     end;
     // Добавляем в позицию курсора

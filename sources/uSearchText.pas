@@ -1,4 +1,4 @@
-unit uSearchText;
+﻿unit uSearchText;
 
 {$I SynEdit.inc}
 

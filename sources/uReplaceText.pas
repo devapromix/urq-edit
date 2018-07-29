@@ -1,4 +1,4 @@
-unit uReplaceText;
+﻿unit uReplaceText;
 
 {$I SynEdit.inc}
 

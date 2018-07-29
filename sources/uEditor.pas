@@ -665,21 +665,21 @@ begin
     Hint := Trim(string(KeyWordsList.Selected.Data^));
     // Выбранное из группы ключевое слово
     Word := Trim(KeyWordsList.Selected.Text);
-    // Шаблоны
+    // Начало шаблона (если вообще есть шаблон для кл. слова)
     Start := Pos('{', Hint);
     if Start > 0 then
     begin
+      // Конечная позиция шаблона
       Finish := Pos('}', Hint);
+      // Обрабатываем шаблон кл. слова
       Template := Copy(Hint, Start + 1, Finish - 2);
       Delete(Hint, Start, Finish);
       CaretLeft := StrToIntDef(Template[Length(Template)], 0);
       if IsLastCharDigit(Template) then
-      Delete(Template, Length(Template), 1);
+        Delete(Template, Length(Template), 1);
+      Template := Template.Replace('|', #13#10);
       Word := Template;
     end;
-    // Оператор end (особый случай)
-    if Trim(Word) = 'end' then
-      Word := Enter + Word + Enter + Enter;
     // Добавляем в позицию курсора
     SynEditor.SelText := Word;
     // Отводим каретку по шаблону назад на N символов

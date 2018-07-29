@@ -70,6 +70,7 @@ type
     procedure ShowSearchReplaceDialog(AReplace: Boolean);
     procedure InitKeyWordsList;
     procedure FreeKeyWordsList;
+    function IsLastCharDigit(const S: string): Boolean;
   public
     procedure DoActivate;
   end;
@@ -137,7 +138,7 @@ implementation
 {$R *.DFM}
 
 uses
-  IniFiles, uCommands, uSearchText, uReplaceText, uConfirmReplace,
+  IniFiles, Character, uCommands, uSearchText, uReplaceText, uConfirmReplace,
   uMainWorkbook, uLanguage, uConfirm, uUtils, uMain;
 
 const
@@ -640,26 +641,50 @@ begin
     end;
 end;
 
+function TEditorForm.IsLastCharDigit(const S: string): Boolean;
+var
+  C: Char;
+begin
+  C := S[Length(S)];
+  Result := C.IsDigit;
+end;
+
 procedure TEditorForm.KeyWordsListClick(Sender: TObject);
 var
   Word, Hint: string;
+  Start, Finish, CaretLeft: Integer;
+  Template: string;
 const
   Enter = #13#10;
 begin
   SynEditor.SetFocus;
   if KeyWordsList.Selected.Level > 0 then
   begin
-    Hint := string(KeyWordsList.Selected.Data^);
-    // Выбранное из группы ключевое слово, добавляем пробел в конец
-    Word := Trim(KeyWordsList.Selected.Text) + ' ';
-    // Если оператор без параметров (как cls или perkill), то пробел не нужен
-    if Hint = '<>' then
-      Word := Trim(Word);
+    CaretLeft := 0;
+    Template := '';
+    Hint := Trim(string(KeyWordsList.Selected.Data^));
+    // Выбранное из группы ключевое слово
+    Word := Trim(KeyWordsList.Selected.Text);
+    // Шаблоны
+    Start := Pos('{', Hint);
+    if Start > 0 then
+    begin
+      Finish := Pos('}', Hint);
+      Template := Copy(Hint, Start + 1, Finish - 2);
+      Delete(Hint, Start, Finish);
+      CaretLeft := StrToIntDef(Template[Length(Template)], 0);
+      if IsLastCharDigit(Template) then
+      Delete(Template, Length(Template), 1);
+      Word := Template;
+    end;
     // Оператор end (особый случай)
-    if Word = 'end' then
+    if Trim(Word) = 'end' then
       Word := Enter + Word + Enter + Enter;
     // Добавляем в позицию курсора
     SynEditor.SelText := Word;
+    // Отводим каретку по шаблону назад на N символов
+    if CaretLeft > 0 then
+      SynEditor.CaretX := SynEditor.CaretX - CaretLeft;
   end;
 end;
 

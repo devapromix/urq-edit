@@ -6,9 +6,8 @@ interface
 
 uses
   Windows, Messages, SysUtils, Classes, Graphics, Controls, Forms, Dialogs,
-  ActnList, SynEditHighlighter,
-  SynHighlighterSQL, SynHighlighterPas, SynHighlighterCpp,
-  System.Actions, SynEditCodeFolding, SynHighlighterURQL;
+  ActnList, SynEditHighlighter, System.Actions, SynEditCodeFolding,
+  SynHighlighterURQL, SynHighlighterXML;
 
 type
   TCommandsDataModule = class(TDataModule)
@@ -29,11 +28,9 @@ type
     actSearchFindNext: TAction;
     actSearchFindPrev: TAction;
     actSearchReplace: TAction;
-    SynCppSyn1: TSynCppSyn;
-    SynPasSyn1: TSynPasSyn;
-    SynSQLSyn1: TSynSQLSyn;
     dlgFileSave: TSaveDialog;
     SynURQLSyn1: TSynURQLSyn;
+    SynXMLSyn1: TSynXMLSyn;
     procedure DataModuleCreate(Sender: TObject);
     procedure DataModuleDestroy(Sender: TObject);
     procedure actFileSaveExecute(Sender: TObject);
@@ -80,6 +77,7 @@ type
     function GetUntitledNumber: Integer;
     procedure ReleaseUntitledNumber(ANumber: Integer);
     procedure RemoveMRUEntry(AFileName: string);
+    function GetDefaultHighlighter: string;
   end;
 
 var
@@ -125,6 +123,12 @@ begin
     while FMRUFiles.Count > MAX_MRU do
       FMRUFiles.Delete(FMRUFiles.Count - 1);
   end;
+end;
+
+function TCommandsDataModule.GetDefaultHighlighter: string;
+begin
+  // Хайлайтер URQ по умолчанию
+  Result := SynURQLSyn1.DefaultFilter;
 end;
 
 function TCommandsDataModule.GetHighlighterForFile(AFileName: string)

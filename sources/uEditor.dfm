@@ -65,8 +65,6 @@ object EditorForm: TEditorForm
     OnReplaceText = SynEditorReplaceText
     OnStatusChange = SynEditorStatusChange
     FontSmoothing = fsmNone
-    ExplicitWidth = 464
-    ExplicitHeight = 456
     RemovedKeystrokes = <
       item
         Command = ecDeleteLastChar
@@ -90,7 +88,6 @@ object EditorForm: TEditorForm
     Align = alLeft
     BevelOuter = bvNone
     TabOrder = 1
-    ExplicitHeight = 456
     object PageControl1: TPageControl
       Left = 0
       Top = 0
@@ -101,8 +98,6 @@ object EditorForm: TEditorForm
       TabOrder = 0
       object TabSheet1: TTabSheet
         Caption = 'KeyWords'
-        ExplicitWidth = 281
-        ExplicitHeight = 165
         object KeyWordsList: TTreeView
           Left = 0
           Top = 0
@@ -117,7 +112,6 @@ object EditorForm: TEditorForm
           TabOrder = 0
           OnClick = KeyWordsListClick
           OnDeletion = KeyWordsListDeletion
-          ExplicitLeft = 1
         end
       end
     end
@@ -154,7 +148,7 @@ object EditorForm: TEditorForm
     end
   end
   object SynEditSearch1: TSynEditSearch
-    Left = 356
-    Top = 64
+    Left = 452
+    Top = 40
   end
 end

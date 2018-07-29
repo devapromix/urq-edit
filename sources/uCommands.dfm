@@ -130,44 +130,6 @@ object CommandsDataModule: TCommandsDataModule
       OnUpdate = actSearchReplaceUpdate
     end
   end
-  object SynCppSyn1: TSynCppSyn
-    DefaultFilter = 'C++ files (*.cpp,*.h,*.hpp)|*.cpp;*.h;*.hpp'
-    Options.AutoDetectEnabled = False
-    Options.AutoDetectLineLimit = 0
-    Options.Visible = False
-    CommentAttri.Foreground = clGreen
-    DirecAttri.Foreground = clMaroon
-    IdentifierAttri.Foreground = clNavy
-    InvalidAttri.Foreground = clRed
-    NumberAttri.Foreground = clBlue
-    StringAttri.Foreground = clBlue
-    Left = 172
-    Top = 12
-  end
-  object SynPasSyn1: TSynPasSyn
-    Options.AutoDetectEnabled = False
-    Options.AutoDetectLineLimit = 0
-    Options.Visible = False
-    CommentAttri.Foreground = clGreen
-    IdentifierAttri.Foreground = clNavy
-    NumberAttri.Foreground = clBlue
-    StringAttri.Foreground = clBlue
-    Left = 252
-    Top = 12
-  end
-  object SynSQLSyn1: TSynSQLSyn
-    DefaultFilter = 'SQL files (*.sql)|*.sql'
-    Options.AutoDetectEnabled = False
-    Options.AutoDetectLineLimit = 0
-    Options.Visible = False
-    CommentAttri.Foreground = clGreen
-    IdentifierAttri.Foreground = clNavy
-    NumberAttri.Foreground = clBlue
-    StringAttri.Foreground = clBlue
-    SQLDialect = sqlSybase
-    Left = 328
-    Top = 12
-  end
   object dlgFileSave: TSaveDialog
     Options = [ofHideReadOnly, ofPathMustExist, ofEnableSizing]
     Left = 20
@@ -177,7 +139,15 @@ object CommandsDataModule: TCommandsDataModule
     Options.AutoDetectEnabled = False
     Options.AutoDetectLineLimit = 0
     Options.Visible = False
-    Left = 328
-    Top = 64
+    Left = 112
+    Top = 16
+  end
+  object SynXMLSyn1: TSynXMLSyn
+    Options.AutoDetectEnabled = False
+    Options.AutoDetectLineLimit = 0
+    Options.Visible = False
+    WantBracesParsed = False
+    Left = 208
+    Top = 8
   end
 end

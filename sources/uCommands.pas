@@ -10,7 +10,7 @@ uses
   SynHighlighterURQL, SynHighlighterXML;
 
 type
-  TCommandsDataModule = class(TDataModule)
+  TfCommands = class(TDataModule)
     dlgFileOpen: TOpenDialog;
     actlMain: TActionList;
     actFileSave: TAction;
@@ -81,7 +81,7 @@ type
   end;
 
 var
-  CommandsDataModule: TCommandsDataModule;
+  fCommands: TfCommands;
 
 implementation
 
@@ -98,7 +98,7 @@ resourcestring
 
   { TCommandsDataModule }
 
-procedure TCommandsDataModule.DataModuleCreate(Sender: TObject);
+procedure TfCommands.DataModuleCreate(Sender: TObject);
 begin
   FHighlighters := TStringList.Create;
   GetHighlighters(Self, FHighlighters, False);
@@ -107,15 +107,15 @@ begin
   FMRUFiles := TStringList.Create;
 end;
 
-procedure TCommandsDataModule.DataModuleDestroy(Sender: TObject);
+procedure TfCommands.DataModuleDestroy(Sender: TObject);
 begin
   FMRUFiles.Free;
   FHighlighters.Free;
   FUntitledNumbers.Free;
-  CommandsDataModule := nil;
+  fCommands := nil;
 end;
 
-procedure TCommandsDataModule.AddMRUEntry(AFileName: string);
+procedure TfCommands.AddMRUEntry(AFileName: string);
 begin
   if AFileName <> '' then
   begin
@@ -126,13 +126,13 @@ begin
   end;
 end;
 
-function TCommandsDataModule.GetDefaultHighlighter: string;
+function TfCommands.GetDefaultHighlighter: string;
 begin
   // Хайлайтер URQ по умолчанию
   Result := SynURQLSyn1.DefaultFilter;
 end;
 
-function TCommandsDataModule.GetHighlighterForFile(AFileName: string)
+function TfCommands.GetHighlighterForFile(AFileName: string)
   : TSynCustomHighlighter;
 begin
   if AFileName <> '' then
@@ -142,12 +142,12 @@ begin
     Result := nil;
 end;
 
-function TCommandsDataModule.GetMRUEntries: Integer;
+function TfCommands.GetMRUEntries: Integer;
 begin
   Result := FMRUFiles.Count;
 end;
 
-function TCommandsDataModule.GetMRUEntry(Index: Integer): string;
+function TfCommands.GetMRUEntry(Index: Integer): string;
 begin
   if (Index >= 0) and (Index < FMRUFiles.Count) then
     Result := FMRUFiles[Index]
@@ -155,7 +155,7 @@ begin
     Result := '';
 end;
 
-function TCommandsDataModule.GetSaveFileName(var ANewName: string;
+function TfCommands.GetSaveFileName(var ANewName: string;
   AHighlighter: TSynCustomHighlighter): Boolean;
 begin
   with dlgFileSave do
@@ -184,7 +184,7 @@ begin
   end;
 end;
 
-function TCommandsDataModule.GetUntitledNumber: Integer;
+function TfCommands.GetUntitledNumber: Integer;
 begin
   if FUntitledNumbers = nil then
     FUntitledNumbers := TBits.Create;
@@ -195,7 +195,7 @@ begin
   Inc(Result);
 end;
 
-procedure TCommandsDataModule.ReleaseUntitledNumber(ANumber: Integer);
+procedure TfCommands.ReleaseUntitledNumber(ANumber: Integer);
 begin
   Dec(ANumber);
   if (FUntitledNumbers <> nil) and (ANumber >= 0) and
@@ -203,7 +203,7 @@ begin
     FUntitledNumbers[ANumber] := False;
 end;
 
-procedure TCommandsDataModule.RemoveMRUEntry(AFileName: string);
+procedure TfCommands.RemoveMRUEntry(AFileName: string);
 var
   I: Integer;
 begin
@@ -214,169 +214,169 @@ begin
   end;
 end;
 
-procedure TCommandsDataModule.actFileSaveExecute(Sender: TObject);
+procedure TfCommands.actFileSaveExecute(Sender: TObject);
 begin
   if GI_FileCmds <> nil then
     GI_FileCmds.ExecSave;
 end;
 
-procedure TCommandsDataModule.actFileSaveUpdate(Sender: TObject);
+procedure TfCommands.actFileSaveUpdate(Sender: TObject);
 begin
   actFileSave.Enabled := (GI_FileCmds <> nil) and GI_FileCmds.CanSave;
 end;
 
-procedure TCommandsDataModule.actFileSaveAsExecute(Sender: TObject);
+procedure TfCommands.actFileSaveAsExecute(Sender: TObject);
 begin
   if GI_FileCmds <> nil then
     GI_FileCmds.ExecSaveAs;
 end;
 
-procedure TCommandsDataModule.actFileSaveAsUpdate(Sender: TObject);
+procedure TfCommands.actFileSaveAsUpdate(Sender: TObject);
 begin
   actFileSaveAs.Enabled := (GI_FileCmds <> nil) and GI_FileCmds.CanSaveAs;
 end;
 
-procedure TCommandsDataModule.actFilePrintExecute(Sender: TObject);
+procedure TfCommands.actFilePrintExecute(Sender: TObject);
 begin
   if GI_FileCmds <> nil then
     GI_FileCmds.ExecPrint;
 end;
 
-procedure TCommandsDataModule.actFilePrintUpdate(Sender: TObject);
+procedure TfCommands.actFilePrintUpdate(Sender: TObject);
 begin
   actFilePrint.Enabled := (GI_FileCmds <> nil) and GI_FileCmds.CanPrint;
 end;
 
-procedure TCommandsDataModule.actFileCloseExecute(Sender: TObject);
+procedure TfCommands.actFileCloseExecute(Sender: TObject);
 begin
   if GI_FileCmds <> nil then
     GI_FileCmds.ExecClose;
 end;
 
-procedure TCommandsDataModule.actFileCloseUpdate(Sender: TObject);
+procedure TfCommands.actFileCloseUpdate(Sender: TObject);
 begin
   actFileClose.Enabled := (GI_FileCmds <> nil) and GI_FileCmds.CanClose;
 end;
 
-procedure TCommandsDataModule.actEditCutExecute(Sender: TObject);
+procedure TfCommands.actEditCutExecute(Sender: TObject);
 begin
   if GI_EditCmds <> nil then
     GI_EditCmds.ExecCut;
 end;
 
-procedure TCommandsDataModule.actEditCutUpdate(Sender: TObject);
+procedure TfCommands.actEditCutUpdate(Sender: TObject);
 begin
   actEditCut.Enabled := (GI_EditCmds <> nil) and GI_EditCmds.CanCut;
 end;
 
-procedure TCommandsDataModule.actEditCopyExecute(Sender: TObject);
+procedure TfCommands.actEditCopyExecute(Sender: TObject);
 begin
   if GI_EditCmds <> nil then
     GI_EditCmds.ExecCopy;
 end;
 
-procedure TCommandsDataModule.actEditCopyUpdate(Sender: TObject);
+procedure TfCommands.actEditCopyUpdate(Sender: TObject);
 begin
   actEditCopy.Enabled := (GI_EditCmds <> nil) and GI_EditCmds.CanCopy;
 end;
 
-procedure TCommandsDataModule.actEditPasteExecute(Sender: TObject);
+procedure TfCommands.actEditPasteExecute(Sender: TObject);
 begin
   if GI_EditCmds <> nil then
     GI_EditCmds.ExecPaste;
 end;
 
-procedure TCommandsDataModule.actEditPasteUpdate(Sender: TObject);
+procedure TfCommands.actEditPasteUpdate(Sender: TObject);
 begin
   actEditPaste.Enabled := (GI_EditCmds <> nil) and GI_EditCmds.CanPaste;
 end;
 
-procedure TCommandsDataModule.actEditDeleteExecute(Sender: TObject);
+procedure TfCommands.actEditDeleteExecute(Sender: TObject);
 begin
   if GI_EditCmds <> nil then
     GI_EditCmds.ExecDelete;
 end;
 
-procedure TCommandsDataModule.actEditDeleteUpdate(Sender: TObject);
+procedure TfCommands.actEditDeleteUpdate(Sender: TObject);
 begin
   actEditDelete.Enabled := (GI_EditCmds <> nil) and GI_EditCmds.CanDelete;
 end;
 
-procedure TCommandsDataModule.actEditSelectAllExecute(Sender: TObject);
+procedure TfCommands.actEditSelectAllExecute(Sender: TObject);
 begin
   if GI_EditCmds <> nil then
     GI_EditCmds.ExecSelectAll;
 end;
 
-procedure TCommandsDataModule.actEditSelectAllUpdate(Sender: TObject);
+procedure TfCommands.actEditSelectAllUpdate(Sender: TObject);
 begin
   actEditSelectAll.Enabled := (GI_EditCmds <> nil) and GI_EditCmds.CanSelectAll;
 end;
 
-procedure TCommandsDataModule.actEditRedoExecute(Sender: TObject);
+procedure TfCommands.actEditRedoExecute(Sender: TObject);
 begin
   if GI_EditCmds <> nil then
     GI_EditCmds.ExecRedo;
 end;
 
-procedure TCommandsDataModule.actEditRedoUpdate(Sender: TObject);
+procedure TfCommands.actEditRedoUpdate(Sender: TObject);
 begin
   actEditRedo.Enabled := (GI_EditCmds <> nil) and GI_EditCmds.CanRedo;
 end;
 
-procedure TCommandsDataModule.actEditUndoExecute(Sender: TObject);
+procedure TfCommands.actEditUndoExecute(Sender: TObject);
 begin
   if GI_EditCmds <> nil then
     GI_EditCmds.ExecUndo;
 end;
 
-procedure TCommandsDataModule.actEditUndoUpdate(Sender: TObject);
+procedure TfCommands.actEditUndoUpdate(Sender: TObject);
 begin
   actEditUndo.Enabled := (GI_EditCmds <> nil) and GI_EditCmds.CanUndo;
 end;
 
-procedure TCommandsDataModule.actSearchFindExecute(Sender: TObject);
+procedure TfCommands.actSearchFindExecute(Sender: TObject);
 begin
   if GI_SearchCmds <> nil then
     GI_SearchCmds.ExecFind;
 end;
 
-procedure TCommandsDataModule.actSearchFindUpdate(Sender: TObject);
+procedure TfCommands.actSearchFindUpdate(Sender: TObject);
 begin
   actSearchFind.Enabled := (GI_SearchCmds <> nil) and GI_SearchCmds.CanFind;
 end;
 
-procedure TCommandsDataModule.actSearchFindNextExecute(Sender: TObject);
+procedure TfCommands.actSearchFindNextExecute(Sender: TObject);
 begin
   if GI_SearchCmds <> nil then
     GI_SearchCmds.ExecFindNext;
 end;
 
-procedure TCommandsDataModule.actSearchFindNextUpdate(Sender: TObject);
+procedure TfCommands.actSearchFindNextUpdate(Sender: TObject);
 begin
   actSearchFindNext.Enabled := (GI_SearchCmds <> nil) and
     GI_SearchCmds.CanFindNext;
 end;
 
-procedure TCommandsDataModule.actSearchFindPrevExecute(Sender: TObject);
+procedure TfCommands.actSearchFindPrevExecute(Sender: TObject);
 begin
   if GI_SearchCmds <> nil then
     GI_SearchCmds.ExecFindPrev;
 end;
 
-procedure TCommandsDataModule.actSearchFindPrevUpdate(Sender: TObject);
+procedure TfCommands.actSearchFindPrevUpdate(Sender: TObject);
 begin
   actSearchFindPrev.Enabled := (GI_SearchCmds <> nil) and
     GI_SearchCmds.CanFindPrev;
 end;
 
-procedure TCommandsDataModule.actSearchReplaceExecute(Sender: TObject);
+procedure TfCommands.actSearchReplaceExecute(Sender: TObject);
 begin
   if GI_SearchCmds <> nil then
     GI_SearchCmds.ExecReplace;
 end;
 
-procedure TCommandsDataModule.actSearchReplaceUpdate(Sender: TObject);
+procedure TfCommands.actSearchReplaceUpdate(Sender: TObject);
 begin
   actSearchReplace.Enabled := (GI_SearchCmds <> nil) and
     GI_SearchCmds.CanReplace;

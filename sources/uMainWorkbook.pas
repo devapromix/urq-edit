@@ -9,7 +9,7 @@ uses
   ComCtrls, ActnList, Menus, uEditAppIntfs, uMain, System.Actions;
 
 type
-  TWorkbookMainForm = class(TMainForm)
+  TfMainWorkbook = class(TfMain)
     pctrlMain: TPageControl;
     procedure pctrlMainChange(Sender: TObject);
     procedure FormCreate(Sender: TObject);
@@ -19,14 +19,14 @@ type
   end;
 
 var
-  WorkbookMainForm: TWorkbookMainForm;
+  fMainWorkbook: TfMainWorkbook;
 
 implementation
 
 {$R *.DFM}
 { TWorkbookMainForm }
 
-function TWorkbookMainForm.DoCreateEditor(AFileName: string): IEditor;
+function TfMainWorkbook.DoCreateEditor(AFileName: string): IEditor;
 begin
   if GI_EditorFactory <> nil then
     Result := GI_EditorFactory.CreateTabSheet(pctrlMain)
@@ -34,20 +34,20 @@ begin
     Result := nil;
 end;
 
-procedure TWorkbookMainForm.FormCreate(Sender: TObject);
+procedure TfMainWorkbook.FormCreate(Sender: TObject);
 begin
   inherited;
   CmdLineOpenFiles(True);
 end;
 
-procedure TWorkbookMainForm.pctrlMainChange(Sender: TObject);
+procedure TfMainWorkbook.pctrlMainChange(Sender: TObject);
 begin
   inherited;
   if GI_ActiveEditor <> nil then
     GI_ActiveEditor.Activate;
 end;
 
-procedure TWorkbookMainForm.FormCloseQuery(Sender: TObject;
+procedure TfMainWorkbook.FormCloseQuery(Sender: TObject;
   var CanClose: Boolean);
 begin
   inherited;

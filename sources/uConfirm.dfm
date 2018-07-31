@@ -1,4 +1,4 @@
-object ConfirmDialog: TConfirmDialog
+object fConfirm: TfConfirm
   Left = 0
   Top = 0
   BorderStyle = bsDialog

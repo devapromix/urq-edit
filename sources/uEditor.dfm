@@ -1,4 +1,4 @@
-object EditorForm: TEditorForm
+object fEditor: TfEditor
   Left = 338
   Top = 199
   ActiveControl = SynEditor
@@ -98,6 +98,10 @@ object EditorForm: TEditorForm
       TabOrder = 0
       object TabSheet1: TTabSheet
         Caption = 'KeyWords'
+        ExplicitLeft = 0
+        ExplicitTop = 0
+        ExplicitWidth = 0
+        ExplicitHeight = 0
         object KeyWordsList: TTreeView
           Left = 0
           Top = 0
@@ -120,31 +124,31 @@ object EditorForm: TEditorForm
     Left = 356
     Top = 36
     object lmiEditUndo: TMenuItem
-      Action = CommandsDataModule.actEditUndo
+      Action = fCommands.actEditUndo
     end
     object lmiEditRedo: TMenuItem
-      Action = CommandsDataModule.actEditRedo
+      Action = fCommands.actEditRedo
     end
     object N2: TMenuItem
       Caption = '-'
     end
     object lmiEditCut: TMenuItem
-      Action = CommandsDataModule.actEditCut
+      Action = fCommands.actEditCut
     end
     object lmiEditCopy: TMenuItem
-      Action = CommandsDataModule.actEditCopy
+      Action = fCommands.actEditCopy
     end
     object lmiEditPaste: TMenuItem
-      Action = CommandsDataModule.actEditPaste
+      Action = fCommands.actEditPaste
     end
     object lmiEditDelete: TMenuItem
-      Action = CommandsDataModule.actEditDelete
+      Action = fCommands.actEditDelete
     end
     object N1: TMenuItem
       Caption = '-'
     end
     object lmiEditSelectAll: TMenuItem
-      Action = CommandsDataModule.actEditSelectAll
+      Action = fCommands.actEditSelectAll
     end
   end
   object SynEditSearch1: TSynEditSearch

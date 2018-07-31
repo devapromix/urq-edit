@@ -1,4 +1,4 @@
-inherited WorkbookMainForm: TWorkbookMainForm
+inherited fMainWorkbook: TfMainWorkbook
   Caption = 'URQEdit'
   ClientHeight = 500
   ClientWidth = 650

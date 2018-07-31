@@ -1,4 +1,4 @@
-object ConfirmReplaceDialog: TConfirmReplaceDialog
+object fConfirmReplace: TfConfirmReplace
   Left = 176
   Top = 158
   BorderStyle = bsDialog

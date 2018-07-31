@@ -9,7 +9,7 @@ uses
   StdCtrls, ExtCtrls;
 
 type
-  TConfirmReplaceDialog = class(TForm)
+  TfConfirmReplace = class(TForm)
     btnReplace: TButton;
     lblConfirmation: TLabel;
     btnSkip: TButton;
@@ -24,7 +24,7 @@ type
   end;
 
 var
-  ConfirmReplaceDialog: TConfirmReplaceDialog;
+  fConfirmReplace: TfConfirmReplace;
 
 implementation
 
@@ -34,17 +34,17 @@ uses uLanguage;
 
 { TConfirmReplaceDialog }
 
-procedure TConfirmReplaceDialog.FormCreate(Sender: TObject);
+procedure TfConfirmReplace.FormCreate(Sender: TObject);
 begin
   Image1.Picture.Icon.Handle := LoadIcon(0, IDI_QUESTION);
 end;
 
-procedure TConfirmReplaceDialog.FormDestroy(Sender: TObject);
+procedure TfConfirmReplace.FormDestroy(Sender: TObject);
 begin
-  ConfirmReplaceDialog := nil;
+  fConfirmReplace := nil;
 end;
 
-procedure TConfirmReplaceDialog.FormShow(Sender: TObject);
+procedure TfConfirmReplace.FormShow(Sender: TObject);
 begin
   Caption := _('Confirm replace');
   btnReplace.Caption := _('&Yes');
@@ -53,7 +53,7 @@ begin
   btnReplaceAll.Caption := _('Yes to &all');
 end;
 
-procedure TConfirmReplaceDialog.PrepareShow(AEditorRect: TRect; X, Y1, Y2: Integer; AReplaceText: string);
+procedure TfConfirmReplace.PrepareShow(AEditorRect: TRect; X, Y1, Y2: Integer; AReplaceText: string);
 var
   NW, NH: Integer;
 begin

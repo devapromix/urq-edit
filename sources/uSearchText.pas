@@ -9,7 +9,7 @@ uses
   StdCtrls, ExtCtrls;
 
 type
-  TTextSearchDialog = class(TForm)
+  TfSearchText = class(TForm)
     Label1: TLabel;
     cbSearchText: TComboBox;
     rgSearchDirection: TRadioGroup;
@@ -59,7 +59,7 @@ uses uLanguage;
 
 { TTextSearchDialog }
 
-procedure TTextSearchDialog.FormShow(Sender: TObject);
+procedure TfSearchText.FormShow(Sender: TObject);
 begin
   Caption := _('Search Text');
   Label1.Caption := _('&Search for:');
@@ -76,37 +76,37 @@ begin
   btnCancel.Caption := _('Cancel');
 end;
 
-function TTextSearchDialog.GetSearchBackwards: Boolean;
+function TfSearchText.GetSearchBackwards: Boolean;
 begin
   Result := rgSearchDirection.ItemIndex = 1;
 end;
 
-function TTextSearchDialog.GetSearchCaseSensitive: Boolean;
+function TfSearchText.GetSearchCaseSensitive: Boolean;
 begin
   Result := cbSearchCaseSensitive.Checked;
 end;
 
-function TTextSearchDialog.GetSearchFromCursor: Boolean;
+function TfSearchText.GetSearchFromCursor: Boolean;
 begin
   Result := cbSearchFromCursor.Checked;
 end;
 
-function TTextSearchDialog.GetSearchInSelection: Boolean;
+function TfSearchText.GetSearchInSelection: Boolean;
 begin
   Result := cbSearchSelectedOnly.Checked;
 end;
 
-function TTextSearchDialog.GetSearchRegularExpression: Boolean;
+function TfSearchText.GetSearchRegularExpression: Boolean;
 begin
   Result := cbRegularExpression.Checked;
 end;
 
-function TTextSearchDialog.GetSearchText: string;
+function TfSearchText.GetSearchText: string;
 begin
   Result := cbSearchText.Text;
 end;
 
-function TTextSearchDialog.GetSearchTextHistory: string;
+function TfSearchText.GetSearchTextHistory: string;
 var
   I: Integer;
 begin
@@ -121,52 +121,52 @@ begin
   end;
 end;
 
-function TTextSearchDialog.GetSearchWholeWords: Boolean;
+function TfSearchText.GetSearchWholeWords: Boolean;
 begin
   Result := cbSearchWholeWords.Checked;
 end;
 
-procedure TTextSearchDialog.SetSearchBackwards(Value: Boolean);
+procedure TfSearchText.SetSearchBackwards(Value: Boolean);
 begin
   rgSearchDirection.ItemIndex := Ord(Value);
 end;
 
-procedure TTextSearchDialog.SetSearchCaseSensitive(Value: Boolean);
+procedure TfSearchText.SetSearchCaseSensitive(Value: Boolean);
 begin
   cbSearchCaseSensitive.Checked := Value;
 end;
 
-procedure TTextSearchDialog.SetSearchFromCursor(Value: Boolean);
+procedure TfSearchText.SetSearchFromCursor(Value: Boolean);
 begin
   cbSearchFromCursor.Checked := Value;
 end;
 
-procedure TTextSearchDialog.SetSearchInSelection(Value: Boolean);
+procedure TfSearchText.SetSearchInSelection(Value: Boolean);
 begin
   cbSearchSelectedOnly.Checked := Value;
 end;
 
-procedure TTextSearchDialog.SetSearchText(Value: string);
+procedure TfSearchText.SetSearchText(Value: string);
 begin
   cbSearchText.Text := Value;
 end;
 
-procedure TTextSearchDialog.SetSearchTextHistory(Value: string);
+procedure TfSearchText.SetSearchTextHistory(Value: string);
 begin
   cbSearchText.Items.Text := Value;
 end;
 
-procedure TTextSearchDialog.SetSearchWholeWords(Value: Boolean);
+procedure TfSearchText.SetSearchWholeWords(Value: Boolean);
 begin
   cbSearchWholeWords.Checked := Value;
 end;
 
-procedure TTextSearchDialog.SetSearchRegularExpression(const Value: Boolean);
+procedure TfSearchText.SetSearchRegularExpression(const Value: Boolean);
 begin
   cbRegularExpression.Checked := Value;
 end;
 
-procedure TTextSearchDialog.FormCloseQuery(Sender: TObject; var CanClose: Boolean);
+procedure TfSearchText.FormCloseQuery(Sender: TObject; var CanClose: Boolean);
 var
   S: string;
   I: Integer;

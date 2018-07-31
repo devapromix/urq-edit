@@ -1,4 +1,4 @@
-inherited TextReplaceDialog: TTextReplaceDialog
+inherited fReplaceText: TfReplaceText
   Caption = 'Replace text'
   ClientHeight = 210
   OldCreateOrder = True

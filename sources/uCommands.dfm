@@ -1,4 +1,4 @@
-object CommandsDataModule: TCommandsDataModule
+object fCommands: TfCommands
   OldCreateOrder = False
   OnCreate = DataModuleCreate
   OnDestroy = DataModuleDestroy

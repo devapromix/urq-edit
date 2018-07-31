@@ -1,4 +1,4 @@
-object TextSearchDialog: TTextSearchDialog
+object fSearchText: TfSearchText
   Left = 132
   Top = 168
   BorderStyle = bsDialog

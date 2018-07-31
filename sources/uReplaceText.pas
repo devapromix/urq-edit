@@ -9,7 +9,7 @@ uses
   StdCtrls, ExtCtrls, uSearchText;
 
 type
-  TTextReplaceDialog = class(TTextSearchDialog)
+  TfReplaceText = class(TfSearchText)
     Label2: TLabel;
     cbReplaceText: TComboBox;
     procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
@@ -32,19 +32,19 @@ uses uLanguage;
 
 { TTextReplaceDialog }
 
-procedure TTextReplaceDialog.FormShow(Sender: TObject);
+procedure TfReplaceText.FormShow(Sender: TObject);
 begin
   inherited;
   Caption := _('Replace text');
   Label2.Caption := _('&Replace with:');
 end;
 
-function TTextReplaceDialog.GetReplaceText: string;
+function TfReplaceText.GetReplaceText: string;
 begin
   Result := cbReplaceText.Text;
 end;
 
-function TTextReplaceDialog.GetReplaceTextHistory: string;
+function TfReplaceText.GetReplaceTextHistory: string;
 var
   I: Integer;
 begin
@@ -59,17 +59,17 @@ begin
   end;
 end;
 
-procedure TTextReplaceDialog.SetReplaceText(Value: string);
+procedure TfReplaceText.SetReplaceText(Value: string);
 begin
   cbReplaceText.Text := Value;
 end;
 
-procedure TTextReplaceDialog.SetReplaceTextHistory(Value: string);
+procedure TfReplaceText.SetReplaceTextHistory(Value: string);
 begin
   cbReplaceText.Items.Text := Value;
 end;
 
-procedure TTextReplaceDialog.FormCloseQuery(Sender: TObject; var CanClose: Boolean);
+procedure TfReplaceText.FormCloseQuery(Sender: TObject; var CanClose: Boolean);
 var
   S: string;
   I: Integer;

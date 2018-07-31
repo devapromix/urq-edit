@@ -7,7 +7,7 @@ uses
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs;
 
 type
-  TAboutDialog = class(TForm)
+  TfAbout = class(TForm)
     procedure FormShow(Sender: TObject);
   private
     { Private declarations }
@@ -16,7 +16,7 @@ type
   end;
 
 var
-  AboutDialog: TAboutDialog;
+  fAbout: TfAbout;
 
 implementation
 
@@ -24,7 +24,7 @@ implementation
 
 uses uLanguage;
 
-procedure TAboutDialog.FormShow(Sender: TObject);
+procedure TfAbout.FormShow(Sender: TObject);
 begin
   Caption := _('About...');
 end;

@@ -8,7 +8,7 @@ uses
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.ExtCtrls, Vcl.StdCtrls;
 
 type
-  TConfirmDialog = class(TForm)
+  TfConfirm = class(TForm)
     Image1: TImage;
     btnReplace: TButton;
     btnSkip: TButton;
@@ -28,7 +28,7 @@ type
 function DoConfirmDialog(const FileName: string): TConfirmResult;
 
 var
-  ConfirmDialog: TConfirmDialog;
+  fConfirm: TfConfirm;
 
 implementation
 
@@ -39,12 +39,12 @@ uses uLanguage, uUtils;
 function DoConfirmDialog(const FileName: string): TConfirmResult;
 begin
   Result := crCancel;
-  with ConfirmDialog do
+  with fConfirm do
   begin
     lblConfirmation.Caption :=
       Format(_('The text in the "%s" file has changed. Do you want to save the modifications?'),
       [FileName]);
-    Utils.ShowForm(ConfirmDialog);
+    Utils.ShowForm(fConfirm);
     case ModalResult of
       mrYes:
         Result := crYes;
@@ -54,12 +54,12 @@ begin
   end;
 end;
 
-procedure TConfirmDialog.FormCreate(Sender: TObject);
+procedure TfConfirm.FormCreate(Sender: TObject);
 begin
   Image1.Picture.Icon.Handle := LoadIcon(0, IDI_QUESTION);
 end;
 
-procedure TConfirmDialog.FormShow(Sender: TObject);
+procedure TfConfirm.FormShow(Sender: TObject);
 begin
   Caption := _('Confirm');
   btnReplace.Caption := _('&Yes');

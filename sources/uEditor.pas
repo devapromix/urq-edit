@@ -15,7 +15,7 @@ type
 
   TEditor = class;
 
-  TEditorForm = class(TForm)
+  TfEditor = class(TForm)
     SynEditor: TSynEdit;
     pmnuEditor: TPopupMenu;
     lmiEditCut: TMenuItem;
@@ -123,13 +123,13 @@ type
     procedure ExecReplace;
   private
     FFileName: string;
-    FForm: TEditorForm;
+    FForm: TfEditor;
     FHasSelection: Boolean;
     FIsEmpty: Boolean;
     FIsReadOnly: Boolean;
     FModified: Boolean;
     FUntitledNumber: Integer;
-    constructor Create(AForm: TEditorForm);
+    constructor Create(AForm: TfEditor);
     procedure DoSetFileName(AFileName: string);
   end;
 
@@ -152,7 +152,7 @@ var
 
   { TEditor }
 
-constructor TEditor.Create(AForm: TEditorForm);
+constructor TEditor.Create(AForm: TfEditor);
 begin
   Assert(AForm <> nil);
   inherited Create;
@@ -181,10 +181,10 @@ end;
 
 procedure TEditor.Close;
 begin
-  if (FFileName <> '') and (CommandsDataModule <> nil) then
-    CommandsDataModule.AddMRUEntry(FFileName);
+  if (FFileName <> '') and (fCommands <> nil) then
+    fCommands.AddMRUEntry(FFileName);
   if FUntitledNumber <> -1 then
-    CommandsDataModule.ReleaseUntitledNumber(FUntitledNumber);
+    fCommands.ReleaseUntitledNumber(FUntitledNumber);
   if FForm <> nil then
     FForm.Close;
 end;
@@ -196,7 +196,7 @@ begin
     FFileName := AFileName;
     if FUntitledNumber <> -1 then
     begin
-      CommandsDataModule.ReleaseUntitledNumber(FUntitledNumber);
+      fCommands.ReleaseUntitledNumber(FUntitledNumber);
       FUntitledNumber := -1;
     end;
   end;
@@ -237,7 +237,7 @@ begin
   else
   begin
     if FUntitledNumber = -1 then
-      FUntitledNumber := CommandsDataModule.GetUntitledNumber;
+      FUntitledNumber := fCommands.GetUntitledNumber;
     Result := _('Quest') + IntToStr(FUntitledNumber);
   end;
 end;
@@ -497,9 +497,9 @@ end;
 
 function TEditorFactory.CreateBorderless(AOwner: TForm): IEditor;
 var
-  LForm: TEditorForm;
+  LForm: TfEditor;
 begin
-  LForm := TEditorForm.Create(AOwner);
+  LForm := TfEditor.Create(AOwner);
   with LForm do
   begin
     FEditor := TEditor.Create(LForm);
@@ -516,9 +516,9 @@ end;
 
 function TEditorFactory.CreateMDIChild(AOwner: TForm): IEditor;
 var
-  LForm: TEditorForm;
+  LForm: TfEditor;
 begin
-  LForm := TEditorForm.Create(AOwner);
+  LForm := TfEditor.Create(AOwner);
   with LForm do
   begin
     FEditor := TEditor.Create(LForm);
@@ -533,12 +533,12 @@ end;
 function TEditorFactory.CreateTabSheet(AOwner: TPageControl): IEditor;
 var
   Sheet: TTabSheet;
-  LForm: TEditorForm;
+  LForm: TfEditor;
 begin
   Sheet := TEditorTabSheet.Create(AOwner);
   try
     Sheet.PageControl := AOwner;
-    LForm := TEditorForm.Create(Sheet);
+    LForm := TfEditor.Create(Sheet);
     with LForm do
     begin
       FEditor := TEditor.Create(LForm);
@@ -581,27 +581,27 @@ end;
 
 { TEditorForm }
 
-procedure TEditorForm.FormActivate(Sender: TObject);
+procedure TfEditor.FormActivate(Sender: TObject);
 begin
   DoAssignInterfacePointer(True);
 end;
 
-procedure TEditorForm.FormDeactivate(Sender: TObject);
+procedure TfEditor.FormDeactivate(Sender: TObject);
 begin
   DoAssignInterfacePointer(False);
 end;
 
-procedure TEditorForm.FormShow(Sender: TObject);
+procedure TfEditor.FormShow(Sender: TObject);
 begin
   DoUpdateCaption;
 end;
 
-procedure TEditorForm.FreeKeyWordsList;
+procedure TfEditor.FreeKeyWordsList;
 begin
 
 end;
 
-procedure TEditorForm.InitKeyWordsList;
+procedure TfEditor.InitKeyWordsList;
 var
   ValuesList, SectionsList: TStrings;
   Name: string;
@@ -641,7 +641,7 @@ begin
     end;
 end;
 
-function TEditorForm.IsLastCharDigit(const S: string): Boolean;
+function TfEditor.IsLastCharDigit(const S: string): Boolean;
 var
   C: Char;
 begin
@@ -649,7 +649,7 @@ begin
   Result := C.IsDigit;
 end;
 
-procedure TEditorForm.KeyWordsListClick(Sender: TObject);
+procedure TfEditor.KeyWordsListClick(Sender: TObject);
 var
   Word, Hint: string;
   Start, Finish, CaretLeft: Integer;
@@ -688,14 +688,14 @@ begin
   end;
 end;
 
-procedure TEditorForm.KeyWordsListDeletion(Sender: TObject; Node: TTreeNode);
+procedure TfEditor.KeyWordsListDeletion(Sender: TObject; Node: TTreeNode);
 begin
   // Освобождаем память
   if Node.Data <> nil then
     Dispose(PString(Node.Data));
 end;
 
-procedure TEditorForm.FormClose(Sender: TObject; var Action: TCloseAction);
+procedure TfEditor.FormClose(Sender: TObject; var Action: TCloseAction);
 begin
   if FKind = ekInTabsheet then
   begin
@@ -706,19 +706,19 @@ begin
     Action := caFree;
 end;
 
-procedure TEditorForm.FormCloseQuery(Sender: TObject; var CanClose: Boolean);
+procedure TfEditor.FormCloseQuery(Sender: TObject; var CanClose: Boolean);
 begin
   if not(csDestroying in ComponentState) then
     CanClose := DoAskSaveChanges;
 end;
 
-procedure TEditorForm.FormCreate(Sender: TObject);
+procedure TfEditor.FormCreate(Sender: TObject);
 begin
   // Загружаем список ключевых слов
   InitKeyWordsList;
 end;
 
-procedure TEditorForm.FormDestroy(Sender: TObject);
+procedure TfEditor.FormDestroy(Sender: TObject);
 var
   LEditor: IEditor;
 begin
@@ -730,7 +730,7 @@ begin
   GI_EditorFactory.RemoveEditor(LEditor);
 end;
 
-procedure TEditorForm.SynEditorChange(Sender: TObject);
+procedure TfEditor.SynEditorChange(Sender: TObject);
 var
   Empty: Boolean;
   I: Integer;
@@ -746,17 +746,17 @@ begin
   FEditor.FIsEmpty := Empty;
 end;
 
-procedure TEditorForm.SynEditorEnter(Sender: TObject);
+procedure TfEditor.SynEditorEnter(Sender: TObject);
 begin
   DoAssignInterfacePointer(True);
 end;
 
-procedure TEditorForm.SynEditorExit(Sender: TObject);
+procedure TfEditor.SynEditorExit(Sender: TObject);
 begin
   DoAssignInterfacePointer(False);
 end;
 
-procedure TEditorForm.SynEditorReplaceText(Sender: TObject;
+procedure TfEditor.SynEditorReplaceText(Sender: TObject;
   const ASearch, AReplace: string; Line, Column: Integer;
   var Action: TSynReplaceAction);
 var
@@ -774,11 +774,11 @@ begin
     EditRect.TopLeft := ClientToScreen(EditRect.TopLeft);
     EditRect.BottomRight := ClientToScreen(EditRect.BottomRight);
 
-    if ConfirmReplaceDialog = nil then
-      ConfirmReplaceDialog := TConfirmReplaceDialog.Create(Application);
-    ConfirmReplaceDialog.PrepareShow(EditRect, APos.X, APos.Y,
+    if fConfirmReplace = nil then
+      fConfirmReplace := TfConfirmReplace.Create(Application);
+    fConfirmReplace.PrepareShow(EditRect, APos.X, APos.Y,
       APos.Y + SynEditor.LineHeight, ASearch);
-    case Utils.ShowForm(ConfirmReplaceDialog) of
+    case Utils.ShowForm(fConfirmReplace) of
       mrYes:
         Action := raReplace;
       mrYesToAll:
@@ -791,7 +791,7 @@ begin
   end;
 end;
 
-procedure TEditorForm.SynEditorStatusChange(Sender: TObject;
+procedure TfEditor.SynEditorStatusChange(Sender: TObject;
   Changes: TSynStatusChanges);
 begin
   Assert(FEditor <> nil);
@@ -803,7 +803,7 @@ begin
     FEditor.FModified := SynEditor.Modified;
 end;
 
-procedure TEditorForm.DoActivate;
+procedure TfEditor.DoActivate;
 var
   TabSheet: TTabSheet;
   PageControl: TPageControl;
@@ -820,7 +820,7 @@ begin
   DoUpdateCaption;
 end;
 
-function TEditorForm.DoAskSaveChanges: Boolean;
+function TfEditor.DoAskSaveChanges: Boolean;
 begin
   if SynEditor.Modified then
   begin
@@ -840,7 +840,7 @@ begin
     Result := True;
 end;
 
-procedure TEditorForm.DoAssignInterfacePointer(AActive: Boolean);
+procedure TfEditor.DoAssignInterfacePointer(AActive: Boolean);
 begin
   if AActive then
   begin
@@ -862,7 +862,7 @@ begin
   end;
 end;
 
-function TEditorForm.DoSave: Boolean;
+function TfEditor.DoSave: Boolean;
 begin
   Assert(FEditor <> nil);
   if FEditor.FFileName <> '' then
@@ -871,7 +871,7 @@ begin
     Result := DoSaveAs;
 end;
 
-function TEditorForm.DoSaveFile: Boolean;
+function TfEditor.DoSaveFile: Boolean;
 begin
   Assert(FEditor <> nil);
   try
@@ -884,13 +884,13 @@ begin
   end;
 end;
 
-function TEditorForm.DoSaveAs: Boolean;
+function TfEditor.DoSaveAs: Boolean;
 var
   NewName: string;
 begin
   Assert(FEditor <> nil);
   NewName := FEditor.FFileName;
-  if CommandsDataModule.GetSaveFileName(NewName, SynEditor.Highlighter) then
+  if fCommands.GetSaveFileName(NewName, SynEditor.Highlighter) then
   begin
     FEditor.DoSetFileName(NewName);
     DoUpdateCaption;
@@ -901,7 +901,7 @@ begin
     Result := False;
 end;
 
-procedure TEditorForm.DoSearchReplaceText(AReplace: Boolean;
+procedure TfEditor.DoSearchReplaceText(AReplace: Boolean;
   ABackwards: Boolean);
 var
   Options: TSynSearchOptions;
@@ -930,11 +930,11 @@ begin
     SynEditor.CaretXY := SynEditor.BlockBegin;
   end;
 
-  if ConfirmReplaceDialog <> nil then
-    ConfirmReplaceDialog.Free;
+  if fConfirmReplace <> nil then
+    fConfirmReplace.Free;
 end;
 
-procedure TEditorForm.DoUpdateCaption;
+procedure TfEditor.DoUpdateCaption;
 begin
   Assert(FEditor <> nil);
   if (FKind = ekInTabsheet) then
@@ -942,27 +942,27 @@ begin
   Application.MainForm.Caption := FEditor.GetFileTitle + ' - ' + 'URQEdit';
 end;
 
-procedure TEditorForm.DoUpdateHighlighter;
+procedure TfEditor.DoUpdateHighlighter;
 begin
   Assert(FEditor <> nil);
   // Выбираем хайлайтер для расширения файла
   if FEditor.FFileName <> '' then
-    SynEditor.Highlighter := CommandsDataModule.GetHighlighterForFile
+    SynEditor.Highlighter := fCommands.GetHighlighterForFile
       (FEditor.FFileName)
   else
     // Текущий урковский хайлайтер по умолчанию
-    SynEditor.Highlighter := CommandsDataModule.GetHighlighterForFile
-      (CommandsDataModule.GetDefaultHighlighter);
+    SynEditor.Highlighter := fCommands.GetHighlighterForFile
+      (fCommands.GetDefaultHighlighter);
 end;
 
-procedure TEditorForm.ShowSearchReplaceDialog(AReplace: Boolean);
+procedure TfEditor.ShowSearchReplaceDialog(AReplace: Boolean);
 var
-  Dialog: TTextSearchDialog;
+  Dialog: TfSearchText;
 begin
   if AReplace then
-    Dialog := TTextReplaceDialog.Create(Self)
+    Dialog := TfReplaceText.Create(Self)
   else
-    Dialog := TTextSearchDialog.Create(Self);
+    Dialog := TfSearchText.Create(Self);
   Utils.ShowForm(Dialog, False);
   with Dialog do
     try
@@ -984,7 +984,7 @@ begin
       end;
       SearchTextHistory := gsSearchTextHistory;
       if AReplace then
-        with Dialog as TTextReplaceDialog do
+        with Dialog as TfReplaceText do
         begin
           ReplaceText := gsReplaceText;
           ReplaceTextHistory := gsReplaceTextHistory;
@@ -1000,7 +1000,7 @@ begin
         gsSearchText := SearchText;
         gsSearchTextHistory := SearchTextHistory;
         if AReplace then
-          with Dialog as TTextReplaceDialog do
+          with Dialog as TfReplaceText do
           begin
             gsReplaceText := ReplaceText;
             gsReplaceTextHistory := ReplaceTextHistory;

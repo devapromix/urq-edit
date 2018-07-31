@@ -1,4 +1,4 @@
-object MainForm: TMainForm
+object fMain: TfMain
   Left = 186
   Top = 133
   ClientHeight = 312
@@ -79,13 +79,13 @@ object MainForm: TMainForm
         Caption = '-'
       end
       object miFileSave: TMenuItem
-        Action = CommandsDataModule.actFileSave
+        Action = fCommands.actFileSave
       end
       object miFileSaveAs: TMenuItem
-        Action = CommandsDataModule.actFileSaveAs
+        Action = fCommands.actFileSaveAs
       end
       object miFileClose: TMenuItem
-        Action = CommandsDataModule.actFileClose
+        Action = fCommands.actFileClose
       end
       object miFileCloseAll: TMenuItem
         Action = actQuestCloseAll
@@ -100,7 +100,7 @@ object MainForm: TMainForm
         Caption = '-'
       end
       object miFilePrint: TMenuItem
-        Action = CommandsDataModule.actFilePrint
+        Action = fCommands.actFilePrint
       end
       object N1: TMenuItem
         Caption = '-'
@@ -112,43 +112,43 @@ object MainForm: TMainForm
     object mEdit: TMenuItem
       Caption = '&Edit'
       object miEditUndo: TMenuItem
-        Action = CommandsDataModule.actEditUndo
+        Action = fCommands.actEditUndo
       end
       object miEditRedo: TMenuItem
-        Action = CommandsDataModule.actEditRedo
+        Action = fCommands.actEditRedo
       end
       object N2: TMenuItem
         Caption = '-'
       end
       object miEditCut: TMenuItem
-        Action = CommandsDataModule.actEditCut
+        Action = fCommands.actEditCut
       end
       object miEditCopy: TMenuItem
-        Action = CommandsDataModule.actEditCopy
+        Action = fCommands.actEditCopy
       end
       object miEditPaste: TMenuItem
-        Action = CommandsDataModule.actEditPaste
+        Action = fCommands.actEditPaste
       end
       object miEditDelete: TMenuItem
-        Action = CommandsDataModule.actEditDelete
+        Action = fCommands.actEditDelete
       end
       object miEditSelectAll: TMenuItem
-        Action = CommandsDataModule.actEditSelectAll
+        Action = fCommands.actEditSelectAll
       end
       object N3: TMenuItem
         Caption = '-'
       end
       object miEditFind: TMenuItem
-        Action = CommandsDataModule.actSearchFind
+        Action = fCommands.actSearchFind
       end
       object miEditFindNext: TMenuItem
-        Action = CommandsDataModule.actSearchFindNext
+        Action = fCommands.actSearchFindNext
       end
       object miEditFindPrev: TMenuItem
-        Action = CommandsDataModule.actSearchFindPrev
+        Action = fCommands.actSearchFindPrev
       end
       object miEditReplace: TMenuItem
-        Action = CommandsDataModule.actSearchReplace
+        Action = fCommands.actSearchReplace
       end
     end
     object mView: TMenuItem

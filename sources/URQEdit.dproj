@@ -111,36 +111,36 @@
             <MainSource>MainSource</MainSource>
         </DelphiCompile>
         <DCCReference Include="uMain.pas">
-            <Form>MainForm</Form>
+            <Form>fMain</Form>
         </DCCReference>
         <DCCReference Include="uMainWorkbook.pas">
-            <Form>WorkbookMainForm</Form>
+            <Form>fMainWorkbook</Form>
         </DCCReference>
         <DCCReference Include="uEditAppIntfs.pas"/>
         <DCCReference Include="uEditor.pas">
-            <Form>EditorForm</Form>
+            <Form>fEditor</Form>
         </DCCReference>
         <DCCReference Include="uCommands.pas">
-            <Form>CommandsDataModule</Form>
+            <Form>fCommands</Form>
             <DesignClass>TDataModule</DesignClass>
         </DCCReference>
         <DCCReference Include="uHighlighterProcs.pas"/>
         <DCCReference Include="uSearchText.pas">
-            <Form>TextSearchDialog</Form>
+            <Form>fSearchText</Form>
         </DCCReference>
         <DCCReference Include="uReplaceText.pas">
-            <Form>TextReplaceDialog</Form>
+            <Form>fReplaceText</Form>
         </DCCReference>
         <DCCReference Include="uConfirmReplace.pas">
-            <Form>ConfirmReplaceDialog</Form>
+            <Form>fConfirmReplace</Form>
         </DCCReference>
         <DCCReference Include="uLanguage.pas"/>
         <DCCReference Include="uUtils.pas"/>
         <DCCReference Include="uConfirm.pas">
-            <Form>ConfirmDialog</Form>
+            <Form>fConfirm</Form>
         </DCCReference>
         <DCCReference Include="uAbout.pas">
-            <Form>AboutDialog</Form>
+            <Form>fAbout</Form>
         </DCCReference>
         <DCCReference Include="uSettings.pas">
             <Form>fSettings</Form>

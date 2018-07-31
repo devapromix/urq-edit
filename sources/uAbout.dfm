@@ -1,8 +1,8 @@
-object AboutDialog: TAboutDialog
+object fAbout: TfAbout
   Left = 0
   Top = 0
   BorderStyle = bsDialog
-  Caption = 'About'
+  Caption = 'fAbout'
   ClientHeight = 346
   ClientWidth = 341
   Color = clBtnFace

@@ -14,6 +14,7 @@
 
 ### Интерпретаторы URQ
 * [FireURQ на Github](https://github.com/fireton/fireurq). Интерпретатор FireURQ. Уже много лет игры пишутся в основном для него. Автор - Антон Жучков (Fireton). 
+* [UrqW на Github](https://github.com/narmiel/UrqW). Интерпретатор на JavaScript. Запускается на многих устройствах. Автор - Narmiel.
 
 
 

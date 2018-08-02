@@ -74,9 +74,7 @@ type
 
 var
   GI_EditorFactory: IEditorFactory;
-
   GI_ActiveEditor: IEditor;
-
   GI_EditCmds: IEditCommands;
   GI_FileCmds: IFileCommands;
   GI_SearchCmds: ISearchCommands;

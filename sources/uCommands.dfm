@@ -135,14 +135,6 @@ object fCommands: TfCommands
     Left = 20
     Top = 68
   end
-  object SynURQLSyn1: TSynURQLSyn
-    DefaultFilter = 'URQ Quest File (*.qst)|*.qst'
-    Options.AutoDetectEnabled = False
-    Options.AutoDetectLineLimit = 0
-    Options.Visible = False
-    Left = 112
-    Top = 16
-  end
   object SynXMLSyn1: TSynXMLSyn
     Options.AutoDetectEnabled = False
     Options.AutoDetectLineLimit = 0
@@ -150,5 +142,39 @@ object fCommands: TfCommands
     WantBracesParsed = False
     Left = 208
     Top = 8
+  end
+  object SynURQLSyn1: TSynURQLSyn
+    DefaultFilter = 'URQ Quest File (*.qst)|*.qst'
+    Options.AutoDetectEnabled = False
+    Options.AutoDetectLineLimit = 0
+    Options.Visible = False
+    CommentAttr.Background = clNone
+    CommentAttr.Foreground = clTeal
+    OverlineAttr.Background = clNone
+    OverlineAttr.Foreground = 7716607
+    NumberAttr.Background = clNone
+    NumberAttr.Foreground = clLime
+    DefaultAttr.Background = clNone
+    DefaultAttr.Foreground = clSilver
+    LabelAttr.Background = clNone
+    LabelAttr.Foreground = clFuchsia
+    SymbolAttr.Background = clNone
+    SymbolAttr.Foreground = clWhite
+    KeyWordAttr.Background = clNone
+    KeyWordAttr.Foreground = clYellow
+    StringAttr.Background = clNone
+    StringAttr.Foreground = clAqua
+    PlnTextAttr.Background = clNone
+    PlnTextAttr.Foreground = 15588540
+    SpecialAttr.Background = clNone
+    SpecialAttr.Foreground = 5160959
+    SubLevel1Attr.Background = clNone
+    SubLevel1Attr.Foreground = 11184895
+    SubLevel2Attr.Background = clNone
+    SubLevel2Attr.Foreground = 8550395
+    SubLevel3Attr.Background = clNone
+    SubLevel3Attr.Foreground = clRed
+    Left = 136
+    Top = 48
   end
 end

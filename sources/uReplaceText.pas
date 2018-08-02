@@ -21,7 +21,8 @@ type
     procedure SetReplaceTextHistory(Value: string);
   public
     property ReplaceText: string read GetReplaceText write SetReplaceText;
-    property ReplaceTextHistory: string read GetReplaceTextHistory write SetReplaceTextHistory;
+    property ReplaceTextHistory: string read GetReplaceTextHistory
+      write SetReplaceTextHistory;
   end;
 
 implementation

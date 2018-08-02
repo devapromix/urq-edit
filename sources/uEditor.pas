@@ -181,10 +181,10 @@ end;
 
 procedure TEditor.Close;
 begin
-  if (FFileName <> '') and (fCommands <> nil) then
-    fCommands.AddMRUEntry(FFileName);
+  if (FFileName <> '') and (FCommands <> nil) then
+    FCommands.AddMRUEntry(FFileName);
   if FUntitledNumber <> -1 then
-    fCommands.ReleaseUntitledNumber(FUntitledNumber);
+    FCommands.ReleaseUntitledNumber(FUntitledNumber);
   if FForm <> nil then
     FForm.Close;
 end;
@@ -196,7 +196,7 @@ begin
     FFileName := AFileName;
     if FUntitledNumber <> -1 then
     begin
-      fCommands.ReleaseUntitledNumber(FUntitledNumber);
+      FCommands.ReleaseUntitledNumber(FUntitledNumber);
       FUntitledNumber := -1;
     end;
   end;
@@ -237,7 +237,7 @@ begin
   else
   begin
     if FUntitledNumber = -1 then
-      FUntitledNumber := fCommands.GetUntitledNumber;
+      FUntitledNumber := FCommands.GetUntitledNumber;
     Result := _('Quest') + IntToStr(FUntitledNumber);
   end;
 end;
@@ -437,7 +437,6 @@ end;
 type
   TEditorFactory = class(TInterfacedObject, IEditorFactory)
   private
-    // IEditorFactory implementation
     function CanCloseAll: Boolean;
     procedure CloseAll;
     function CreateBorderless(AOwner: TForm): IEditor;
@@ -447,7 +446,7 @@ type
     function GetEditor(Index: Integer): IEditor;
     procedure RemoveEditor(AEditor: IEditor);
   private
-    fEditors: TInterfaceList;
+    FEditors: TInterfaceList;
     constructor Create;
     destructor Destroy; override;
   end;
@@ -455,12 +454,12 @@ type
 constructor TEditorFactory.Create;
 begin
   inherited Create;
-  fEditors := TInterfaceList.Create;
+  FEditors := TInterfaceList.Create;
 end;
 
 destructor TEditorFactory.Destroy;
 begin
-  fEditors.Free;
+  FEditors.Free;
   inherited Destroy;
 end;
 
@@ -469,15 +468,12 @@ var
   I: Integer;
   LEditor: IEditor;
 begin
-  I := fEditors.Count - 1;
+  I := FEditors.Count - 1;
   while I >= 0 do
   begin
-    LEditor := IEditor(fEditors[I]);
+    LEditor := IEditor(FEditors[I]);
     if not LEditor.AskSaveChanges then
-    begin
-      Result := False;
-      exit;
-    end;
+      Exit(False);
     Dec(I);
   end;
   Result := True;
@@ -487,10 +483,10 @@ procedure TEditorFactory.CloseAll;
 var
   I: Integer;
 begin
-  I := fEditors.Count - 1;
+  I := FEditors.Count - 1;
   while I >= 0 do
   begin
-    IEditor(fEditors[I]).Close;
+    IEditor(FEditors[I]).Close;
     Dec(I);
   end;
 end;
@@ -511,7 +507,7 @@ begin
     Visible := True;
   end;
   if Result <> nil then
-    fEditors.Add(Result);
+    FEditors.Add(Result);
 end;
 
 function TEditorFactory.CreateMDIChild(AOwner: TForm): IEditor;
@@ -527,7 +523,7 @@ begin
     FormStyle := fsMDIChild;
   end;
   if Result <> nil then
-    fEditors.Add(Result);
+    FEditors.Add(Result);
 end;
 
 function TEditorFactory.CreateTabSheet(AOwner: TPageControl): IEditor;
@@ -554,7 +550,7 @@ begin
     // fix for Delphi 4 (???)
     LForm.Realign;
     if Result <> nil then
-      fEditors.Add(Result);
+      FEditors.Add(Result);
   except
     Sheet.Free;
   end;
@@ -562,21 +558,21 @@ end;
 
 function TEditorFactory.GetEditorCount: Integer;
 begin
-  Result := fEditors.Count;
+  Result := FEditors.Count;
 end;
 
 function TEditorFactory.GetEditor(Index: Integer): IEditor;
 begin
-  Result := IEditor(fEditors[Index]);
+  Result := IEditor(FEditors[Index]);
 end;
 
 procedure TEditorFactory.RemoveEditor(AEditor: IEditor);
 var
   I: Integer;
 begin
-  I := fEditors.IndexOf(AEditor);
+  I := FEditors.IndexOf(AEditor);
   if I > -1 then
-    fEditors.Delete(I);
+    FEditors.Delete(I);
 end;
 
 { TEditorForm }
@@ -890,7 +886,7 @@ var
 begin
   Assert(FEditor <> nil);
   NewName := FEditor.FFileName;
-  if fCommands.GetSaveFileName(NewName, SynEditor.Highlighter) then
+  if FCommands.GetSaveFileName(NewName, SynEditor.Highlighter) then
   begin
     FEditor.DoSetFileName(NewName);
     DoUpdateCaption;
@@ -901,8 +897,7 @@ begin
     Result := False;
 end;
 
-procedure TfEditor.DoSearchReplaceText(AReplace: Boolean;
-  ABackwards: Boolean);
+procedure TfEditor.DoSearchReplaceText(AReplace: Boolean; ABackwards: Boolean);
 var
   Options: TSynSearchOptions;
 begin
@@ -947,12 +942,11 @@ begin
   Assert(FEditor <> nil);
   // Выбираем хайлайтер для расширения файла
   if FEditor.FFileName <> '' then
-    SynEditor.Highlighter := fCommands.GetHighlighterForFile
-      (FEditor.FFileName)
+    SynEditor.Highlighter := FCommands.GetHighlighterForFile(FEditor.FFileName)
   else
     // Текущий урковский хайлайтер по умолчанию
-    SynEditor.Highlighter := fCommands.GetHighlighterForFile
-      (fCommands.GetDefaultHighlighter);
+    SynEditor.Highlighter := FCommands.GetHighlighterForFile
+      (FCommands.GetDefaultHighlighter);
 end;
 
 procedure TfEditor.ShowSearchReplaceDialog(AReplace: Boolean);

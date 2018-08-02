@@ -110,7 +110,7 @@ begin
   FMRUItems[3] := miFileMRU3;
   FMRUItems[4] := miFileMRU4;
   FMRUItems[5] := miFileMRU5;
-  fCommands := TfCommands.Create(Self);
+  FCommands := TFCommands.Create(Self);
   ReadIniSettings;
   Language := TLanguage.Create(True);
 end;
@@ -122,7 +122,7 @@ begin
   Language.SaveDefault;
   FreeAndNil(Language);
   WriteIniSettings;
-  FreeAndNil(fCommands);
+  FreeAndNil(FCommands);
   DragAcceptFiles(Handle, False);
 end;
 
@@ -140,23 +140,23 @@ begin
   actQuestExit.Caption := _('E&xit');
   actQuestRun.Caption := _('&Run');
   mRecentFiles.Caption := _('Recent &Files');
-  fCommands.actFileSave.Caption := _('&Save');
-  fCommands.actFileSaveAs.Caption := _('Save &As...');
-  fCommands.actFileClose.Caption := _('&Close');
-  fCommands.actFilePrint.Caption := _('&Print...');
+  FCommands.actFileSave.Caption := _('&Save');
+  FCommands.actFileSaveAs.Caption := _('Save &As...');
+  FCommands.actFileClose.Caption := _('&Close');
+  FCommands.actFilePrint.Caption := _('&Print...');
   // Edit
-  fCommands.actEditUndo.Caption := _('&Undo');
-  fCommands.actEditRedo.Caption := _('&Redo');
-  fCommands.actEditCut.Caption := _('Cu&t');
-  fCommands.actEditCopy.Caption := _('&Copy');
-  fCommands.actEditPaste.Caption := _('&Paste');
-  fCommands.actEditDelete.Caption := _('De&lete');
-  fCommands.actEditSelectAll.Caption := _('Select &All');
+  FCommands.actEditUndo.Caption := _('&Undo');
+  FCommands.actEditRedo.Caption := _('&Redo');
+  FCommands.actEditCut.Caption := _('Cu&t');
+  FCommands.actEditCopy.Caption := _('&Copy');
+  FCommands.actEditPaste.Caption := _('&Paste');
+  FCommands.actEditDelete.Caption := _('De&lete');
+  FCommands.actEditSelectAll.Caption := _('Select &All');
   // Search
-  fCommands.actSearchFind.Caption := _('&Find...');
-  fCommands.actSearchFindNext.Caption := _('Find &Next');
-  fCommands.actSearchFindPrev.Caption := _('Find &Previous');
-  fCommands.actSearchReplace.Caption := _('&Replace...');
+  FCommands.actSearchFind.Caption := _('&Find...');
+  FCommands.actSearchFindNext.Caption := _('Find &Next');
+  FCommands.actSearchFindPrev.Caption := _('Find &Previous');
+  FCommands.actSearchReplace.Caption := _('&Replace...');
   // View
   actViewStatusbar.Caption := _('&Status Bar');
   actViewSettings.Caption := _('Se&ttings');
@@ -202,8 +202,7 @@ begin
   AFileName := ExpandFileName(AFileName);
   if AFileName <> '' then
   begin
-    fCommands.RemoveMRUEntry(AFileName);
-    // activate the editor if already open
+    FCommands.RemoveMRUEntry(AFileName);
     Assert(GI_EditorFactory <> nil);
     for I := GI_EditorFactory.GetEditorCount - 1 downto 0 do
     begin
@@ -244,7 +243,7 @@ begin
     begin
       S := IniFile.ReadString('MRUFiles', Format('MRUFile%d', [I]), '');
       if S <> '' then
-        fCommands.AddMRUEntry(S);
+        FCommands.AddMRUEntry(S);
     end;
   finally
     IniFile.Free;
@@ -291,7 +290,7 @@ begin
     // MRU files
     for I := 1 to 5 do
     begin
-      S := fCommands.GetMRUEntry(I - 1);
+      S := FCommands.GetMRUEntry(I - 1);
       if S <> '' then
         IniFile.WriteString('MRUFiles', Format('MRUFile%d', [I]), S)
       else
@@ -328,7 +327,7 @@ procedure TfMain.actQuestOpenExecute(Sender: TObject);
 var
   I: Integer;
 begin
-  with fCommands.dlgFileOpen do
+  with FCommands.dlgFileOpen do
   begin
     if Execute then
       for I := 0 to Files.Count - 1 do
@@ -370,7 +369,6 @@ begin
     if not CanCloseAll then
       Exit;
     I := GI_EditorFactory.GetEditorCount - 1;
-    // close all editor childs
     while I >= 0 do
     begin
       GI_EditorFactory.GetEditor(I).Close;
@@ -398,7 +396,7 @@ begin
   for I := Low(FMRUItems) to High(FMRUItems) do
     if FMRUItems[I] <> nil then
     begin
-      S := fCommands.GetMRUEntry(I - Low(FMRUItems));
+      S := FCommands.GetMRUEntry(I - Low(FMRUItems));
       FMRUItems[I].Visible := S <> '';
       FMRUItems[I].Caption := S;
     end;
@@ -406,7 +404,7 @@ end;
 
 procedure TfMain.mQuestClick(Sender: TObject);
 begin
-  mRecentFiles.Enabled := fCommands.GetMRUEntries > 0;
+  mRecentFiles.Enabled := FCommands.GetMRUEntries > 0;
 end;
 
 procedure TfMain.actViewStatusbarUpdate(Sender: TObject);
@@ -427,7 +425,7 @@ begin
   for I := Low(FMRUItems) to High(FMRUItems) do
     if Sender = FMRUItems[I] then
     begin
-      S := fCommands.GetMRUEntry(I - 1);
+      S := FCommands.GetMRUEntry(I - 1);
       if S <> '' then
         DoOpenFile(S);
     end;

@@ -84,10 +84,7 @@ begin
         J := Pos(Extension, Filter);
         if (J > 0) and ((J + ExtLen > Length(Filter)) or
           (Filter[J + ExtLen] = ';')) then
-        begin
-          Result := Highlighter;
-          exit;
-        end;
+          Exit(Highlighter);
       end;
     end;
   end;

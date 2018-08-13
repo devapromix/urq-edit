@@ -33,9 +33,7 @@ type
     PageControl1: TPageControl;
     TabSheet1: TTabSheet;
     KeyWordsList: TTreeView;
-    procedure SynEditorReplaceText(Sender: TObject;
-      const ASearch, AReplace: string; Line, Column: Integer;
-      var Action: TSynReplaceAction);
+    procedure SynEditorReplaceText(Sender: TObject; const ASearch, AReplace: string; Line, Column: Integer; var Action: TSynReplaceAction);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
     procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
     procedure FormDestroy(Sender: TObject);
@@ -45,8 +43,7 @@ type
     procedure SynEditorChange(Sender: TObject);
     procedure SynEditorEnter(Sender: TObject);
     procedure SynEditorExit(Sender: TObject);
-    procedure SynEditorStatusChange(Sender: TObject;
-      Changes: TSynStatusChanges);
+    procedure SynEditorStatusChange(Sender: TObject; Changes: TSynStatusChanges);
     procedure FormCreate(Sender: TObject);
     procedure KeyWordsListDeletion(Sender: TObject; Node: TTreeNode);
     procedure KeyWordsListClick(Sender: TObject);
@@ -75,8 +72,7 @@ type
     procedure DoActivate;
   end;
 
-  TEditor = class(TInterfacedObject, IEditor, IEditCommands, IFileCommands,
-    ISearchCommands)
+  TEditor = class(TInterfacedObject, IEditor, IEditCommands, IFileCommands, ISearchCommands)
   private
     // IEditor implementation
     procedure Activate;
@@ -212,6 +208,7 @@ end;
 
 function TEditor.GetEditorState: string;
 begin
+  // Состояние редактора
   if FForm <> nil then
   begin
     if FForm.SynEditor.ReadOnly then
@@ -232,10 +229,13 @@ end;
 
 function TEditor.GetFileTitle: string;
 begin
+  // Название закладки редактора
+  // Если открыт сущ. файл, то выводится его название
   if FFileName <> '' then
     Result := ExtractFileName(FFileName)
   else
   begin
+    // ... иначе "Квест 1" и т.д.
     if FUntitledNumber = -1 then
       FUntitledNumber := FCommands.GetUntitledNumber;
     Result := _('Quest') + IntToStr(FUntitledNumber);
@@ -425,7 +425,13 @@ type
   TEditorTabSheet = class(TTabSheet)
   private
     procedure WMDeleteThis(var Msg: TMessage); message WM_DELETETHIS;
+    constructor Create(AOwner: TComponent);
   end;
+
+constructor TEditorTabSheet.Create(AOwner: TComponent);
+begin
+  inherited Create(AOwner);
+end;
 
 procedure TEditorTabSheet.WMDeleteThis(var Msg: TMessage);
 begin
@@ -468,6 +474,7 @@ var
   I: Integer;
   LEditor: IEditor;
 begin
+  // Попытка закрыть все вкладки
   I := FEditors.Count - 1;
   while I >= 0 do
   begin
@@ -483,6 +490,7 @@ procedure TEditorFactory.CloseAll;
 var
   I: Integer;
 begin
+  // Закрыть все вкладки
   I := FEditors.Count - 1;
   while I >= 0 do
   begin
@@ -547,12 +555,11 @@ begin
       AOwner.ActivePage := Sheet;
       LForm.SetFocus;
     end;
-    // fix for Delphi 4 (???)
     LForm.Realign;
     if Result <> nil then
       FEditors.Add(Result);
   except
-    Sheet.Free;
+    FreeAndNil(Sheet);
   end;
 end;
 
@@ -589,6 +596,7 @@ end;
 
 procedure TfEditor.FormShow(Sender: TObject);
 begin
+  // Обновить заголовок в окне редактора
   DoUpdateCaption;
 end;
 
@@ -606,21 +614,27 @@ var
   P: PString;
 begin
   KeyWordsList.Items.Clear;
-  with TIniFile.Create(Utils.GetPath('') + 'keywords.ini') do
+  // Открываем файл для работы
+  with TMemIniFile.Create(Utils.GetPath('') + 'keywords.ini', TEncoding.UTF8) do
     try
       SectionsList := TStringList.Create;
       try
+        // Читаем все группы ключевых слов
         ReadSections(SectionsList);
         ValuesList := TStringList.Create;
         try
+          // Перебираем группы
           for I := 0 to SectionsList.Count - 1 do
           begin
             ValuesList.Clear;
+            // Загрузка в память всех ключевых слов из тек. группы
             ReadSectionValues(SectionsList[I], ValuesList);
             RootNode := KeyWordsList.Items.Add(nil, _(SectionsList[I]));
             for J := 0 to ValuesList.Count - 1 do
             begin
+              // Само ключ. слово ...
               Name := ValuesList.Names[J];
+              // ... и его шаблон
               New(P);
               P^ := ValuesList.Values[Name];
               KeyWordsList.Items.AddChildObject(RootNode, Name, P);
@@ -669,16 +683,22 @@ begin
       Finish := Pos('}', Hint);
       // Обрабатываем шаблон кл. слова
       Template := Copy(Hint, Start + 1, Finish - 2);
+      // Удал. лишнее...
       Delete(Hint, Start, Finish);
+      // Число указывает, на сколько символов нужно вернуть каретку назад
       CaretLeft := StrToIntDef(Template[Length(Template)], 0);
+      // Теперь это число уже не нужно - удаляем его
       if IsLastCharDigit(Template) then
         Delete(Template, Length(Template), 1);
+      // Замена спец. символов по шаблону
       Template := Template.Replace('@@', #13#10);
+      // Ключ. слово взято из обработ. шаблона
       Word := Template;
     end;
-    // Добавляем в позицию курсора
+    // Добавляем ключ. слово в позицию курсора
     SynEditor.SelText := Word;
-    // Отводим каретку по шаблону назад на N символов
+    // Отводим каретку по шаблону назад на N символов,
+    // если такая команда была в шаблоне (число больше 0)
     if CaretLeft > 0 then
       SynEditor.CaretX := SynEditor.CaretX - CaretLeft;
   end;
@@ -704,6 +724,7 @@ end;
 
 procedure TfEditor.FormCloseQuery(Sender: TObject; var CanClose: Boolean);
 begin
+  // Попытка закрыть окно
   if not(csDestroying in ComponentState) then
     CanClose := DoAskSaveChanges;
 end;
@@ -737,7 +758,7 @@ begin
     if SynEditor.Lines[I] <> '' then
     begin
       Empty := False;
-      break;
+      Break;
     end;
   FEditor.FIsEmpty := Empty;
 end;
@@ -752,9 +773,7 @@ begin
   DoAssignInterfacePointer(False);
 end;
 
-procedure TfEditor.SynEditorReplaceText(Sender: TObject;
-  const ASearch, AReplace: string; Line, Column: Integer;
-  var Action: TSynReplaceAction);
+procedure TfEditor.SynEditorReplaceText(Sender: TObject; const ASearch, AReplace: string; Line, Column: Integer; var Action: TSynReplaceAction);
 var
   APos: TPoint;
   EditRect: TRect;
@@ -763,17 +782,14 @@ begin
     Action := raSkip
   else
   begin
-    APos := SynEditor.ClientToScreen
-      (SynEditor.RowColumnToPixels(SynEditor.BufferToDisplayPos
-      (BufferCoord(Column, Line))));
+    APos := SynEditor.ClientToScreen(SynEditor.RowColumnToPixels(SynEditor.BufferToDisplayPos(BufferCoord(Column, Line))));
     EditRect := ClientRect;
     EditRect.TopLeft := ClientToScreen(EditRect.TopLeft);
     EditRect.BottomRight := ClientToScreen(EditRect.BottomRight);
 
     if fConfirmReplace = nil then
       fConfirmReplace := TfConfirmReplace.Create(Application);
-    fConfirmReplace.PrepareShow(EditRect, APos.X, APos.Y,
-      APos.Y + SynEditor.LineHeight, ASearch);
+    fConfirmReplace.PrepareShow(EditRect, APos.X, APos.Y, APos.Y + SynEditor.LineHeight, ASearch);
     case Utils.ShowForm(fConfirmReplace) of
       mrYes:
         Action := raReplace;
@@ -787,9 +803,9 @@ begin
   end;
 end;
 
-procedure TfEditor.SynEditorStatusChange(Sender: TObject;
-  Changes: TSynStatusChanges);
+procedure TfEditor.SynEditorStatusChange(Sender: TObject; Changes: TSynStatusChanges);
 begin
+  // Изм. сатус
   Assert(FEditor <> nil);
   if Changes * [scAll, scSelection] <> [] then
     FEditor.FHasSelection := SynEditor.SelAvail;
@@ -931,6 +947,7 @@ end;
 
 procedure TfEditor.DoUpdateCaption;
 begin
+  // Обновить заголовок программы
   Assert(FEditor <> nil);
   if (FKind = ekInTabsheet) then
     (Parent as TTabSheet).Caption := FEditor.GetFileTitle;
@@ -945,8 +962,7 @@ begin
     SynEditor.Highlighter := FCommands.GetHighlighterForFile(FEditor.FFileName)
   else
     // Текущий урковский хайлайтер по умолчанию
-    SynEditor.Highlighter := FCommands.GetHighlighterForFile
-      (FCommands.GetDefaultHighlighter);
+    SynEditor.Highlighter := FCommands.GetHighlighterForFile(FCommands.GetDefaultHighlighter);
 end;
 
 procedure TfEditor.ShowSearchReplaceDialog(AReplace: Boolean);
@@ -970,8 +986,7 @@ begin
       if FSearchTextAtCaret then
       begin
         // if something is selected search for that text
-        if SynEditor.SelAvail and
-          (SynEditor.BlockBegin.Line = SynEditor.BlockEnd.Line) then
+        if SynEditor.SelAvail and (SynEditor.BlockBegin.Line = SynEditor.BlockEnd.Line) then
           SearchText := SynEditor.SelText
         else
           SearchText := SynEditor.GetWordAtRowCol(SynEditor.CaretXY);

@@ -177,4 +177,11 @@ object fCommands: TfCommands
     Left = 136
     Top = 48
   end
+  object PopupMenu1: TPopupMenu
+    Left = 280
+    Top = 24
+    object fgfgfg1: TMenuItem
+      Caption = 'test...'
+    end
+  end
 end

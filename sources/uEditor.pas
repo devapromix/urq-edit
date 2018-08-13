@@ -431,6 +431,7 @@ type
 constructor TEditorTabSheet.Create(AOwner: TComponent);
 begin
   inherited Create(AOwner);
+  Self.PopupMenu := fCommands.PopupMenu1;
 end;
 
 procedure TEditorTabSheet.WMDeleteThis(var Msg: TMessage);

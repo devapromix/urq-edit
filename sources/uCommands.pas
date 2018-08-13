@@ -7,7 +7,7 @@ interface
 uses
   Windows, Messages, SysUtils, Classes, Graphics, Controls, Forms, Dialogs,
   ActnList, SynEditHighlighter, System.Actions, SynEditCodeFolding,
-  SynHighlighterURQL, SynHighlighterXML;
+  SynHighlighterURQL, SynHighlighterXML, Vcl.Menus;
 
 type
   TFCommands = class(TDataModule)
@@ -31,6 +31,8 @@ type
     dlgFileSave: TSaveDialog;
     SynXMLSyn1: TSynXMLSyn;
     SynURQLSyn1: TSynURQLSyn;
+    PopupMenu1: TPopupMenu;
+    fgfgfg1: TMenuItem;
     procedure DataModuleCreate(Sender: TObject);
     procedure DataModuleDestroy(Sender: TObject);
     procedure actFileSaveExecute(Sender: TObject);

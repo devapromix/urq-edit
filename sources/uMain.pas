@@ -291,7 +291,7 @@ begin
     // MRU files
     for I := Low(FMRUItems) to High(FMRUItems) do
     begin
-      S := FCommands.GetMRUEntry(I - Low(FMRUItems));
+      S := FCommands.GetMRUEntry(I);
       if S <> '' then
         IniFile.WriteString('MRUFiles', I.ToString, S)
       else
@@ -394,7 +394,7 @@ begin
   for I := Low(FMRUItems) to High(FMRUItems) do
     if FMRUItems[I] <> nil then
     begin
-      S := FCommands.GetMRUEntry(I - Low(FMRUItems));
+      S := FCommands.GetMRUEntry(I);
       FMRUItems[I].Visible := S <> '';
       FMRUItems[I].Caption := S;
     end;
@@ -423,7 +423,7 @@ begin
   for I := Low(FMRUItems) to High(FMRUItems) do
     if Sender = FMRUItems[I] then
     begin
-      S := FCommands.GetMRUEntry(I - Low(FMRUItems));
+      S := FCommands.GetMRUEntry(I);
       if S <> '' then
         DoOpenFile(S);
     end;

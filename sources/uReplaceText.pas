@@ -21,8 +21,7 @@ type
     procedure SetReplaceTextHistory(Value: string);
   public
     property ReplaceText: string read GetReplaceText write SetReplaceText;
-    property ReplaceTextHistory: string read GetReplaceTextHistory
-      write SetReplaceTextHistory;
+    property ReplaceTextHistory: string read GetReplaceTextHistory write SetReplaceTextHistory;
   end;
 
 implementation
@@ -46,18 +45,8 @@ begin
 end;
 
 function TfReplaceText.GetReplaceTextHistory: string;
-var
-  I: Integer;
 begin
-  Result := '';
-  for I := 0 to cbReplaceText.Items.Count - 1 do
-  begin
-    if I >= 10 then
-      break;
-    if I > 0 then
-      Result := Result + #13#10;
-    Result := Result + cbReplaceText.Items[I];
-  end;
+  Result := GetHistory(cbReplaceText);
 end;
 
 procedure TfReplaceText.SetReplaceText(Value: string);

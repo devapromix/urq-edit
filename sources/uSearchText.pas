@@ -49,6 +49,7 @@ type
     property SearchTextHistory: string read GetSearchTextHistory write SetSearchTextHistory;
     property SearchWholeWords: Boolean read GetSearchWholeWords write SetSearchWholeWords;
     property SearchRegularExpression: Boolean read GetSearchRegularExpression write SetSearchRegularExpression;
+    function GetHistory(AComboBox: TComboBox): string;
   end;
 
 implementation
@@ -101,24 +102,29 @@ begin
   Result := cbRegularExpression.Checked;
 end;
 
+function TfSearchText.GetHistory(AComboBox: TComboBox): string;
+var
+  I: Integer;
+begin
+  Result := '';
+  for I := 0 to AComboBox.Items.Count - 1 do
+  begin
+    if I >= 10 then
+      Break;
+    if I > 0 then
+      Result := Result + ''#13''#10'';
+    Result := Result + AComboBox.Items[I];
+  end;
+end;
+
 function TfSearchText.GetSearchText: string;
 begin
   Result := cbSearchText.Text;
 end;
 
 function TfSearchText.GetSearchTextHistory: string;
-var
-  I: Integer;
 begin
-  Result := '';
-  for I := 0 to cbSearchText.Items.Count - 1 do
-  begin
-    if I >= 10 then
-      break;
-    if I > 0 then
-      Result := Result + #13#10;
-    Result := Result + cbSearchText.Items[I];
-  end;
+  Result := GetHistory(cbSearchText);
 end;
 
 function TfSearchText.GetSearchWholeWords: Boolean;

@@ -60,27 +60,9 @@ begin
 end;
 
 procedure TfReplaceText.FormCloseQuery(Sender: TObject; var CanClose: Boolean);
-var
-  S: string;
-  I: Integer;
 begin
   inherited;
-  if ModalResult = mrOK then
-  begin
-    S := cbReplaceText.Text;
-    if S <> '' then
-    begin
-      I := cbReplaceText.Items.IndexOf(S);
-      if I > -1 then
-      begin
-        cbReplaceText.Items.Delete(I);
-        cbReplaceText.Items.Insert(0, S);
-        cbReplaceText.Text := S;
-      end
-      else
-        cbReplaceText.Items.Insert(0, S);
-    end;
-  end;
+  Self.CloseForm(cbReplaceText);
 end;
 
 end.

@@ -50,6 +50,7 @@ type
     property SearchWholeWords: Boolean read GetSearchWholeWords write SetSearchWholeWords;
     property SearchRegularExpression: Boolean read GetSearchRegularExpression write SetSearchRegularExpression;
     function GetHistory(AComboBox: TComboBox): string;
+    procedure CloseForm(AComboBox: TComboBox);
   end;
 
 implementation
@@ -117,6 +118,29 @@ begin
   end;
 end;
 
+procedure TfSearchText.CloseForm(AComboBox: TComboBox);
+var
+  S: string;
+  I: Integer;
+begin
+  if ModalResult = mrOK then
+  begin
+    S := AComboBox.Text;
+    if S <> '' then
+    begin
+      I := AComboBox.Items.IndexOf(S);
+      if I > -1 then
+      begin
+        AComboBox.Items.Delete(I);
+        AComboBox.Items.Insert(0, S);
+        AComboBox.Text := S;
+      end
+      else
+        AComboBox.Items.Insert(0, S);
+    end;
+  end;
+end;
+
 function TfSearchText.GetSearchText: string;
 begin
   Result := cbSearchText.Text;
@@ -173,26 +197,8 @@ begin
 end;
 
 procedure TfSearchText.FormCloseQuery(Sender: TObject; var CanClose: Boolean);
-var
-  S: string;
-  I: Integer;
 begin
-  if ModalResult = mrOK then
-  begin
-    S := cbSearchText.Text;
-    if S <> '' then
-    begin
-      I := cbSearchText.Items.IndexOf(S);
-      if I > -1 then
-      begin
-        cbSearchText.Items.Delete(I);
-        cbSearchText.Items.Insert(0, S);
-        cbSearchText.Text := S;
-      end
-      else
-        cbSearchText.Items.Insert(0, S);
-    end;
-  end;
+  CloseForm(cbSearchText);
 end;
 
 end.

@@ -466,7 +466,7 @@ end;
 
 destructor TEditorFactory.Destroy;
 begin
-  FEditors.Free;
+  FreeAndNil(FEditors);
   inherited Destroy;
 end;
 
@@ -943,7 +943,7 @@ begin
   end;
 
   if fConfirmReplace <> nil then
-    fConfirmReplace.Free;
+    FreeAndNil(fConfirmReplace);
 end;
 
 procedure TfEditor.DoUpdateCaption;

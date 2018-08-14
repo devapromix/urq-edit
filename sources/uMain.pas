@@ -84,7 +84,7 @@ type
   private
     procedure WMDropFiles(var Msg: TWMDropFiles); message WM_DROPFILES;
   protected
-    FMRUItems: array [1 .. 5] of TMenuItem;
+    FMRUItems: TArray<TMenuItem>;
     function CanCloseAll: Boolean;
     function CmdLineOpenFiles(AMultipleFiles: Boolean): Boolean;
     function DoCreateEditor(AFileName: string): IEditor; virtual;
@@ -105,11 +105,12 @@ uses
 procedure TfMain.FormCreate(Sender: TObject);
 begin
   DragAcceptFiles(Handle, True);
-  FMRUItems[1] := miFileMRU1;
-  FMRUItems[2] := miFileMRU2;
-  FMRUItems[3] := miFileMRU3;
-  FMRUItems[4] := miFileMRU4;
-  FMRUItems[5] := miFileMRU5;
+  SetLength(FMRUItems, MAX_MRU);
+  FMRUItems[0] := miFileMRU1;
+  FMRUItems[1] := miFileMRU2;
+  FMRUItems[2] := miFileMRU3;
+  FMRUItems[3] := miFileMRU4;
+  FMRUItems[4] := miFileMRU5;
   FCommands := TFCommands.Create(Self);
   ReadIniSettings;
   Language := TLanguage.Create(True);
@@ -239,14 +240,14 @@ begin
       WindowState := wsMaximized;
     StatusBar.Visible := IniFile.ReadInteger('Main', 'ShowStatusbar', 1) <> 0;
     // MRU files
-    for I := 5 downto 1 do
+    for I := High(FMRUItems) downto Low(FMRUItems) do
     begin
-      S := IniFile.ReadString('MRUFiles', Format('MRUFile%d', [I]), '');
+      S := IniFile.ReadString('MRUFiles', I.ToString, '');
       if S <> '' then
         FCommands.AddMRUEntry(S);
     end;
   finally
-    IniFile.Free;
+    FreeAndNil(IniFile);
   end;
 end;
 
@@ -288,16 +289,16 @@ begin
     IniFile.WriteInteger('Main', 'Maximized', Ord(WindowState = wsMaximized));
     IniFile.WriteInteger('Main', 'ShowStatusbar', Ord(StatusBar.Visible));
     // MRU files
-    for I := 1 to 5 do
+    for I := Low(FMRUItems) to High(FMRUItems) do
     begin
-      S := FCommands.GetMRUEntry(I - 1);
+      S := FCommands.GetMRUEntry(I - Low(FMRUItems));
       if S <> '' then
-        IniFile.WriteString('MRUFiles', Format('MRUFile%d', [I]), S)
+        IniFile.WriteString('MRUFiles', I.ToString, S)
       else
-        IniFile.DeleteKey('MRUFiles', Format('MRUFile%d', [I]));
+        IniFile.DeleteKey('MRUFiles', I.ToString);
     end;
   finally
-    IniFile.Free;
+    FreeAndNil(IniFile);
   end;
 end;
 
@@ -343,11 +344,11 @@ begin
   FileName := '';
   if (GI_ActiveEditor <> nil) then
     FileName := GI_ActiveEditor.GetFileName;
+  // Путь к интерп.
   IntURQPath := Trim(fSettings.edSelURQ.Text);
   if (IntURQPath = '') or not FileExists(IntURQPath) then
     Exit;
-  ShellExecute(Application.Handle, 'open', PWideChar(IntURQPath),
-    PWideChar(FileName), nil, SW_SHOWNORMAL);
+  ShellExecute(Application.Handle, 'open', PWideChar(IntURQPath), PWideChar(FileName), nil, SW_SHOWNORMAL);
 end;
 
 procedure TfMain.actQuestRunUpdate(Sender: TObject);
@@ -355,9 +356,7 @@ var
   IntURQPath: string;
 begin
   IntURQPath := Trim(fSettings.edSelURQ.Text);
-  actQuestRun.Enabled := (GI_ActiveEditor <> nil) and
-    not GI_ActiveEditor.GetModified and (IntURQPath <> '') and
-    FileExists(IntURQPath)
+  actQuestRun.Enabled := (GI_ActiveEditor <> nil) and not GI_ActiveEditor.GetModified and (IntURQPath <> '') and FileExists(IntURQPath)
 end;
 
 procedure TfMain.actQuestCloseAllExecute(Sender: TObject);
@@ -379,8 +378,7 @@ end;
 
 procedure TfMain.actQuestCloseAllUpdate(Sender: TObject);
 begin
-  actQuestCloseAll.Enabled := (GI_EditorFactory <> nil) and
-    (GI_EditorFactory.GetEditorCount > 0);
+  actQuestCloseAll.Enabled := (GI_EditorFactory <> nil) and (GI_EditorFactory.GetEditorCount > 0);
 end;
 
 procedure TfMain.actQuestExitExecute(Sender: TObject);
@@ -425,7 +423,7 @@ begin
   for I := Low(FMRUItems) to High(FMRUItems) do
     if Sender = FMRUItems[I] then
     begin
-      S := FCommands.GetMRUEntry(I - 1);
+      S := FCommands.GetMRUEntry(I - Low(FMRUItems));
       if S <> '' then
         DoOpenFile(S);
     end;
@@ -433,6 +431,7 @@ end;
 
 procedure TfMain.actUpdateStatusBarPanelsUpdate(Sender: TObject);
 var
+  I: Integer;
   PtCaret: TPoint;
 begin
   actUpdateStatusBarPanels.Enabled := True;
@@ -450,11 +449,8 @@ begin
     StatusBar.Panels[2].Text := GI_ActiveEditor.GetEditorState;
   end
   else
-  begin
-    StatusBar.Panels[0].Text := '';
-    StatusBar.Panels[1].Text := '';
-    StatusBar.Panels[2].Text := '';
-  end;
+    for I := 0 to 2 do
+      StatusBar.Panels[I].Text := '';
 end;
 
 end.

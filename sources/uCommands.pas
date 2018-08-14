@@ -74,13 +74,15 @@ type
     function GetHighlighterForFile(AFileName: string): TSynCustomHighlighter;
     function GetMRUEntries: Integer;
     function GetMRUEntry(Index: Integer): string;
-    function GetSaveFileName(var ANewName: string;
-      AHighlighter: TSynCustomHighlighter): Boolean;
+    function GetSaveFileName(var ANewName: string; AHighlighter: TSynCustomHighlighter): Boolean;
     function GetUntitledNumber: Integer;
     procedure ReleaseUntitledNumber(ANumber: Integer);
     procedure RemoveMRUEntry(AFileName: string);
     function GetDefaultHighlighter: string;
   end;
+
+const
+  MAX_MRU = 5;
 
 var
   FCommands: TFCommands;
@@ -92,9 +94,6 @@ implementation
 uses
   uHighlighterProcs, uEditAppIntfs, uLanguage;
 
-const
-  MAX_MRU = 5;
-
 resourcestring
   SFilterAllFiles = 'All files |*.*|';
 
@@ -104,16 +103,15 @@ procedure TFCommands.DataModuleCreate(Sender: TObject);
 begin
   FHighlighters := TStringList.Create;
   GetHighlighters(Self, FHighlighters, False);
-  dlgFileOpen.Filter := GetHighlightersFilter(FHighlighters) +
-    _(SFilterAllFiles);
+  dlgFileOpen.Filter := GetHighlightersFilter(FHighlighters) + _(SFilterAllFiles);
   FMRUFiles := TStringList.Create;
 end;
 
 procedure TFCommands.DataModuleDestroy(Sender: TObject);
 begin
-  FMRUFiles.Free;
-  FHighlighters.Free;
-  FUntitledNumbers.Free;
+  FreeAndNil(FMRUFiles);
+  FreeAndNil(FHighlighters);
+  FreeAndNil(FUntitledNumbers);
   FCommands := nil;
 end;
 
@@ -134,12 +132,10 @@ begin
   Result := SynURQLSyn1.DefaultFilter;
 end;
 
-function TFCommands.GetHighlighterForFile(AFileName: string)
-  : TSynCustomHighlighter;
+function TFCommands.GetHighlighterForFile(AFileName: string): TSynCustomHighlighter;
 begin
   if AFileName <> '' then
-    Result := GetHighlighterFromFileExt(FHighlighters,
-      ExtractFileExt(AFileName))
+    Result := GetHighlighterFromFileExt(FHighlighters, ExtractFileExt(AFileName))
   else
     Result := nil;
 end;
@@ -157,8 +153,7 @@ begin
     Result := '';
 end;
 
-function TFCommands.GetSaveFileName(var ANewName: string;
-  AHighlighter: TSynCustomHighlighter): Boolean;
+function TFCommands.GetSaveFileName(var ANewName: string; AHighlighter: TSynCustomHighlighter): Boolean;
 begin
   with dlgFileSave do
   begin
@@ -200,8 +195,7 @@ end;
 procedure TFCommands.ReleaseUntitledNumber(ANumber: Integer);
 begin
   Dec(ANumber);
-  if (FUntitledNumbers <> nil) and (ANumber >= 0) and
-    (ANumber < FUntitledNumbers.Size) then
+  if (FUntitledNumbers <> nil) and (ANumber >= 0) and (ANumber < FUntitledNumbers.Size) then
     FUntitledNumbers[ANumber] := False;
 end;
 
@@ -356,8 +350,7 @@ end;
 
 procedure TFCommands.actSearchFindNextUpdate(Sender: TObject);
 begin
-  actSearchFindNext.Enabled := (GI_SearchCmds <> nil) and
-    GI_SearchCmds.CanFindNext;
+  actSearchFindNext.Enabled := (GI_SearchCmds <> nil) and GI_SearchCmds.CanFindNext;
 end;
 
 procedure TFCommands.actSearchFindPrevExecute(Sender: TObject);
@@ -368,8 +361,7 @@ end;
 
 procedure TFCommands.actSearchFindPrevUpdate(Sender: TObject);
 begin
-  actSearchFindPrev.Enabled := (GI_SearchCmds <> nil) and
-    GI_SearchCmds.CanFindPrev;
+  actSearchFindPrev.Enabled := (GI_SearchCmds <> nil) and GI_SearchCmds.CanFindPrev;
 end;
 
 procedure TFCommands.actSearchReplaceExecute(Sender: TObject);
@@ -380,8 +372,7 @@ end;
 
 procedure TFCommands.actSearchReplaceUpdate(Sender: TObject);
 begin
-  actSearchReplace.Enabled := (GI_SearchCmds <> nil) and
-    GI_SearchCmds.CanReplace;
+  actSearchReplace.Enabled := (GI_SearchCmds <> nil) and GI_SearchCmds.CanReplace;
 end;
 
 end.

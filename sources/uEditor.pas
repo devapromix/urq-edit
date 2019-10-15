@@ -238,7 +238,7 @@ begin
     // ... иначе "Квест 1" и т.д.
     if FUntitledNumber = -1 then
       FUntitledNumber := FCommands.GetUntitledNumber;
-    Result := _('Quest') + IntToStr(FUntitledNumber);
+    Result := _('Quest') + FUntitledNumber.ToString;
   end;
 end;
 
@@ -656,7 +656,7 @@ function TfEditor.IsLastCharDigit(const S: string): Boolean;
 var
   C: Char;
 begin
-  C := S[Length(S)];
+  C := S[S.Length];
   Result := C.IsDigit;
 end;
 
@@ -673,9 +673,9 @@ begin
   begin
     CaretLeft := 0;
     Template := '';
-    Hint := Trim(string(KeyWordsList.Selected.Data^));
+    Hint := string(KeyWordsList.Selected.Data^).Trim;
     // Выбранное из группы ключевое слово
-    Word := Trim(KeyWordsList.Selected.Text);
+    Word := KeyWordsList.Selected.Text.Trim;
     // Начало шаблона (если вообще есть шаблон для кл. слова)
     Start := Pos('{', Hint);
     if Start > 0 then

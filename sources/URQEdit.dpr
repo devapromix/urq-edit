@@ -1,4 +1,4 @@
-program URQEdit;
+﻿program URQEdit;
 
 uses
   Forms,

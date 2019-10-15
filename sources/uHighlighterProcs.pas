@@ -67,7 +67,7 @@ var
   Highlighter: TSynCustomHighlighter;
   Filter: string;
 begin
-  Extension := LowerCase(Extension);
+  Extension := Extension.ToLower;
   ExtLen := Length(Extension);
   if Assigned(AHighlighters) and (ExtLen > 0) then
   begin
@@ -76,7 +76,7 @@ begin
       if not(AHighlighters.Objects[I] is TSynCustomHighlighter) then
         Continue;
       Highlighter := TSynCustomHighlighter(AHighlighters.Objects[I]);
-      Filter := LowerCase(Highlighter.DefaultFilter);
+      Filter := Highlighter.DefaultFilter.ToLower;
       J := Pos('|', Filter);
       if J > 0 then
       begin
